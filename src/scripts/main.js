@@ -110,7 +110,7 @@ const resources = {
 
         buttonElementType: 'span',
 
-        buttonStyle: 'position:absolute;padding:4px;right:0;top:.4em;width:2em;height:2em;cursor:pointer;background-color:#262626',
+        buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
 
         buttonParent: function () {
             const e = document.getElementById('playerContainer');
