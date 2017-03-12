@@ -234,7 +234,7 @@ const resources = {
         buttonStyle: 'transform:scale(0.7)',
 
         buttonWillAppear: function () {
-            resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = '407px';
+            resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
         },
         
         buttonInsertBefore: function (/** Element */ parent) {
