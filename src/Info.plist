@@ -63,6 +63,8 @@
 				<string>collegehumor.com</string>
 				<string>vid.me</string>
 				<string>*.vid.me</string>
+				<string>hulu.com</string>
+				<string>*.hulu.com</string>
 			</array>
 			<key>Include Secure Pages</key>
 			<true/>

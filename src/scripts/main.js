@@ -225,6 +225,30 @@ const resources = {
         videoElement: function () {
             return document.getElementById('video_player_html5_api');
         }
+    },
+    'hulu': {
+	    buttonElementType: 'div',
+	    
+	    buttonClassName: 'simple-button',
+
+        buttonStyle: 'transform:scale(0.7)',
+
+        buttonWillAppear: function () {
+            resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = '407px';
+        },
+        
+        buttonInsertBefore: function (/** Element */ parent) {
+            return parent.lastChild;
+        },
+
+        buttonParent: function () {
+            const e = document.getElementById('site-player');
+            return e && e.querySelector('.main-bar');
+        },
+
+        videoElement: function () {
+            return document.getElementById('content-video-player');
+        }
     }
 };
 
