@@ -226,6 +226,8 @@ const resources = {
   },
 };
 
+resources['youtu'] = resources['youtube'];
+
 
 const domainName = location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
@@ -242,4 +244,3 @@ if (domainName in resources) {
 
   buttonObserver();
 }
-
