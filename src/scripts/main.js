@@ -3,6 +3,7 @@
 /**
  * @typedef {{
  *    buttonClassName: (string|undefined),
+ *    buttonDidAppear: (function(): undefined|undefined),
  *    buttonElementType: (string|undefined),
  *    buttonImage: (string|undefined),
  *    buttonInsertBefore: (function(Element): ?Node|undefined),
@@ -46,7 +47,10 @@ const addButton = function(/** Element */ parent) {
     event.preventDefault();
 
     const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-    if (!video) return;
+    if (!video) {
+      log('Unable to find video');
+      return;
+    }
 
     const presentationMode = 'inline' === video.webkitPresentationMode ? 'picture-in-picture' : 'inline';
     video.webkitSetPresentationMode(presentationMode);
@@ -68,6 +72,7 @@ const buttonObserver = function() {
   if (buttonParent) {
     if (currentResource.buttonWillAppear) currentResource.buttonWillAppear();
     addButton(buttonParent);
+    if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
     log('Button added');
     buttonAdded = true;
   }
@@ -214,6 +219,21 @@ const resources = {
 
   'youtube': {
     buttonClassName: 'ytp-button',
+    buttonDidAppear: function() {
+      const button = document.getElementById(BUTTON_ID);
+      const previousButton = button.previousSibling;
+      const /** string */ previousTitle = previousButton.title;
+      button.addEventListener('mouseover', function(e){
+        previousButton.title = button.title;
+        button.title = '';
+        previousButton.dispatchEvent(new Event('mouseover'));
+      });
+      button.addEventListener('mouseout', function(e){
+        previousButton.dispatchEvent(new Event('mouseout'));
+        button.title = previousButton.title;
+        previousButton.title = previousTitle;
+      });
+    },
     buttonParent: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('.ytp-right-controls');

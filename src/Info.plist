@@ -32,10 +32,6 @@
 	<string>BQ6Q24MF9X</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
-	<key>Update Manifest URL</key>
-	<string>https://s3.amazonaws.com/piper-extension/update.plist</string>
-	<key>Website</key>
-	<string>https://github.com/amarcu5/PiPer/</string>
 	<key>Permissions</key>
 	<dict>
 		<key>Website Access</key>
@@ -79,5 +75,9 @@
 			<string>Some</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>https://s3.amazonaws.com/piper-extension/update.plist</string>
+	<key>Website</key>
+	<string>https://github.com/amarcu5/PiPer/</string>
 </dict>
 </plist>
