@@ -1,21 +1,5 @@
 'use strict';
 
-/**
- * @typedef {{
- *    buttonClassName: (string|undefined),
- *    buttonDidAppear: (function(): undefined|undefined),
- *    buttonElementType: (string|undefined),
- *    buttonImage: (string|undefined),
- *    buttonInsertBefore: (function(Element): ?Node|undefined),
- *    buttonParent: function(): ?Element,
- *    buttonStyle: (string|undefined),
- *    buttonWillAppear: (function(): undefined|undefined),
- *    videoElement: function(): ?Element,
- * }}
- */
-let PIPResource;
-
-
 /** @define {boolean} */
 const COMPILED = false;
 
@@ -70,7 +54,6 @@ const buttonObserver = function() {
 
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
-    if (currentResource.buttonWillAppear) currentResource.buttonWillAppear();
     addButton(buttonParent);
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
     log('Button added');
@@ -122,7 +105,7 @@ const resources = {
       return e && e.querySelector('.main-bar');
     },
     buttonStyle: 'transform:scale(0.7)',
-    buttonWillAppear: function() {
+    buttonDidAppear: function() {
       resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
     },
     videoElement: function() {
@@ -151,7 +134,7 @@ const resources = {
       return e ? e.querySelector('.player-status') : null;
     },
     buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
-    buttonWillAppear: function() {
+    buttonDidAppear: function() {
       resources['netflix'].buttonParent().style.paddingRight = '50px';
     },
     videoElement: function() {
