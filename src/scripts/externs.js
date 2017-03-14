@@ -1,5 +1,5 @@
 /** @const */
-var safari = {};
+const safari = {};
 
 /** @const */
 safari.extension = {};
@@ -12,3 +12,17 @@ HTMLVideoElement.prototype.webkitPresentationMode;
 
 /** @return {undefined} */
 HTMLVideoElement.prototype.webkitSetPresentationMode = function(mode) {}
+
+/**
+ * @typedef {{
+ *    buttonClassName: (string|undefined),
+ *    buttonDidAppear: (function(): undefined|undefined),
+ *    buttonElementType: (string|undefined),
+ *    buttonImage: (string|undefined),
+ *    buttonInsertBefore: (function(Element): ?Node|undefined),
+ *    buttonParent: function(): ?Element,
+ *    buttonStyle: (string|undefined),
+ *    videoElement: function(): ?Element,
+ * }}
+ */
+let PIPResource;

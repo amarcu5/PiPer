@@ -1,6 +1,8 @@
 # PiPer
 Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Video, Twitch, and more!
 
+<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" height="384"/>
+
 ## Installation
 
 Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariextz), open the downloaded file, and hit trust
@@ -15,6 +17,7 @@ Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariex
 * [CollegeHumor](http://www.collegehumor.com)
 * [Vevo](http://www.vevo.com)
 * [Vid.me](http://www.vid.me)
+* [Hulu](http://www.hulu.com)
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon
