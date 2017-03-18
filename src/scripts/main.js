@@ -125,6 +125,18 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
+  
+  'ncaa': {
+	  buttonClassName: 'video-player-controls-button',
+    buttonElementType: 'div',
+    buttonParent: function() {
+      return document.getElementById('video-player-controls-buttons-right');
+    },
+    buttonStyle: 'transform:scale(0.7)',
+    videoElement: function() {
+      return document.getElementById('vjs_video_3_html5_api');
+    },  
+  },
 
   'netflix': {
     buttonElementType: 'span',

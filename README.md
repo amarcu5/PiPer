@@ -17,6 +17,7 @@ Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariex
 * [CollegeHumor](http://www.collegehumor.com)
 * [Vevo](http://www.vevo.com)
 * [Vid.me](http://www.vid.me)
+* [NCAA](http://www.ncaa.com)
 * [Hulu](http://www.hulu.com)
 
 ## Acknowledgements
