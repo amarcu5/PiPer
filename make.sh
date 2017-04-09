@@ -40,13 +40,13 @@ cp -r src/* "out/${EXTENSION_NAME}.safariextension/"
 ${SVGO_PATH} -q -f "out/${EXTENSION_NAME}.safariextension/images"
 
 # Use closure compiler to compress javascript
-${CCJS_PATH} out/${EXTENSION_NAME}.safariextension/scripts/main.js \
-  --compilation_level=ADVANCED_OPTIMIZATIONS \
-  --warning_level=VERBOSE \
-  --externs="out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
-  --new_type_inf \
-  --use_types_for_optimization \
-  > out/${EXTENSION_NAME}.safariextension/scripts/main.min.js
+${CCJS_PATH} \
+  --compilationLevel ADVANCED \
+  --warningLevel VERBOSE \
+  --newTypeInf \
+  --useTypesForOptimization \
+  --externs "out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
+  out/${EXTENSION_NAME}.safariextension/scripts/main.js > out/${EXTENSION_NAME}.safariextension/scripts/main.min.js
 mv out/${EXTENSION_NAME}.safariextension/scripts/main.min.js out/${EXTENSION_NAME}.safariextension/scripts/main.js
 rm out/${EXTENSION_NAME}.safariextension/scripts/externs.js
 
@@ -65,10 +65,11 @@ ${PLISTBUDDY_PATH} -c "Set \":Extension Updates:0:CFBundleShortVersionString\" $
 
 # Package safari extension
 cd out  || exit
-[[ ${XARJS_PATH} != /* ]] && ! command -v "${XARJS_PATH}" >/dev/null 2>&1 && XARJS_PATH="../${XARJS_PATH}"
-${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension"
-
-# Remove unpacked extension
-[ -f "${PRIVATE_KEY_PATH}" ] && rm -rf "${EXTENSION_NAME}.safariextension"
+if [ -f "${PRIVATE_KEY_PATH}" ]
+then
+  [[ ${XARJS_PATH} != /* ]] && ! command -v "${XARJS_PATH}" >/dev/null 2>&1 && XARJS_PATH="../${XARJS_PATH}"
+  ${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension"
+  rm -rf "${EXTENSION_NAME}.safariextension"
+fi
 
 echo "Done."

@@ -8,17 +8,21 @@ Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Vid
 Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariextz), open the downloaded file, and hit trust
 
 ## Supported sites
-* [Youtube](http://www.youtube.com)
-* [Netflix](http://www.netflix.com)
 * [Amazon video](http://www.amazon.com/PrimeVideo)
-* [Twitch](http://www.twitch.tv)
-* [Metacafe](http://www.metacafe.com)
-* [Openload](http://www.openload.co)
 * [CollegeHumor](http://www.collegehumor.com)
-* [Vevo](http://www.vevo.com)
-* [Vid.me](http://www.vid.me)
-* [NCAA](http://www.ncaa.com)
 * [Hulu](http://www.hulu.com)
+* [LittleThings](http://www.littlethings.com)
+* [Mashable](http://www.mashable.com)
+* [Metacafe](http://www.metacafe.com)
+* [NCAA](http://www.ncaa.com)
+* [Netflix](http://www.netflix.com)
+* [Openload](http://www.openload.co)
+* [The Onion](http://www.theonion.com)
+* [Twitch](http://www.twitch.tv)
+* [Vevo](http://www.vevo.com)
+* [Vice](http://www.vice.com)
+* [Vid.me](http://www.vid.me)
+* [Youtube](http://www.youtube.com)
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon

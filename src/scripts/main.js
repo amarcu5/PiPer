@@ -1,5 +1,20 @@
 'use strict';
 
+/**
+ * @typedef {{
+ *    buttonClassName: (string|undefined),
+ *    buttonDidAppear: (function(): undefined|undefined),
+ *    buttonElementType: (string|undefined),
+ *    buttonImage: (string|undefined),
+ *    buttonInsertBefore: (function(Element): ?Node|undefined),
+ *    buttonParent: function(): ?Element,
+ *    buttonStyle: (string|undefined),
+ *    videoElement: function(): ?Element,
+ * }}
+ */
+let PIPResource;
+
+
 /** @define {boolean} */
 const COMPILED = false;
 
@@ -112,6 +127,34 @@ const resources = {
       return document.getElementById('content-video-player');
     },
   },
+  
+  'littlethings': {
+    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonElementType: 'div',
+    buttonParent: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('.jw-controlbar-right-group');
+    },
+    buttonStyle: 'width:38px',
+    videoElement: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('video.jw-video');
+    },
+  },
+  
+  'mashable': {
+    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonElementType: 'div',
+    buttonParent: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('.jw-controlbar-right-group');
+    },
+    buttonStyle: 'width:38px;top:-2px',
+    videoElement: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('video.jw-video');
+    },
+  },
 
   'metacafe': {
     buttonElementType: 'div',
@@ -127,7 +170,7 @@ const resources = {
   },
   
   'ncaa': {
-	  buttonClassName: 'video-player-controls-button',
+    buttonClassName: 'video-player-controls-button',
     buttonElementType: 'div',
     buttonParent: function() {
       return document.getElementById('video-player-controls-buttons-right');
@@ -169,6 +212,20 @@ const resources = {
       return document.getElementById('olvideo_html5_api');
     },
   },
+  
+  'theonion': {
+    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonElementType: 'div',
+    buttonParent: function() {
+      const e = document.getElementById('container');
+      return e && e.querySelector('.jw-controlbar-right-group');
+    },
+    buttonStyle: 'width:38px;top:-2px',
+    videoElement: function() {
+      const e = document.getElementById('container');
+      return e && e.querySelector('video.jw-video');
+    },
+  },
 
   'twitch': {
     buttonClassName: 'player-button',
@@ -195,6 +252,20 @@ const resources = {
     buttonStyle: 'transform:scale(0.7);border:0;background:transparent',
     videoElement: function() {
       return document.getElementById('html5-player');
+    },
+  },
+  
+  'vice': {
+    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonElementType: 'div',
+    buttonParent: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('.jw-controlbar-right-group');
+    },
+    buttonStyle: 'width:45px',
+    videoElement: function() {
+      const e = document.getElementById('player');
+      return e && e.querySelector('video.jw-video');
     },
   },
 
@@ -244,7 +315,7 @@ const resources = {
 resources['youtu'] = resources['youtube'];
 
 
-const domainName = location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
+const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
 if (domainName in resources) {
   log('Matched site ' + domainName + ' (' + location + ')');
