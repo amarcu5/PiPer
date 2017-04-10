@@ -213,6 +213,23 @@ const resources = {
     },
   },
   
+  'plex': {
+    buttonClassName: 'btn-link',
+    buttonDidAppear: function() {
+      const style = document.createElement('style');
+      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
+      document.getElementById(BUTTON_ID).appendChild(style);
+    },
+    buttonParent: function() {
+      const e = document.getElementById('plex');
+      return e && e.querySelector('.player-dropups-container.video-controls-right');
+    },
+    buttonStyle: 'transform:scale(0.7);opacity:0.8;position:relative;top:-3px',
+    videoElement: function() {
+      return document.getElementById('html-video');
+    },
+  },
+  
   'theonion': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',

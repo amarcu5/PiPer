@@ -17,6 +17,7 @@ Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariex
 * [NCAA](http://www.ncaa.com)
 * [Netflix](http://www.netflix.com)
 * [Openload](http://www.openload.co)
+* [Plex](http://www.plex.tv)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
 * [Vevo](http://www.vevo.com)

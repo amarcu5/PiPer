@@ -64,6 +64,8 @@
 				<string>*.netflix.com</string>
 				<string>openload.co</string>
 				<string>*.openload.co</string>
+				<string>plex.tv</string>
+				<string>*.plex.tv</string>
 				<string>theonion.com</string>
 				<string>*.theonion.com</string>
 				<string>twitch.tv</string>
