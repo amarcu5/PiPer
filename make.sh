@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Settings
@@ -24,7 +24,8 @@ PRIVATE_KEY_PATH="../certs/privatekey.pem"
 #
 
 # Set working directory to project root
-cd $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+project_root=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+cd "$project_root" || exit
 
 # Remove output folder
 rm -rf out
@@ -39,13 +40,13 @@ cp -r src/* "out/${EXTENSION_NAME}.safariextension/"
 ${SVGO_PATH} -q -f "out/${EXTENSION_NAME}.safariextension/images"
 
 # Use closure compiler to compress javascript
-${CCJS_PATH} out/${EXTENSION_NAME}.safariextension/scripts/main.js \
-    --compilation_level=ADVANCED_OPTIMIZATIONS \
-    --warning_level=VERBOSE \
-    --externs="out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
-    --new_type_inf \
-    --use_types_for_optimization \
-    > out/${EXTENSION_NAME}.safariextension/scripts/main.min.js
+${CCJS_PATH} \
+  --compilationLevel ADVANCED \
+  --warningLevel VERBOSE \
+  --newTypeInf \
+  --useTypesForOptimization \
+  --externs "out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
+  out/${EXTENSION_NAME}.safariextension/scripts/main.js > out/${EXTENSION_NAME}.safariextension/scripts/main.min.js
 mv out/${EXTENSION_NAME}.safariextension/scripts/main.min.js out/${EXTENSION_NAME}.safariextension/scripts/main.js
 rm out/${EXTENSION_NAME}.safariextension/scripts/externs.js
 
@@ -63,11 +64,12 @@ ${PLISTBUDDY_PATH} -c "Set \":Extension Updates:0:CFBundleVersion\" $number_of_c
 ${PLISTBUDDY_PATH} -c "Set \":Extension Updates:0:CFBundleShortVersionString\" ${git_release_version#*v}" "$update_plist"
 
 # Package safari extension
-cd out
-if [[ ${XARJS_PATH} != /* ]]; then if ! [ command -v "${XARJS_PATH}" >/dev/null 2>&1 ]; then XARJS_PATH="../${XARJS_PATH}"; fi; fi
-${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension"
-
-# Remove unpacked extension
-if [ -f "${PRIVATE_KEY_PATH}" ]; then rm -rf "${EXTENSION_NAME}.safariextension"; fi
+cd out  || exit
+if [ -f "${PRIVATE_KEY_PATH}" ]
+then
+  [[ ${XARJS_PATH} != /* ]] && ! command -v "${XARJS_PATH}" >/dev/null 2>&1 && XARJS_PATH="../${XARJS_PATH}"
+  ${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension"
+  rm -rf "${EXTENSION_NAME}.safariextension"
+fi
 
 echo "Done."
