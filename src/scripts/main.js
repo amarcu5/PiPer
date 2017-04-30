@@ -317,11 +317,14 @@ const resources = {
         previousButton.title = previousTitle;
       });
     },
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('.ytp-right-controls');
     },
-    buttonStyle: 'transform:scale(0.7)',
+    buttonStyle: 'transform:scale(0.68)',
     videoElement: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('video.html5-main-video');
