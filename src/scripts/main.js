@@ -80,14 +80,19 @@ const buttonObserver = function() {
 const resources = {
 
   'amazon': {
+    buttonDidAppear: function() {
+      const style = document.createElement('style');
+      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
+      document.getElementById(BUTTON_ID).appendChild(style);
+    },
     buttonInsertBefore: function(/** Element */ parent) {
-      return parent.lastChild;
+      return parent.querySelector('.fullscreenButtonWrapper');
     },
     buttonParent: function() {
       const e = document.getElementById('dv-web-player');
       return e && e.querySelector('.hideableTopButtons');
     },
-    buttonStyle: 'border:0;padding:0;margin:0;background-color:transparent;opacity:0.8;position:relative;left:-8px;width:2vw;height:2vw;min-width:20px;min-height:20px',
+    buttonStyle: 'border:0;padding:0;margin:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
     videoElement: function() {
       const e = document.querySelector('.rendererContainer');
       return e && e.querySelector('video[width="100%"]');
@@ -246,6 +251,9 @@ const resources = {
 
   'twitch': {
     buttonClassName: 'player-button',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('.player-button--fullscreen');
+    },
     buttonParent: function() {
       const e = document.getElementById('video-playback') || document.getElementById('player');
       return e && e.querySelector('.player-buttons-right');
