@@ -8,6 +8,7 @@
  *    buttonImage: (string|undefined),
  *    buttonInsertBefore: (function(Element): ?Node|undefined),
  *    buttonParent: function(): ?Element,
+ *    buttonScale: (number|undefined),
  *    buttonStyle: (string|undefined),
  *    videoElement: function(): ?Element,
  * }}
@@ -39,6 +40,7 @@ const addButton = function(/** Element */ parent) {
   const image = document.createElement('img');
   image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
   image.style.cssText = 'width:100%;height:100%';
+  if (currentResource.buttonScale) image.style.cssText += ';transform:scale(' + currentResource.buttonScale + ')';
 
   button.appendChild(image);
 
@@ -92,7 +94,7 @@ const resources = {
       const e = document.getElementById('dv-web-player');
       return e && e.querySelector('.hideableTopButtons');
     },
-    buttonStyle: 'border:0;padding:0;margin:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
+    buttonStyle: 'border:0;padding:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
     videoElement: function() {
       const e = document.querySelector('.rendererContainer');
       return e && e.querySelector('video[width="100%"]');
@@ -108,7 +110,7 @@ const resources = {
       const e = document.getElementById('vjs_video_3');
       return e && e.querySelector('.vjs-control-bar');
     },
-    buttonStyle: 'transform:scale(0.6)',
+    buttonScale: 0.6,
     videoElement: function() {
       return document.getElementById('vjs_video_3_html5_api');
     },
@@ -124,7 +126,7 @@ const resources = {
       const e = document.getElementById('site-player');
       return e && e.querySelector('.main-bar');
     },
-    buttonStyle: 'transform:scale(0.7)',
+    buttonScale: 0.7,
     buttonDidAppear: function() {
       resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
     },
@@ -167,7 +169,8 @@ const resources = {
       const e = document.getElementById('player_place');
       return e && e.querySelector('.tray');
     },
-    buttonStyle: 'transform:scale(0.9);left:-2px',
+    buttonScale: 0.9,
+    buttonStyle: 'left:-2px',
     videoElement: function() {
       const e = document.getElementById('player_place');
       return e && e.querySelector('video');
@@ -180,7 +183,7 @@ const resources = {
     buttonParent: function() {
       return document.getElementById('video-player-controls-buttons-right');
     },
-    buttonStyle: 'transform:scale(0.7)',
+    buttonScale: 0.7,
     videoElement: function() {
       return document.getElementById('vjs_video_3_html5_api');
     },  
@@ -212,7 +215,8 @@ const resources = {
       const e = document.getElementById('olvideo');
       return e && e.querySelector('.vjs-control-bar');
     },
-    buttonStyle: 'transform:scale(0.6);left:5px',
+    buttonScale: 0.6,
+    buttonStyle: 'left:5px',
     videoElement: function() {
       return document.getElementById('olvideo_html5_api');
     },
@@ -229,7 +233,8 @@ const resources = {
       const e = document.getElementById('plex');
       return e && e.querySelector('.player-dropups-container.video-controls-right');
     },
-    buttonStyle: 'transform:scale(0.7);opacity:0.8;position:relative;top:-3px',
+    buttonScale: 0.7,
+    buttonStyle: 'opacity:0.8;position:relative;top:-3px',
     videoElement: function() {
       return document.getElementById('html-video');
     },
@@ -251,6 +256,18 @@ const resources = {
 
   'twitch': {
     buttonClassName: 'player-button',
+    buttonDidAppear: function() {
+      const button = document.getElementById(BUTTON_ID);
+      const style = document.createElement('style');
+      const span = /** @type {HTMLElement} */ (document.createElement('span'));
+      span.className = 'player-tip js-control-tip';
+      span.style.cssText = 'margin-left:-14em';
+      span.dataset['tip'] = button.title;
+      style.appendChild(document.createTextNode('#' + BUTTON_ID + ' img:hover{filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)}'));
+      button.appendChild(style);
+      button.appendChild(span);
+      button.title = '';
+    },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.querySelector('.player-button--fullscreen');
     },
@@ -258,7 +275,7 @@ const resources = {
       const e = document.getElementById('video-playback') || document.getElementById('player');
       return e && e.querySelector('.player-buttons-right');
     },
-    buttonStyle: 'transform:scale(0.8)',
+    buttonScale: 0.8,
     videoElement: function() {
       const e = document.getElementById('video-playback') || document.getElementById('player');
       return e && e.querySelector('video');
@@ -274,7 +291,8 @@ const resources = {
       const e = document.getElementById('control-bar');
       return e && e.querySelector('.right-controls');
     },
-    buttonStyle: 'transform:scale(0.7);border:0;background:transparent',
+    buttonScale: 0.7,
+    buttonStyle: 'border:0;background:transparent',
     videoElement: function() {
       return document.getElementById('html5-player');
     },
@@ -302,7 +320,8 @@ const resources = {
       const e = document.getElementById('video_player');
       return e && e.querySelector('.vjs-control-bar');
     },
-    buttonStyle: 'position:relative;left:9px;top:-2px;transform:scale(0.7);padding:0;margin:0',
+    buttonScale: 0.7,
+    buttonStyle: 'position:relative;left:9px;top:-2px;padding:0;margin:0',
     videoElement: function() {
       return document.getElementById('video_player_html5_api');
     },
@@ -312,17 +331,17 @@ const resources = {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const previousButton = button.previousSibling;
-      const /** string */ previousTitle = previousButton.title;
+      const neighbourButton = button.nextSibling;
+      const /** string */ previousTitle = neighbourButton.title;
       button.addEventListener('mouseover', function(e){
-        previousButton.title = button.title;
+        neighbourButton.title = button.title;
         button.title = '';
-        previousButton.dispatchEvent(new Event('mouseover'));
+        neighbourButton.dispatchEvent(new Event('mouseover'));
       });
       button.addEventListener('mouseout', function(e){
-        previousButton.dispatchEvent(new Event('mouseout'));
-        button.title = previousButton.title;
-        previousButton.title = previousTitle;
+        neighbourButton.dispatchEvent(new Event('mouseout'));
+        button.title = neighbourButton.title;
+        neighbourButton.title = previousTitle;
       });
     },
     buttonInsertBefore: function(/** Element */ parent) {
@@ -332,7 +351,7 @@ const resources = {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('.ytp-right-controls');
     },
-    buttonStyle: 'transform:scale(0.68)',
+    buttonScale: 0.68,
     videoElement: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('video.html5-main-video');
