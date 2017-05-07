@@ -5,9 +5,9 @@ Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Vid
 
 ## Installation
 
-Get the lastest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
+Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
 
-<sub>...or live life on the edge with the latest [developer build](https://rawgit.com/amarcu5/PiPer/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
+<sub>...or live life on the edge with the latest [developer build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon video](http://www.amazon.com/PrimeVideo)
