@@ -1,7 +1,7 @@
 # PiPer
 Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Video, Twitch, and more!
 
-<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" height="384"/>
+<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
 ## Installation
 
