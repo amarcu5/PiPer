@@ -115,6 +115,27 @@ const resources = {
       return document.getElementById('vjs_video_3_html5_api');
     },
   },
+  
+  'curiositystream': {
+    buttonDidAppear: function() {
+      const style = document.createElement('style');
+      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
+      document.getElementById(BUTTON_ID).appendChild(style);
+    },
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      const e = document.getElementById('app');
+      return e && e.querySelector('div[class^="styles__controls"]');
+    },
+    buttonScale: 1.1,
+    buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
+    videoElement: function() {
+      const e = document.getElementById('app');
+      return e && e.querySelector('video[class^="styles__video"]');
+    },
+  },
 
   'hulu': {
     buttonClassName: 'simple-button',

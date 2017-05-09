@@ -12,6 +12,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 ## Supported sites
 * [Amazon video](http://www.amazon.com/PrimeVideo)
 * [CollegeHumor](http://www.collegehumor.com)
+* [CuriosityStream](http://www.curiositystream.com)
 * [Hulu](http://www.hulu.com)
 * [LittleThings](http://www.littlethings.com)
 * [Mashable](http://www.mashable.com)
