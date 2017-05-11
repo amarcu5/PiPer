@@ -5,6 +5,7 @@
  *    buttonClassName: (string|undefined),
  *    buttonDidAppear: (function(): undefined|undefined),
  *    buttonElementType: (string|undefined),
+ *    buttonHoverStyle: (string|undefined),
  *    buttonImage: (string|undefined),
  *    buttonInsertBefore: (function(Element): ?Node|undefined),
  *    buttonParent: function(): ?Element,
@@ -39,10 +40,16 @@ const addButton = function(/** Element */ parent) {
 
   const image = document.createElement('img');
   image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
-  image.style.cssText = 'width:100%;height:100%';
-  if (currentResource.buttonScale) image.style.cssText += ';transform:scale(' + currentResource.buttonScale + ')';
-
+  image.style.width = image.style.height = '100%';
+  if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
   button.appendChild(image);
+
+  if (currentResource.buttonHoverStyle) {
+    const style = document.createElement('style');
+    const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
+    style.appendChild(document.createTextNode(css));
+    button.appendChild(style);
+  }
 
   button.addEventListener('click', function(event) {
     event.preventDefault();
@@ -82,11 +89,7 @@ const buttonObserver = function() {
 const resources = {
 
   'amazon': {
-    buttonDidAppear: function() {
-      const style = document.createElement('style');
-      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
-      document.getElementById(BUTTON_ID).appendChild(style);
-    },
+    buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.querySelector('.fullscreenButtonWrapper');
     },
@@ -117,11 +120,7 @@ const resources = {
   },
   
   'curiositystream': {
-    buttonDidAppear: function() {
-      const style = document.createElement('style');
-      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
-      document.getElementById(BUTTON_ID).appendChild(style);
-    },
+    buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
@@ -186,12 +185,14 @@ const resources = {
 
   'metacafe': {
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
       const e = document.getElementById('player_place');
       return e && e.querySelector('.tray');
     },
-    buttonScale: 0.9,
-    buttonStyle: 'left:-2px',
+    buttonScale: 0.85,
     videoElement: function() {
       const e = document.getElementById('player_place');
       return e && e.querySelector('video');
@@ -245,11 +246,7 @@ const resources = {
   
   'plex': {
     buttonClassName: 'btn-link',
-    buttonDidAppear: function() {
-      const style = document.createElement('style');
-      style.appendChild(document.createTextNode('#' + BUTTON_ID + ':hover{opacity:1!important}'));
-      document.getElementById(BUTTON_ID).appendChild(style);
-    },
+    buttonHoverStyle: 'opacity:1!important',
     buttonParent: function() {
       const e = document.getElementById('plex');
       return e && e.querySelector('.player-dropups-container.video-controls-right');
@@ -279,16 +276,20 @@ const resources = {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const style = document.createElement('style');
-      const span = /** @type {HTMLElement} */ (document.createElement('span'));
-      span.className = 'player-tip js-control-tip';
-      span.style.cssText = 'margin-left:-14em';
-      span.dataset['tip'] = button.title;
-      style.appendChild(document.createTextNode('#' + BUTTON_ID + ' img:hover{filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)}'));
-      button.appendChild(style);
-      button.appendChild(span);
-      button.title = '';
+      const neighbourTooltip = /** @type {HTMLElement} */ (button.nextSibling.querySelector('.player-tip'));
+      const /** string */ previousTitle = neighbourTooltip.dataset['tip'];
+      button.addEventListener('mouseover', function(e){
+        neighbourTooltip.dataset['tip'] = button.title;
+        neighbourTooltip.style.display = 'block';
+        button.title = '';
+      });
+      button.addEventListener('mouseout', function(e){
+        neighbourTooltip.style.display = '';
+        button.title = neighbourTooltip.dataset['tip'];
+        neighbourTooltip.dataset['tip'] = previousTitle;
+      });
     },
+    buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.querySelector('.player-button--fullscreen');
     },
