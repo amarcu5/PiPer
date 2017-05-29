@@ -74,8 +74,8 @@ const addButton = function(parent) {
         return;
       }
   
-      const presentationMode = 'inline' === video.webkitPresentationMode ? 'picture-in-picture' : 'inline';
-      video.webkitSetPresentationMode(presentationMode);
+      const mode = video.webkitPresentationMode == 'picture-in-picture' ? 'inline' : 'picture-in-picture';
+      video.webkitSetPresentationMode(mode);
     });
     
     log('Picture in Picture button created');
