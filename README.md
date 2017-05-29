@@ -1,15 +1,18 @@
 # PiPer
 Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Video, Twitch, and more!
 
-<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" height="384"/>
+<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
 ## Installation
 
-Get the extension [here](https://s3.amazonaws.com/piper-extension/PiPer.safariextz), open the downloaded file, and hit trust
+Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
+
+<sub>...or live life on the edge with the latest [developer build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon video](http://www.amazon.com/PrimeVideo)
 * [CollegeHumor](http://www.collegehumor.com)
+* [CuriosityStream](http://www.curiositystream.com)
 * [Hulu](http://www.hulu.com)
 * [LittleThings](http://www.littlethings.com)
 * [Mashable](http://www.mashable.com)
