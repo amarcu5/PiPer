@@ -22,7 +22,7 @@ const COMPILED = false;
 
 const BUTTON_ID = 'PIPButton';
 
-let /** boolean */ buttonAdded = false;
+let /** ?Element */ button = null;
 let /** ?PIPResource */ currentResource = null;
 
 const log = function(message) {
@@ -30,38 +30,43 @@ const log = function(message) {
 }
 
 const addButton = function(/** Element */ parent) {
-  const button = document.createElement(currentResource.buttonElementType || 'button');
-
-  button.id = BUTTON_ID;
-  button.title = 'Open Picture in Picture mode';
-  if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
-  if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
-
-  const image = document.createElement('img');
-  image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
-  image.style.width = image.style.height = '100%';
-  if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
-  button.appendChild(image);
-
-  if (currentResource.buttonHoverStyle) {
-    const style = document.createElement('style');
-    const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
-    style.appendChild(document.createTextNode(css));
-    button.appendChild(style);
-  }
-
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-    if (!video) {
-      log('Unable to find video');
-      return;
+  
+  if (!button) {
+    button = document.createElement(currentResource.buttonElementType || 'button');
+    
+    button.id = BUTTON_ID;
+    button.title = 'Open Picture in Picture mode';
+    if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
+    if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
+  
+    const image = document.createElement('img');
+    image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
+    image.style.width = image.style.height = '100%';
+    if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
+    button.appendChild(image);
+  
+    if (currentResource.buttonHoverStyle) {
+      const style = document.createElement('style');
+      const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
+      style.appendChild(document.createTextNode(css));
+      button.appendChild(style);
     }
-
-    const presentationMode = 'inline' === video.webkitPresentationMode ? 'picture-in-picture' : 'inline';
-    video.webkitSetPresentationMode(presentationMode);
-  });
+  
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+  
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      if (!video) {
+        log('Unable to find video');
+        return;
+      }
+  
+      const presentationMode = 'inline' === video.webkitPresentationMode ? 'picture-in-picture' : 'inline';
+      video.webkitSetPresentationMode(presentationMode);
+    });
+    
+    log('Picture in Picture button created');
+  }
 
   const referenceNode = currentResource.buttonInsertBefore ? currentResource.buttonInsertBefore(parent) : null;
   parent.insertBefore(button, referenceNode);
@@ -69,18 +74,13 @@ const addButton = function(/** Element */ parent) {
 
 const buttonObserver = function() {
 
-  if (buttonAdded) {
-    if (document.getElementById(BUTTON_ID)) return;
-    log('Button removed');
-    buttonAdded = false;
-  }
+  if (document.getElementById(BUTTON_ID)) return;
 
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
     addButton(buttonParent);
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
-    log('Button added');
-    buttonAdded = true;
+    log('Picture in Picture button added to webpage');
   }
 };
 
