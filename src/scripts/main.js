@@ -20,15 +20,14 @@ let PIPResource;
 /** @define {boolean} */
 const COMPILED = false;
 
-function log(/** string */ message) {
-  !COMPILED && console.log('PIPer: ' + message);
-}
-
-
 const BUTTON_ID = 'PIPButton';
 
 let /** boolean */ buttonAdded = false;
 let /** ?PIPResource */ currentResource = null;
+
+const log = function(message) {
+  !COMPILED && console.log('PiPer: ' + message);
+}
 
 const addButton = function(/** Element */ parent) {
   const button = document.createElement(currentResource.buttonElementType || 'button');
