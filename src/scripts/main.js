@@ -17,7 +17,7 @@
 let PIPResource;
 
 
-/** @define {boolean} */
+/** @define {boolean} - Flag used by closure compiler to remove logging */
 const COMPILED = false;
 
 const BUTTON_ID = 'PIPButton';
@@ -25,26 +25,38 @@ const BUTTON_ID = 'PIPButton';
 let /** ?Element */ button = null;
 let /** ?PIPResource */ currentResource = null;
 
+/**
+ * Logs message to console
+ * @param {string} message - Message to log
+ */
 const log = function(message) {
   !COMPILED && console.log('PiPer: ' + message);
 }
 
-const addButton = function(/** Element */ parent) {
+/**
+ * Injects Picture in Picture button into webpage
+ * @param {Element} parent - Element button will be inserted into
+ */
+const addButton = function(parent) {
   
+  // Create button if needed
   if (!button) {
     button = document.createElement(currentResource.buttonElementType || 'button');
     
+    // Set button properties
     button.id = BUTTON_ID;
     button.title = 'Open Picture in Picture mode';
     if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
     if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
   
+    // Add scaled SVG image to button
     const image = document.createElement('img');
     image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
     image.style.width = image.style.height = '100%';
     if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
     button.appendChild(image);
   
+    // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
     if (currentResource.buttonHoverStyle) {
       const style = document.createElement('style');
       const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
@@ -52,6 +64,7 @@ const addButton = function(/** Element */ parent) {
       button.appendChild(style);
     }
   
+    // Toggle Picture in Picture mode when button is clicked
     button.addEventListener('click', function(event) {
       event.preventDefault();
   
@@ -68,10 +81,14 @@ const addButton = function(/** Element */ parent) {
     log('Picture in Picture button created');
   }
 
+  // Inject button into correct place
   const referenceNode = currentResource.buttonInsertBefore ? currentResource.buttonInsertBefore(parent) : null;
   parent.insertBefore(button, referenceNode);
 }
 
+/**
+ * Tracks injected button
+ */
 const buttonObserver = function() {
 
   if (document.getElementById(BUTTON_ID)) return;
@@ -380,9 +397,11 @@ const resources = {
   },
 };
 
+// Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
 resources['youtu'] = resources['youtube'];
 
 
+// Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
 const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
 if (domainName in resources) {
