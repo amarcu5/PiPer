@@ -292,17 +292,22 @@ const resources = {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const neighbourTooltip = /** @type {HTMLElement} */ (button.nextSibling.querySelector('.player-tip'));
-      const /** string */ previousTitle = neighbourTooltip.dataset['tip'];
+      const neighbourButton = button.nextSibling;
+      const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
+      const /** string */ title = button.title;
+      const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
+      button.title = '';
       button.addEventListener('mouseover', function(e){
-        neighbourTooltip.dataset['tip'] = button.title;
+        neighbourTooltip.dataset['tip'] = title;
         neighbourTooltip.style.display = 'block';
-        button.title = '';
       });
       button.addEventListener('mouseout', function(e){
         neighbourTooltip.style.display = '';
-        button.title = neighbourTooltip.dataset['tip'];
-        neighbourTooltip.dataset['tip'] = previousTitle;
+        neighbourTooltip.dataset['tip'] = neighbourTitle;
+      });
+      neighbourButton.addEventListener('click', function(e){
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
       });
     },
     buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)',
