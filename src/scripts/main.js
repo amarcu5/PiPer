@@ -369,17 +369,17 @@ const resources = {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const neighbourButton = button.nextSibling;
-      const /** string */ previousTitle = neighbourButton.title;
+      const neighbourButton = button.previousSibling;
+      const /** string */ title = button.title;
+      const /** string */ neighbourTitle = neighbourButton.title;
+      button.title = '';
       button.addEventListener('mouseover', function(e){
-        neighbourButton.title = button.title;
-        button.title = '';
+        neighbourButton.title = title;
         neighbourButton.dispatchEvent(new Event('mouseover'));
       });
       button.addEventListener('mouseout', function(e){
         neighbourButton.dispatchEvent(new Event('mouseout'));
-        button.title = neighbourButton.title;
-        neighbourButton.title = previousTitle;
+        neighbourButton.title = neighbourTitle;
       });
     },
     buttonInsertBefore: function(/** Element */ parent) {
