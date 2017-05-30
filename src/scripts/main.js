@@ -164,7 +164,7 @@ const resources = {
     },
     buttonScale: 0.7,
     buttonDidAppear: function() {
-      resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+      currentResource.buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
     },
     videoElement: function() {
       return document.getElementById('content-video-player');
@@ -236,7 +236,7 @@ const resources = {
     },
     buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
     buttonDidAppear: function() {
-      resources['netflix'].buttonParent().style.paddingRight = '50px';
+      currentResource.buttonParent().style.paddingRight = '50px';
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
