@@ -11,6 +11,7 @@
  *    buttonParent: function(): ?Element,
  *    buttonScale: (number|undefined),
  *    buttonStyle: (string|undefined),
+ *    captionElement: (function(): ?Element|undefined),
  *    videoElement: function(): ?Element,
  * }}
  */
@@ -20,10 +21,14 @@ let PIPResource;
 /** @define {boolean} - Flag used by closure compiler to remove logging */
 const COMPILED = false;
 
-const BUTTON_ID = 'PIPButton';
+const BUTTON_ID = 'PiPer_button';
+const TRACK_ID = 'PiPer_track';
 
 let /** ?Element */ button = null;
 let /** ?PIPResource */ currentResource = null;
+let /** ?TextTrack */ track = null;
+let /** boolean */ showingCaptions = false;
+let /** string */ lastUnprocessedCaption = '';
 
 /**
  * Logs message to console
@@ -84,12 +89,85 @@ const addButton = function(parent) {
   // Inject button into correct place
   const referenceNode = currentResource.buttonInsertBefore ? currentResource.buttonInsertBefore(parent) : null;
   parent.insertBefore(button, referenceNode);
-}
+};
 
 /**
- * Tracks injected button
+ * Prepares video for captions
+ * @param {HTMLVideoElement} video - an unprepared video element
  */
-const buttonObserver = function() {
+const prepareCaptions = function(video) {
+  
+  // Find existing caption track (if video element id changes function can be called twice)
+  track = null;
+  const allTracks = video.textTracks;
+  for (let trackId = allTracks.length; trackId--;) {
+    if (allTracks[trackId].label === TRACK_ID) {
+      track = allTracks[trackId];
+      log('Existing caption track found');
+      break;
+    }
+  }
+  if (track) return;
+  
+  // Otherwise create new caption track
+  log('Caption track created');
+  track = video.addTextTrack('captions', TRACK_ID, 'en');
+  
+  // Toggle captions when Picture in Picture mode changes
+  const toggleCaptions = function() {
+    showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+    lastUnprocessedCaption = '';
+    processCaptions();
+    log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
+  }
+  video.addEventListener('webkitbeginfullscreen', toggleCaptions);
+  video.addEventListener('webkitendfullscreen', toggleCaptions);
+};
+
+/**
+ * Updates visible captions
+ */
+const processCaptions = function() {
+  const captionElement = currentResource.captionElement();
+  
+  // Hide Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
+  if (!showingCaptions || !captionElement) {
+    track.mode = 'disabled';
+    if (captionElement) captionElement.style.visibility = '';
+    return;
+  }
+  
+  // Otherwise ensure native captions remain hidden
+  captionElement.style.visibility = 'hidden';
+  
+  // Check if a new native caption needs to be processed
+  const unprocessedCaption = captionElement.textContent;
+  if (unprocessedCaption == lastUnprocessedCaption) return;
+  lastUnprocessedCaption = unprocessedCaption;
+
+  // Get handle to video (called before accessing 'track' to guarentee valid) 
+  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+  
+  // Remove old caption
+  track.mode = 'showing';
+  if (track.activeCues.length) track.removeCue(track.activeCues[0]);
+  
+  if (!unprocessedCaption) return;
+  
+  // Show correctly spaced Picture in Picture mode caption
+  let caption = '';
+  const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
+  while (walk.nextNode()) caption += walk.currentNode.nodeValue.trim() + ' ';
+  log('Showing caption "' + caption.trim() + '"');
+  track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
+};
+
+/**
+ * Tracks injected button and captions
+ */
+const mutationObserver = function() {
+
+  if (showingCaptions && currentResource.captionElement) processCaptions();
 
   if (document.getElementById(BUTTON_ID)) return;
 
@@ -99,6 +177,43 @@ const buttonObserver = function() {
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
     log('Picture in Picture button added to webpage');
   }
+};
+
+/**
+  * Initialises caching for button, video, and caption elements
+  */
+const initialiseCaches = function() {
+  const cacheElementIds = {};
+  
+  // Return element by native id or assign id for faster lookups
+  const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
+    const uniqueLabel = 'PiPer_' + elementFunction.name;
+    cacheElementIds[uniqueLabel] = uniqueLabel;
+    
+    return function() {
+      let element = document.getElementById(cacheElementIds[uniqueLabel]);
+      
+      if (!element) {
+        element = elementFunction();
+        
+        if (element) {
+          if (!element.id) element.id = uniqueLabel;
+          cacheElementIds[uniqueLabel] = element.id;
+          if (elementChangedCallback) elementChangedCallback(element);
+        }
+      }
+      return element;
+    };
+  };
+  
+  // Performance optimisation - prepare captions when new video found
+  let videoElementChanged = null;
+  if (currentResource.captionElement) {
+    currentResource.captionElement = cacheElementWrapper(currentResource.captionElement);
+    videoElementChanged = prepareCaptions;
+  }
+  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement, videoElementChanged);
+  currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
 };
 
 /** @type {!IObject<string, PIPResource>} */
@@ -114,6 +229,10 @@ const resources = {
       return e && e.querySelector('.hideableTopButtons');
     },
     buttonStyle: 'border:0;padding:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
+    captionElement: function() {
+      const e = document.getElementById('dv-web-player');
+      return e && e.querySelector('.captions');
+    },
     videoElement: function() {
       const e = document.querySelector('.rendererContainer');
       return e && e.querySelector('video[width="100%"]');
@@ -146,6 +265,10 @@ const resources = {
     },
     buttonScale: 1.1,
     buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('div:not([class])'));
+    },
     videoElement: function() {
       const e = document.getElementById('app');
       return e && e.querySelector('video[class^="styles__video"]');
@@ -237,6 +360,10 @@ const resources = {
     buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
     buttonDidAppear: function() {
       currentResource.buttonParent().style.paddingRight = '50px';
+    },
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('.player-timedtext'));
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
@@ -395,6 +522,10 @@ const resources = {
       return e && e.querySelector('.ytp-right-controls');
     },
     buttonScale: 0.68,
+    captionElement: function() {
+      const e = document.getElementById('movie_player') || document.getElementById('player');
+      return e && e.querySelector('.captions-text');      
+    },
     videoElement: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('video.html5-main-video');
@@ -413,12 +544,14 @@ if (domainName in resources) {
   log('Matched site ' + domainName + ' (' + location + ')');
   currentResource = resources[domainName];
 
-  const observer = new MutationObserver(buttonObserver);
+  initialiseCaches();
+  
+  const observer = new MutationObserver(mutationObserver);
 
   observer.observe(document, {
     childList: true,
     subtree: true,
   });
 
-  buttonObserver();
+  mutationObserver();
 }
