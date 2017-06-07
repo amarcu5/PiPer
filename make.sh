@@ -40,15 +40,19 @@ cp -r src/* "out/${EXTENSION_NAME}.safariextension/"
 ${SVGO_PATH} -q -f "out/${EXTENSION_NAME}.safariextension/images"
 
 # Use closure compiler to compress javascript
-${CCJS_PATH} \
-  --compilationLevel ADVANCED \
-  --warningLevel VERBOSE \
-  --newTypeInf \
-  --useTypesForOptimization \
-  --externs "out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
-  out/${EXTENSION_NAME}.safariextension/scripts/main.js > out/${EXTENSION_NAME}.safariextension/scripts/main.min.js
-mv out/${EXTENSION_NAME}.safariextension/scripts/main.min.js out/${EXTENSION_NAME}.safariextension/scripts/main.js
-rm out/${EXTENSION_NAME}.safariextension/scripts/externs.js
+for path in "out/${EXTENSION_NAME}.safariextension/scripts"/*.js; do
+  [ $(basename $path) == "externs.js" ] && continue
+  path=${path%.*}
+  ${CCJS_PATH} \
+    --compilationLevel ADVANCED \
+    --warningLevel VERBOSE \
+    --newTypeInf \
+    --useTypesForOptimization \
+    --externs "out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
+  "${path}.js" > "${path}.min.js"
+  mv "${path}.min.js" "${path}.js"
+done
+rm "out/${EXTENSION_NAME}.safariextension/scripts/externs.js"
 
 # Update version info from git
 git=$(sh /etc/profile; which git)
