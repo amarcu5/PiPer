@@ -157,7 +157,10 @@ const processCaptions = function() {
   // Show correctly spaced Picture in Picture mode caption
   let caption = '';
   const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
-  while (walk.nextNode()) caption += walk.currentNode.nodeValue.trim() + ' ';
+  while (walk.nextNode()) {
+    const segment = walk.currentNode.nodeValue.trim();
+    caption += segment ? segment + ' ' : '\n';
+  }
   log('Showing caption "' + caption.trim() + '"');
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
 };
