@@ -260,8 +260,7 @@ const resources = {
       return parent.lastChild;
     },
     buttonParent: function() {
-      const e = document.getElementById('app');
-      return e && e.querySelector('div[class^="styles__controls"]');
+      return document.querySelector('div[class^="styles__controls"]');
     },
     buttonScale: 1.1,
     buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
@@ -270,8 +269,7 @@ const resources = {
       return /** @type {?Element} */ (e && e.parentNode.querySelector('div:not([class])'));
     },
     videoElement: function() {
-      const e = document.getElementById('app');
-      return e && e.querySelector('video[class^="styles__video"]');
+      return document.querySelector('video[class^="styles__video"]');
     },
   },
 
