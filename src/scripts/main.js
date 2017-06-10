@@ -183,8 +183,8 @@ const mutationObserver = function() {
 };
 
 /**
-  * Initialises caching for button, video, and caption elements
-  */
+ * Initialises caching for button, video, and caption elements
+ */
 const initialiseCaches = function() {
   const cacheElementIds = {};
   
