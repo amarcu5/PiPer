@@ -498,6 +498,33 @@ const resources = {
     },
   },
 
+  'vrv': {
+    buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      const button = document.getElementById(BUTTON_ID);
+      const neighbourButton = button.nextSibling;
+      neighbourButton.addEventListener('click', function(e){
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
+      });
+    },
+    buttonHoverStyle: 'opacity:1!important',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      return document.querySelector('.vjs-control-bar');
+    },
+    buttonScale: 0.6,
+    buttonStyle: 'position:absolute;right:calc(50px + 2.5rem);width:50px;cursor:pointer;opacity:0.6',
+    captionElement: function() {
+      return document.querySelector('.libjass-subs');      
+    }, 
+    videoElement: function() {
+      return document.getElementById('player_html5_api');
+    },
+  },
+
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
