@@ -514,6 +514,14 @@ const resources = {
         neighbourButton.dispatchEvent(new Event('mouseout'));
         neighbourButton.title = neighbourTitle;
       });
+      const request = new XMLHttpRequest();
+      request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
+      request.onload = function() {
+        const script = document.createElement('script');
+        script.appendChild(document.createTextNode(request.responseText));
+        button.appendChild(script);
+      };
+      request.send();
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
