@@ -159,9 +159,16 @@ const processCaptions = function() {
   const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
   while (walk.nextNode()) {
     const segment = walk.currentNode.nodeValue.trim();
-    caption += segment ? segment + ' ' : '\n';
+    if (segment) {
+      caption += segment + ' ';
+    } else if (caption.charAt(caption.length - 1) != '\n') {
+      caption += '\n';
+    } else {
+      caption += '';
+    }
   }
-  log('Showing caption "' + caption.trim() + '"');
+  caption = caption.trim();
+  log('Showing caption "' + caption + '"');
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
 };
 
