@@ -285,17 +285,20 @@ const resources = {
 
   'hulu': {
     buttonClassName: 'simple-button',
-    buttonElementType: 'div',
-    buttonInsertBefore: function(/** Element */ parent) {
-      return parent.lastChild;
+    buttonDidAppear: function() {
+      currentResource.buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+      currentResource.buttonParent().querySelector('.progress-time-container').style.marginRight = '45px';
     },
+    buttonElementType: 'div',
+    buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(58deg)saturate(160%)brightness(110%)!important',
     buttonParent: function() {
       const e = document.getElementById('site-player');
       return e && e.querySelector('.main-bar');
     },
     buttonScale: 0.7,
-    buttonDidAppear: function() {
-      currentResource.buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+    buttonStyle: 'top:-45px;left:-50px;filter:brightness(80%)',
+    captionElement: function() {
+      return document.querySelector('.closed-caption-container');
     },
     videoElement: function() {
       return document.getElementById('content-video-player');
