@@ -356,6 +356,22 @@ const resources = {
     },
   },
   
+  'mixer': {
+    buttonClassName: 'control',
+    buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild.previousSibling;
+    },
+    buttonScale: 0.65,
+    buttonParent: function() {
+      return document.querySelector('.control-container .toolbar');
+    },
+    buttonStyle: 'position:relative;top:2px;cursor:pointer',
+    videoElement: function() {
+      return document.querySelector('.control-container + video');
+    },
+  },
+  
   'ncaa': {
     buttonClassName: 'video-player-controls-button',
     buttonElementType: 'div',
