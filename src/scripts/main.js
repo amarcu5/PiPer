@@ -154,17 +154,23 @@ const processCaptions = function() {
   
   if (!unprocessedCaption) return;
   
-  // Show correctly spaced Picture in Picture mode caption
+  // Show correctly spaced and formatted Picture in Picture mode caption
   let caption = '';
   const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
   while (walk.nextNode()) {
     const segment = walk.currentNode.nodeValue.trim();
     if (segment) {
-      caption += segment + ' ';
+      const style = window.getComputedStyle(/** @type {Element} */ (walk.currentNode.parentNode));
+      if (style.fontStyle == 'italic') {
+        caption += '<i>' + segment + '</i>';
+      } else if (style.textDecoration == 'underline') {
+        caption += '<u>' + segment + '</u>';
+      } else {
+      	caption += segment;      
+      }
+      caption += ' ';
     } else if (caption.charAt(caption.length - 1) != '\n') {
       caption += '\n';
-    } else {
-      caption += '';
     }
   }
   caption = caption.trim();
