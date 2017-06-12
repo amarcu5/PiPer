@@ -167,7 +167,7 @@ const processCaptions = function() {
       } else if (style.textDecoration == 'underline') {
         caption += '<u>' + segment + '</u>';
       } else {
-      	caption += segment;      
+        caption += segment;
       }
       caption += ' ';
     } else if (caption.charAt(caption.length - 1) != '\n') {
@@ -232,6 +232,20 @@ const initialiseCaches = function() {
   currentResource.videoElement = cacheElementWrapper(currentResource.videoElement, videoElementChanged);
   currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
 };
+
+/**
+ * Applies fix to bypass background DOM timer throttling 
+ */
+const bypassBackgroundTimerThrottling = function() {
+  const request = new XMLHttpRequest();
+  request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
+  request.onload = function() {
+    const script = document.createElement('script');
+    script.appendChild(document.createTextNode(request.responseText));
+    button.appendChild(script);
+  };
+  request.send();
+}
 
 /** @type {!IObject<string, PIPResource>} */
 const resources = {
@@ -540,6 +554,7 @@ const resources = {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
+      bypassBackgroundTimerThrottling();
     },
     buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
@@ -574,14 +589,7 @@ const resources = {
         neighbourButton.dispatchEvent(new Event('mouseout'));
         neighbourButton.title = neighbourTitle;
       });
-      const request = new XMLHttpRequest();
-      request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
-      request.onload = function() {
-        const script = document.createElement('script');
-        script.appendChild(document.createTextNode(request.responseText));
-        button.appendChild(script);
-      };
-      request.send();
+      bypassBackgroundTimerThrottling();
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
