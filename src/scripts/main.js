@@ -152,7 +152,8 @@ const processCaptions = function() {
   track.mode = 'showing';
   if (track.activeCues.length) track.removeCue(track.activeCues[0]);
   
-  if (!unprocessedCaption) return;
+  // Line commented out to workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
+  //if (!unprocessedCaption) return;
   
   // Show correctly spaced and formatted Picture in Picture mode caption
   let caption = '';
