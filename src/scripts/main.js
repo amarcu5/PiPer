@@ -148,9 +148,9 @@ const processCaptions = function() {
   // Get handle to video (called before accessing 'track' to guarentee valid) 
   const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
   
-  // Remove old caption
+  // Remove old captions
   track.mode = 'showing';
-  if (track.activeCues.length) track.removeCue(track.activeCues[0]);
+  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
   
   // Line commented out to workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
   //if (!unprocessedCaption) return;
