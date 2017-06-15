@@ -36,7 +36,7 @@ let /** string */ lastUnprocessedCaption = '';
  */
 const log = function(message) {
   !COMPILED && console.log('PiPer: ' + message);
-}
+};
 
 /**
  * Injects Picture in Picture button into webpage
@@ -245,7 +245,7 @@ const bypassBackgroundTimerThrottling = function() {
     button.appendChild(script);
   };
   request.send();
-}
+};
 
 /** @type {!IObject<string, PIPResource>} */
 const resources = {
@@ -472,15 +472,15 @@ const resources = {
       const /** string */ title = button.title;
       const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
       button.title = '';
-      button.addEventListener('mouseover', function(e){
+      button.addEventListener('mouseover', function() {
         neighbourTooltip.dataset['tip'] = title;
         neighbourTooltip.style.display = 'block';
       });
-      button.addEventListener('mouseout', function(e){
+      button.addEventListener('mouseout', function() {
         neighbourTooltip.style.display = '';
         neighbourTooltip.dataset['tip'] = neighbourTitle;
       });
-      neighbourButton.addEventListener('click', function(e){
+      neighbourButton.addEventListener('click', function() {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
@@ -550,7 +550,7 @@ const resources = {
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
       const neighbourButton = button.nextSibling;
-      neighbourButton.addEventListener('click', function(e){
+      neighbourButton.addEventListener('click', function() {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
@@ -581,11 +581,11 @@ const resources = {
       const /** string */ title = button.title;
       const /** string */ neighbourTitle = neighbourButton.title;
       button.title = '';
-      button.addEventListener('mouseover', function(e){
+      button.addEventListener('mouseover', function() {
         neighbourButton.title = title;
         neighbourButton.dispatchEvent(new Event('mouseover'));
       });
-      button.addEventListener('mouseout', function(e){
+      button.addEventListener('mouseout', function() {
         neighbourButton.dispatchEvent(new Event('mouseout'));
         neighbourButton.title = neighbourTitle;
       });

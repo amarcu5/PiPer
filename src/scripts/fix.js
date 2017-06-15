@@ -28,7 +28,7 @@
     callbacks.push(callback);
     
     return request;
-  }
+  };
   window.requestAnimationFrame = trackAnimationFrameRequest;
     
   /**
@@ -63,7 +63,7 @@
     event.stopPropagation();
     
     if (timeouts.length) timeouts.shift()();
-  }
+  };
   window.addEventListener('message', handleTimeoutMessages, true);
   
   /**
