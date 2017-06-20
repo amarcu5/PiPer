@@ -611,6 +611,7 @@ const resources = {
 };
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
+resources['primevideo'] = resources['amazon'];
 resources['youtu'] = resources['youtube'];
 
 
