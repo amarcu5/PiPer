@@ -24,6 +24,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Plex](http://www.plex.tv)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
+* [Udemy](http://www.udemy.com)
 * [Vevo](http://www.vevo.com)
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)

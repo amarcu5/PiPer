@@ -499,6 +499,28 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
+  
+  'udemy': {
+    buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      document.querySelector('.vjs-fullscreen-control').addEventListener('click', function() {
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
+      });
+    },
+    buttonParent: function() {
+      return document.querySelector('.vjs-control-bar');
+    },
+    buttonScale: 0.7,
+    buttonStyle: 'order:7',
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('.vjs-text-track-display'));
+    },
+    videoElement: function() {
+      return document.querySelector('video.vjs-tech');
+    },
+  },
 
   'vevo': {
     buttonClassName: 'player-control',
