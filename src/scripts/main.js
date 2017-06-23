@@ -297,7 +297,7 @@ const resources = {
     buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
     captionElement: function() {
       const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('div:not([class])'));
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('div[style*="width:"]:not([class])'));
     },
     videoElement: function() {
       return document.querySelector('video[class^="styles__video"]');
