@@ -11,78 +11,240 @@
  *    buttonParent: function(): ?Element,
  *    buttonScale: (number|undefined),
  *    buttonStyle: (string|undefined),
+ *    captionElement: (function(): ?Element|undefined),
  *    videoElement: function(): ?Element,
  * }}
  */
 let PIPResource;
 
 
-/** @define {boolean} */
+/** @define {boolean} - Flag used by closure compiler to remove logging */
 const COMPILED = false;
 
-function log(/** string */ message) {
-  !COMPILED && console.log('PIPer: ' + message);
-}
+const BUTTON_ID = 'PiPer_button';
+const TRACK_ID = 'PiPer_track';
 
-
-const BUTTON_ID = 'PIPButton';
-
-let /** boolean */ buttonAdded = false;
+let /** ?Element */ button = null;
 let /** ?PIPResource */ currentResource = null;
+let /** ?TextTrack */ track = null;
+let /** boolean */ showingCaptions = false;
+let /** string */ lastUnprocessedCaption = '';
 
-const addButton = function(/** Element */ parent) {
-  const button = document.createElement(currentResource.buttonElementType || 'button');
+/**
+ * Logs message to console
+ * @param {string} message - Message to log
+ */
+const log = function(message) {
+  !COMPILED && console.log('PiPer: ' + message);
+};
 
-  button.id = BUTTON_ID;
-  button.title = 'Open Picture in Picture mode';
-  if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
-  if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
-
-  const image = document.createElement('img');
-  image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
-  image.style.width = image.style.height = '100%';
-  if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
-  button.appendChild(image);
-
-  if (currentResource.buttonHoverStyle) {
-    const style = document.createElement('style');
-    const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
-    style.appendChild(document.createTextNode(css));
-    button.appendChild(style);
+/**
+ * Injects Picture in Picture button into webpage
+ * @param {Element} parent - Element button will be inserted into
+ */
+const addButton = function(parent) {
+  
+  // Create button if needed
+  if (!button) {
+    button = document.createElement(currentResource.buttonElementType || 'button');
+    
+    // Set button properties
+    button.id = BUTTON_ID;
+    button.title = 'Open Picture in Picture mode';
+    if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
+    if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
+  
+    // Add scaled SVG image to button
+    const image = document.createElement('img');
+    image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
+    image.style.width = image.style.height = '100%';
+    if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
+    button.appendChild(image);
+  
+    // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
+    if (currentResource.buttonHoverStyle) {
+      const style = document.createElement('style');
+      const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
+      style.appendChild(document.createTextNode(css));
+      button.appendChild(style);
+    }
+  
+    // Toggle Picture in Picture mode when button is clicked
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+  
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      if (!video) {
+        log('Unable to find video');
+        return;
+      }
+  
+      const mode = video.webkitPresentationMode == 'picture-in-picture' ? 'inline' : 'picture-in-picture';
+      video.webkitSetPresentationMode(mode);
+    });
+    
+    log('Picture in Picture button created');
   }
 
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-    if (!video) {
-      log('Unable to find video');
-      return;
-    }
-
-    const presentationMode = 'inline' === video.webkitPresentationMode ? 'picture-in-picture' : 'inline';
-    video.webkitSetPresentationMode(presentationMode);
-  });
-
+  // Inject button into correct place
   const referenceNode = currentResource.buttonInsertBefore ? currentResource.buttonInsertBefore(parent) : null;
   parent.insertBefore(button, referenceNode);
-}
+};
 
-const buttonObserver = function() {
-
-  if (buttonAdded) {
-    if (document.getElementById(BUTTON_ID)) return;
-    log('Button removed');
-    buttonAdded = false;
+/**
+ * Prepares video for captions
+ * @param {HTMLVideoElement} video - an unprepared video element
+ */
+const prepareCaptions = function(video) {
+  
+  // Find existing caption track (if video element id changes function can be called twice)
+  track = null;
+  const allTracks = video.textTracks;
+  for (let trackId = allTracks.length; trackId--;) {
+    if (allTracks[trackId].label === TRACK_ID) {
+      track = allTracks[trackId];
+      log('Existing caption track found');
+      break;
+    }
   }
+  if (track) return;
+  
+  // Otherwise create new caption track
+  log('Caption track created');
+  track = video.addTextTrack('captions', TRACK_ID, 'en');
+  
+  // Toggle captions when Picture in Picture mode changes
+  const toggleCaptions = function() {
+    showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+    lastUnprocessedCaption = '';
+    processCaptions();
+    log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
+  }
+  video.addEventListener('webkitbeginfullscreen', toggleCaptions);
+  video.addEventListener('webkitendfullscreen', toggleCaptions);
+};
+
+/**
+ * Updates visible captions
+ */
+const processCaptions = function() {
+  const captionElement = currentResource.captionElement();
+  
+  // Hide Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
+  if (!showingCaptions || !captionElement) {
+    track.mode = 'disabled';
+    if (captionElement) captionElement.style.visibility = '';
+    return;
+  }
+  
+  // Otherwise ensure native captions remain hidden
+  captionElement.style.visibility = 'hidden';
+  
+  // Check if a new native caption needs to be processed
+  const unprocessedCaption = captionElement.textContent;
+  if (unprocessedCaption == lastUnprocessedCaption) return;
+  lastUnprocessedCaption = unprocessedCaption;
+
+  // Get handle to video (called before accessing 'track' to guarentee valid) 
+  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+  
+  // Remove old captions
+  track.mode = 'showing';
+  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
+  
+  // Line commented out to workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
+  //if (!unprocessedCaption) return;
+  
+  // Show correctly spaced and formatted Picture in Picture mode caption
+  let caption = '';
+  const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
+  while (walk.nextNode()) {
+    const segment = walk.currentNode.nodeValue.trim();
+    if (segment) {
+      const style = window.getComputedStyle(/** @type {Element} */ (walk.currentNode.parentNode));
+      if (style.fontStyle == 'italic') {
+        caption += '<i>' + segment + '</i>';
+      } else if (style.textDecoration == 'underline') {
+        caption += '<u>' + segment + '</u>';
+      } else {
+        caption += segment;
+      }
+      caption += ' ';
+    } else if (caption.charAt(caption.length - 1) != '\n') {
+      caption += '\n';
+    }
+  }
+  caption = caption.trim();
+  log('Showing caption "' + caption + '"');
+  track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
+};
+
+/**
+ * Tracks injected button and captions
+ */
+const mutationObserver = function() {
+
+  if (showingCaptions && currentResource.captionElement) processCaptions();
+
+  if (document.getElementById(BUTTON_ID)) return;
 
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
     addButton(buttonParent);
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
-    log('Button added');
-    buttonAdded = true;
+    log('Picture in Picture button added to webpage');
   }
+};
+
+/**
+ * Initialises caching for button, video, and caption elements
+ */
+const initialiseCaches = function() {
+  const cacheElementIds = {};
+  
+  // Return element by native id or assign id for faster lookups
+  const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
+    const uniqueLabel = 'PiPer_' + elementFunction.name;
+    cacheElementIds[uniqueLabel] = uniqueLabel;
+    
+    return function() {
+      let element = document.getElementById(cacheElementIds[uniqueLabel]);
+      
+      if (!element) {
+        element = elementFunction();
+        
+        if (element) {
+          if (!element.id) element.id = uniqueLabel;
+          cacheElementIds[uniqueLabel] = element.id;
+          if (elementChangedCallback) elementChangedCallback(element);
+        }
+      }
+      return element;
+    };
+  };
+  
+  // Performance optimisation - prepare captions when new video found
+  let videoElementChanged = null;
+  if (currentResource.captionElement) {
+    currentResource.captionElement = cacheElementWrapper(currentResource.captionElement);
+    videoElementChanged = prepareCaptions;
+  }
+  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement, videoElementChanged);
+  currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
+};
+
+/**
+ * Applies fix to bypass background DOM timer throttling 
+ */
+const bypassBackgroundTimerThrottling = function() {
+  const request = new XMLHttpRequest();
+  request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
+  request.onload = function() {
+    const script = document.createElement('script');
+    script.appendChild(document.createTextNode(request.responseText));
+    button.appendChild(script);
+  };
+  request.send();
 };
 
 /** @type {!IObject<string, PIPResource>} */
@@ -98,6 +260,10 @@ const resources = {
       return e && e.querySelector('.hideableTopButtons');
     },
     buttonStyle: 'border:0;padding:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
+    captionElement: function() {
+      const e = document.getElementById('dv-web-player');
+      return e && e.querySelector('.captions');
+    },
     videoElement: function() {
       const e = document.querySelector('.rendererContainer');
       return e && e.querySelector('video[width="100%"]');
@@ -125,30 +291,35 @@ const resources = {
       return parent.lastChild;
     },
     buttonParent: function() {
-      const e = document.getElementById('app');
-      return e && e.querySelector('div[class^="styles__controls"]');
+      return document.querySelector('div[class^="styles__controls"]');
     },
     buttonScale: 1.1,
     buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('div[style*="width:"]:not([class])'));
+    },
     videoElement: function() {
-      const e = document.getElementById('app');
-      return e && e.querySelector('video[class^="styles__video"]');
+      return document.querySelector('video[class^="styles__video"]');
     },
   },
 
   'hulu': {
     buttonClassName: 'simple-button',
-    buttonElementType: 'div',
-    buttonInsertBefore: function(/** Element */ parent) {
-      return parent.lastChild;
+    buttonDidAppear: function() {
+      currentResource.buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+      currentResource.buttonParent().querySelector('.progress-time-container').style.marginRight = '45px';
     },
+    buttonElementType: 'div',
+    buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(58deg)saturate(160%)brightness(110%)!important',
     buttonParent: function() {
       const e = document.getElementById('site-player');
       return e && e.querySelector('.main-bar');
     },
     buttonScale: 0.7,
-    buttonDidAppear: function() {
-      resources['hulu'].buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+    buttonStyle: 'top:-45px;left:-50px;filter:brightness(80%)',
+    captionElement: function() {
+      return document.querySelector('.closed-caption-container');
     },
     videoElement: function() {
       return document.getElementById('content-video-player');
@@ -199,6 +370,22 @@ const resources = {
     },
   },
   
+  'mixer': {
+    buttonClassName: 'control',
+    buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild.previousSibling;
+    },
+    buttonScale: 0.65,
+    buttonParent: function() {
+      return document.querySelector('.control-container .toolbar');
+    },
+    buttonStyle: 'position:relative;top:2px;cursor:pointer',
+    videoElement: function() {
+      return document.querySelector('.control-container + video');
+    },
+  },
+  
   'ncaa': {
     buttonClassName: 'video-player-controls-button',
     buttonElementType: 'div',
@@ -220,7 +407,11 @@ const resources = {
     },
     buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
     buttonDidAppear: function() {
-      resources['netflix'].buttonParent().style.paddingRight = '50px';
+      currentResource.buttonParent().style.paddingRight = '50px';
+    },
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('.player-timedtext'));
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
@@ -276,17 +467,22 @@ const resources = {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const neighbourTooltip = /** @type {HTMLElement} */ (button.nextSibling.querySelector('.player-tip'));
-      const /** string */ previousTitle = neighbourTooltip.dataset['tip'];
-      button.addEventListener('mouseover', function(e){
-        neighbourTooltip.dataset['tip'] = button.title;
+      const neighbourButton = button.nextSibling;
+      const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
+      const /** string */ title = button.title;
+      const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
+      button.title = '';
+      button.addEventListener('mouseover', function() {
+        neighbourTooltip.dataset['tip'] = title;
         neighbourTooltip.style.display = 'block';
-        button.title = '';
       });
-      button.addEventListener('mouseout', function(e){
+      button.addEventListener('mouseout', function() {
         neighbourTooltip.style.display = '';
-        button.title = neighbourTooltip.dataset['tip'];
-        neighbourTooltip.dataset['tip'] = previousTitle;
+        neighbourTooltip.dataset['tip'] = neighbourTitle;
+      });
+      neighbourButton.addEventListener('click', function() {
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
       });
     },
     buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)',
@@ -301,6 +497,28 @@ const resources = {
     videoElement: function() {
       const e = document.getElementById('video-playback') || document.getElementById('player');
       return e && e.querySelector('video');
+    },
+  },
+  
+  'udemy': {
+    buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      document.querySelector('.vjs-fullscreen-control').addEventListener('click', function() {
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
+      });
+    },
+    buttonParent: function() {
+      return document.querySelector('.vjs-control-bar');
+    },
+    buttonScale: 0.7,
+    buttonStyle: 'order:7',
+    captionElement: function() {
+      const e = currentResource.videoElement();
+      return /** @type {?Element} */ (e && e.parentNode.querySelector('.vjs-text-track-display'));
+    },
+    videoElement: function() {
+      return document.querySelector('video.vjs-tech');
     },
   },
 
@@ -349,22 +567,51 @@ const resources = {
     },
   },
 
+  'vrv': {
+    buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      const button = document.getElementById(BUTTON_ID);
+      const neighbourButton = button.nextSibling;
+      neighbourButton.addEventListener('click', function() {
+        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        if (video) video.webkitSetPresentationMode('inline');
+      });
+      bypassBackgroundTimerThrottling();
+    },
+    buttonHoverStyle: 'opacity:1!important',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      return document.querySelector('.vjs-control-bar');
+    },
+    buttonScale: 0.6,
+    buttonStyle: 'position:absolute;right:calc(50px + 2.5rem);width:50px;cursor:pointer;opacity:0.6',
+    captionElement: function() {
+      return document.querySelector('.libjass-subs');      
+    }, 
+    videoElement: function() {
+      return document.getElementById('player_html5_api');
+    },
+  },
+
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
       const button = document.getElementById(BUTTON_ID);
-      const neighbourButton = button.nextSibling;
-      const /** string */ previousTitle = neighbourButton.title;
-      button.addEventListener('mouseover', function(e){
-        neighbourButton.title = button.title;
-        button.title = '';
+      const neighbourButton = button.previousSibling;
+      const /** string */ title = button.title;
+      const /** string */ neighbourTitle = neighbourButton.title;
+      button.title = '';
+      button.addEventListener('mouseover', function() {
+        neighbourButton.title = title;
         neighbourButton.dispatchEvent(new Event('mouseover'));
       });
-      button.addEventListener('mouseout', function(e){
+      button.addEventListener('mouseout', function() {
         neighbourButton.dispatchEvent(new Event('mouseout'));
-        button.title = neighbourButton.title;
-        neighbourButton.title = previousTitle;
+        neighbourButton.title = neighbourTitle;
       });
+      bypassBackgroundTimerThrottling();
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
@@ -374,6 +621,10 @@ const resources = {
       return e && e.querySelector('.ytp-right-controls');
     },
     buttonScale: 0.68,
+    captionElement: function() {
+      const e = document.getElementById('movie_player') || document.getElementById('player');
+      return e && e.querySelector('.captions-text');      
+    },
     videoElement: function() {
       const e = document.getElementById('movie_player') || document.getElementById('player');
       return e && e.querySelector('video.html5-main-video');
@@ -381,21 +632,26 @@ const resources = {
   },
 };
 
+// Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
+resources['primevideo'] = resources['amazon'];
 resources['youtu'] = resources['youtube'];
 
 
+// Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
 const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
 if (domainName in resources) {
   log('Matched site ' + domainName + ' (' + location + ')');
   currentResource = resources[domainName];
 
-  const observer = new MutationObserver(buttonObserver);
+  initialiseCaches();
+  
+  const observer = new MutationObserver(mutationObserver);
 
   observer.observe(document, {
     childList: true,
     subtree: true,
   });
 
-  buttonObserver();
+  mutationObserver();
 }

@@ -1,5 +1,5 @@
 # PiPer
-Adds Picture in Picture functionality to Safari for Youtube, Netflix, Amazon Video, Twitch, and more!
+Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Video, Twitch, and more!
 
 <img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
@@ -17,16 +17,19 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [LittleThings](http://www.littlethings.com)
 * [Mashable](http://www.mashable.com)
 * [Metacafe](http://www.metacafe.com)
+* [Mixer](http://mixer.com)
 * [NCAA](http://www.ncaa.com)
 * [Netflix](http://www.netflix.com)
 * [Openload](http://www.openload.co)
 * [Plex](http://www.plex.tv)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
+* [Udemy](http://www.udemy.com)
 * [Vevo](http://www.vevo.com)
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)
-* [Youtube](http://www.youtube.com)
+* [VRV](http://www.vrv.co)
+* [YouTube](http://www.youtube.com)
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon

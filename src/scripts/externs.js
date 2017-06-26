@@ -12,3 +12,6 @@ HTMLVideoElement.prototype.webkitPresentationMode;
 
 /** @return {undefined} */
 HTMLVideoElement.prototype.webkitSetPresentationMode = function(mode) {}
+
+/** @type {string} */
+TextTrack.prototype.label;
