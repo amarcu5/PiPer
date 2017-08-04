@@ -436,16 +436,24 @@ const resources = {
   },
   
   'plex': {
-    buttonClassName: 'btn-link',
-    buttonHoverStyle: 'opacity:1!important',
-    buttonParent: function() {
-      const e = document.getElementById('plex');
-      return e && e.querySelector('.player-dropups-container.video-controls-right');
+    buttonDidAppear: function() {
+      bypassBackgroundTimerThrottling();
     },
-    buttonScale: 0.7,
-    buttonStyle: 'opacity:0.8;position:relative;top:-3px',
+    buttonHoverStyle: 'opacity:1!important',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      const e = document.querySelector('div[class^="FullPlayerTopControls-topControls"]');
+      return /** @type {?Element} */ (e && e.lastChild);
+    },
+    buttonScale: 0.6,
+    buttonStyle: 'border:0;background:transparent;opacity:0.7;position:relative;top:-3px;padding:10px;text-shadow: 0 0 4px rgba(0, 0, 0, .45)',
+    captionElement: function() {
+      return document.querySelector('.libjass-subs');
+    },
     videoElement: function() {
-      return document.getElementById('html-video');
+      return document.querySelector('video[class^="VideoContainer-videoElement"]');
     },
   },
   
