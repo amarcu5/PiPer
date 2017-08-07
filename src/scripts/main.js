@@ -286,21 +286,19 @@ const resources = {
   },
   
   'curiositystream': {
+    buttonClassName: 'vjs-control vjs-button',
     buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
     buttonParent: function() {
-      return document.querySelector('div[class^="styles__controls"]');
+      const e = document.getElementById('main-player');
+      return e && e.querySelector('.vjs-control-bar');
     },
-    buttonScale: 1.1,
-    buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
-    captionElement: function() {
-      const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('div[style*="width:"]:not([class])'));
-    },
+    buttonScale: 0.7,
+    buttonStyle: 'opacity:0.8;cursor:pointer',
     videoElement: function() {
-      return document.querySelector('video[class^="styles__video"]');
+      return document.getElementById('main-player_html5_api');
     },
   },
 
