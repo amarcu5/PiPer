@@ -431,7 +431,7 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
-    buttonStyle: 'left:5px',
+    buttonStyle: 'left:5px;cursor:pointer',
     videoElement: function() {
       return document.getElementById('olvideo_html5_api');
     },
