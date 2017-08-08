@@ -552,16 +552,18 @@ const resources = {
   },
   
   'vice': {
-    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonClassName: 'vp__controls__icon__popup__container',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonElementType: 'div',
     buttonParent: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('.jw-controlbar-right-group');
+      return document.querySelector('.vp__controls__icons');
     },
-    buttonStyle: 'width:45px',
+    buttonScale: 0.6,
+    buttonStyle: 'top:-11px',
     videoElement: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('video.jw-video');
+      return document.querySelector('video.jw-video');
     },
   },
 
