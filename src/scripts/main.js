@@ -280,6 +280,7 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
+    buttonStyle: 'cursor:pointer',
     videoElement: function() {
       return document.getElementById('vjs_video_3_html5_api');
     },
