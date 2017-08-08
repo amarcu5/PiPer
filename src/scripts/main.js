@@ -462,11 +462,14 @@ const resources = {
   'theonion': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
       const e = document.getElementById('container');
       return e && e.querySelector('.jw-controlbar-right-group');
     },
-    buttonStyle: 'width:38px;top:-2px',
+    buttonStyle: 'width:38px;top:-2px;left:10px',
     videoElement: function() {
       const e = document.getElementById('container');
       return e && e.querySelector('video.jw-video');
