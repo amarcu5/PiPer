@@ -450,7 +450,7 @@ const resources = {
       return /** @type {?Element} */ (e && e.lastChild);
     },
     buttonScale: 0.6,
-    buttonStyle: 'border:0;background:transparent;opacity:0.7;position:relative;top:-3px;padding:10px;text-shadow: 0 0 4px rgba(0, 0, 0, .45)',
+    buttonStyle: 'border:0;background:transparent;opacity:0.7;position:relative;top:-3px;padding:10px;text-shadow:0 0 4px rgba(0,0,0,.45)',
     captionElement: function() {
       return document.querySelector('.libjass-subs');
     },
