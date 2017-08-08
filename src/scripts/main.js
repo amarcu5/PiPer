@@ -328,14 +328,15 @@ const resources = {
   'littlethings': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('.jw-controlbar-right-group');
+      return document.querySelector('.jw-controlbar-right-group');
     },
     buttonStyle: 'width:38px',
     videoElement: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('video.jw-video');
+      return document.querySelector('video.jw-video');
     },
   },
   
