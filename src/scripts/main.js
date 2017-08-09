@@ -280,27 +280,26 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
+    buttonStyle: 'cursor:pointer',
     videoElement: function() {
       return document.getElementById('vjs_video_3_html5_api');
     },
   },
   
   'curiositystream': {
+    buttonClassName: 'vjs-control vjs-button',
     buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
     buttonParent: function() {
-      return document.querySelector('div[class^="styles__controls"]');
+      const e = document.getElementById('main-player');
+      return e && e.querySelector('.vjs-control-bar');
     },
-    buttonScale: 1.1,
-    buttonStyle: 'height:22px;width:22px;cursor:pointer;padding:0;border:0;opacity:0.8;margin-right:30px;background:transparent',
-    captionElement: function() {
-      const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('div[style*="width:"]:not([class])'));
-    },
+    buttonScale: 0.7,
+    buttonStyle: 'opacity:0.8;cursor:pointer',
     videoElement: function() {
-      return document.querySelector('video[class^="styles__video"]');
+      return document.getElementById('main-player_html5_api');
     },
   },
 
@@ -329,20 +328,24 @@ const resources = {
   'littlethings': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('.jw-controlbar-right-group');
+      return document.querySelector('.jw-controlbar-right-group');
     },
     buttonStyle: 'width:38px',
     videoElement: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('video.jw-video');
+      return document.querySelector('video.jw-video');
     },
   },
   
   'mashable': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
       const e = document.getElementById('player');
       return e && e.querySelector('.jw-controlbar-right-group');
@@ -429,34 +432,45 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
-    buttonStyle: 'left:5px',
+    buttonStyle: 'left:5px;cursor:pointer',
     videoElement: function() {
       return document.getElementById('olvideo_html5_api');
     },
   },
   
   'plex': {
-    buttonClassName: 'btn-link',
-    buttonHoverStyle: 'opacity:1!important',
-    buttonParent: function() {
-      const e = document.getElementById('plex');
-      return e && e.querySelector('.player-dropups-container.video-controls-right');
+    buttonDidAppear: function() {
+      bypassBackgroundTimerThrottling();
     },
-    buttonScale: 0.7,
-    buttonStyle: 'opacity:0.8;position:relative;top:-3px',
+    buttonHoverStyle: 'opacity:1!important',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      const e = document.querySelector('div[class^="FullPlayerTopControls-topControls"]');
+      return /** @type {?Element} */ (e && e.lastChild);
+    },
+    buttonScale: 0.6,
+    buttonStyle: 'border:0;background:transparent;opacity:0.7;position:relative;top:-3px;padding:10px;text-shadow:0 0 4px rgba(0,0,0,.45)',
+    captionElement: function() {
+      return document.querySelector('.libjass-subs');
+    },
     videoElement: function() {
-      return document.getElementById('html-video');
+      return document.querySelector('video[class^="VideoContainer-videoElement"]');
     },
   },
   
   'theonion': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonParent: function() {
       const e = document.getElementById('container');
       return e && e.querySelector('.jw-controlbar-right-group');
     },
-    buttonStyle: 'width:38px;top:-2px',
+    buttonStyle: 'width:38px;top:-2px;left:10px',
     videoElement: function() {
       const e = document.getElementById('container');
       return e && e.querySelector('video.jw-video');
@@ -539,16 +553,18 @@ const resources = {
   },
   
   'vice': {
-    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonClassName: 'vp__controls__icon__popup__container',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
     buttonElementType: 'div',
     buttonParent: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('.jw-controlbar-right-group');
+      return document.querySelector('.vp__controls__icons');
     },
-    buttonStyle: 'width:45px',
+    buttonScale: 0.6,
+    buttonStyle: 'top:-11px',
     videoElement: function() {
-      const e = document.getElementById('player');
-      return e && e.querySelector('video.jw-video');
+      return document.querySelector('video.jw-video');
     },
   },
 
