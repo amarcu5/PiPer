@@ -646,6 +646,20 @@ const resources = {
       return e && e.querySelector('video.html5-main-video');
     },
   },
+
+  'ocs': {
+    buttonClassName: 'footer-elt fltr',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('#togglePlay');
+    },
+    videoElement: function() {
+      return document.getElementById('LgyVideoPlayer');
+    },
+    buttonParent: function() {
+      return document.querySelector('.footer-block:last-child');
+    },
+    buttonStyle: 'border:0;margin-right:10px;padding:0;background-color:transparent;margin-bottom:-10px;display:block;width:25px;height:18px;transform:scale(1.2);'
+  },
 };
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
