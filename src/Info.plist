@@ -90,6 +90,8 @@
 				<string>*.youtu.be</string>
 				<string>youtube.com</string>
 				<string>*.youtube.com</string>
+				<string>ocs.fr</string>
+				<string>*.ocs.fr</string>
 			</array>
 			<key>Include Secure Pages</key>
 			<true/>
