@@ -125,14 +125,31 @@ const prepareCaptions = function(video) {
 };
 
 /**
+ * Removes visible Picture in Picture mode captions
+ * @param {HTMLVideoElement} video - video element showing captions
+ */
+const removeCaptions = function(video) {
+  track.mode = 'showing';
+  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
+  
+  // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
+  track.addCue(new VTTCue(video.currentTime, video.currentTime, ''));
+}
+
+/**
  * Updates visible captions
  */
 const processCaptions = function() {
-  const captionElement = currentResource.captionElement();
   
-  // Hide Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
+  // Get handles to caption and video elements
+  const captionElement = currentResource.captionElement();
+  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+
+  // Remove old captions
+  removeCaptions(video);
+
+  // Show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
-    track.mode = 'disabled';
     if (captionElement) captionElement.style.visibility = '';
     return;
   }
@@ -144,16 +161,9 @@ const processCaptions = function() {
   const unprocessedCaption = captionElement.textContent;
   if (unprocessedCaption == lastUnprocessedCaption) return;
   lastUnprocessedCaption = unprocessedCaption;
-
-  // Get handle to video (called before accessing 'track' to guarentee valid) 
-  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-  
-  // Remove old captions
-  track.mode = 'showing';
-  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
-  
-  // Line commented out to workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  //if (!unprocessedCaption) return;
+    
+  // Performance optimisation - early exit if caption has no content
+  if (!unprocessedCaption) return;
   
   // Show correctly spaced and formatted Picture in Picture mode caption
   let caption = '';
