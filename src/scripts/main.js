@@ -431,6 +431,21 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
+  
+  'ocs': {
+    buttonClassName: 'footer-elt fltr',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('#togglePlay');
+    },
+    buttonParent: function() {
+      return document.querySelector('.footer-block:last-child');
+    },
+    buttonScale: 1.2,
+    buttonStyle: 'border:0;margin-right:10px;padding:0;background-color:transparent;margin-bottom:-10px;display:block;width:25px;height:18px',
+    videoElement: function() {
+      return document.getElementById('LgyVideoPlayer');
+    },
+  },
 
   'openload': {
     buttonClassName: 'vjs-control vjs-button',

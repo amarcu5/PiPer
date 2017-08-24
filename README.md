@@ -19,6 +19,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Metacafe](http://www.metacafe.com)
 * [Mixer](http://mixer.com)
 * [Netflix](http://www.netflix.com)
+* [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
 * [Plex](http://www.plex.tv)
 * [The Onion](http://www.theonion.com)

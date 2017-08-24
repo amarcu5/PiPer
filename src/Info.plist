@@ -64,6 +64,8 @@
 				<string>*.mixer.com</string>
 				<string>netflix.com</string>
 				<string>*.netflix.com</string>
+				<string>ocs.fr</string>
+				<string>*.ocs.fr</string>
 				<string>openload.co</string>
 				<string>*.openload.co</string>
 				<string>plex.tv</string>
