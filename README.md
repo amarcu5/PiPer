@@ -18,7 +18,6 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Mashable](http://www.mashable.com)
 * [Metacafe](http://www.metacafe.com)
 * [Mixer](http://mixer.com)
-* [NCAA](http://www.ncaa.com)
 * [Netflix](http://www.netflix.com)
 * [Openload](http://www.openload.co)
 * [Plex](http://www.plex.tv)

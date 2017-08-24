@@ -410,18 +410,6 @@ const resources = {
       return document.querySelector('.control-container + video');
     },
   },
-  
-  'ncaa': {
-    buttonClassName: 'video-player-controls-button',
-    buttonElementType: 'div',
-    buttonParent: function() {
-      return document.getElementById('video-player-controls-buttons-right');
-    },
-    buttonScale: 0.7,
-    videoElement: function() {
-      return document.getElementById('vjs_video_3_html5_api');
-    },  
-  },
 
   'netflix': {
     buttonElementType: 'span',
