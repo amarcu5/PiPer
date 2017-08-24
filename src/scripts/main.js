@@ -638,6 +638,16 @@ const resources = {
         neighbourButton.title = neighbourTitle;
       });
       bypassBackgroundTimerThrottling();
+      
+      // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      document.addEventListener('spfrequest', function(){
+        showingCaptions = false;
+        removeCaptions(video);
+      });
+      document.addEventListener('spfdone', function(){
+        showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+      });
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
