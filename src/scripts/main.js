@@ -161,7 +161,7 @@ const processCaptions = function() {
   while (walk.nextNode()) {
     const segment = walk.currentNode.nodeValue.trim();
     if (segment) {
-      const style = window.getComputedStyle(/** @type {Element} */ (walk.currentNode.parentNode));
+      const style = window.getComputedStyle(walk.currentNode.parentElement);
       if (style.fontStyle == 'italic') {
         caption += '<i>' + segment + '</i>';
       } else if (style.textDecoration == 'underline') {
@@ -414,7 +414,7 @@ const resources = {
     },
     captionElement: function() {
       const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('.player-timedtext'));
+      return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
@@ -529,7 +529,7 @@ const resources = {
     buttonStyle: 'order:7',
     captionElement: function() {
       const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('.vjs-text-track-display'));
+      return e && e.parentElement.querySelector('.vjs-text-track-display');
     },
     videoElement: function() {
       return document.querySelector('video.vjs-tech');
