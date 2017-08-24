@@ -4,12 +4,10 @@
   let activeVideo = null;
   let timeoutId = 0;
 
-  const timeoutMessageName = 'PiPer_message';
-  const timeouts = [];
-
   const requests = [];
   const callbacks = [];
-  
+  const timeouts = [];
+
   const originalRequestAnimationFrame = window.requestAnimationFrame;
   const originalSetTimeout = window.setTimeout;
   
@@ -43,9 +41,9 @@
   clearAnimationFrameRequests();
   
   /**
-   * Calls tracked animation frame requests
+   * Calls tracked animation frame requests and timeouts
    */
-  const callAnimationFrameRequests = function() {
+  const callAnimationFrameRequestsAndTimeouts = function() {
     const callbacksCopy = callbacks.slice();
     callbacks.length = 0;
     
@@ -53,21 +51,17 @@
     for (let callback; callback = callbacksCopy.pop();) {
        callback(timestamp);
     };
-  };
-  
-  /**
-   * Receives and calls timeouts from the message queue
-   */
-  const handleTimeoutMessages = function(event) {
-    if (event.data != timeoutMessageName) return;
-    event.stopPropagation();
     
-    if (timeouts.length) timeouts.shift()();
+    const timeoutsCopy = timeouts.slice();
+    timeouts.length = 0;
+    
+    for (let timeout; timeout = timeoutsCopy.pop();) {
+       timeout();
+    };
   };
-  window.addEventListener('message', handleTimeoutMessages, true);
-  
+
   /**
-   * Avoids background throttling by invoking small timeouts instantly using a message queue
+   * Avoids background throttling by invoking small timeouts with media 'timeupdate' events
    * @param {Function|string} callback
    * @param {number=} timeout
    * @return {number}
@@ -76,7 +70,6 @@
     if (timeout >= 500) return originalSetTimeout(callback, timeout);
     
     timeouts.push(callback);
-    window.postMessage(timeoutMessageName, location.href);
     
     return timeoutId++;
   };
@@ -102,7 +95,7 @@
       }
       
       window.setTimeout = unthrottledSetTimeout;
-      activeVideo.addEventListener('timeupdate', callAnimationFrameRequests);
+      activeVideo.addEventListener('timeupdate', callAnimationFrameRequestsAndTimeouts);
       
     } else if (activeVideo) {
       
@@ -112,8 +105,12 @@
       }
       
       window.setTimeout = originalSetTimeout;
-      activeVideo.removeEventListener('timeupdate', callAnimationFrameRequests);
+      activeVideo.removeEventListener('timeupdate', callAnimationFrameRequestsAndTimeouts);
       
+      for (let timeout; timeout = timeouts.pop();) {
+        timeout();
+      };
+    
       activeVideo = null;
     }
   };

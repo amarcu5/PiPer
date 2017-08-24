@@ -125,14 +125,31 @@ const prepareCaptions = function(video) {
 };
 
 /**
+ * Removes visible Picture in Picture mode captions
+ * @param {HTMLVideoElement} video - video element showing captions
+ */
+const removeCaptions = function(video) {
+  track.mode = 'showing';
+  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
+  
+  // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
+  track.addCue(new VTTCue(video.currentTime, video.currentTime, ''));
+}
+
+/**
  * Updates visible captions
  */
 const processCaptions = function() {
-  const captionElement = currentResource.captionElement();
   
-  // Hide Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
+  // Get handles to caption and video elements
+  const captionElement = currentResource.captionElement();
+  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+
+  // Remove old captions
+  removeCaptions(video);
+
+  // Show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
-    track.mode = 'disabled';
     if (captionElement) captionElement.style.visibility = '';
     return;
   }
@@ -144,16 +161,9 @@ const processCaptions = function() {
   const unprocessedCaption = captionElement.textContent;
   if (unprocessedCaption == lastUnprocessedCaption) return;
   lastUnprocessedCaption = unprocessedCaption;
-
-  // Get handle to video (called before accessing 'track' to guarentee valid) 
-  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-  
-  // Remove old captions
-  track.mode = 'showing';
-  while (track.activeCues.length) track.removeCue(track.activeCues[0]);
-  
-  // Line commented out to workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  //if (!unprocessedCaption) return;
+    
+  // Performance optimisation - early exit if caption has no content
+  if (!unprocessedCaption) return;
   
   // Show correctly spaced and formatted Picture in Picture mode caption
   let caption = '';
@@ -161,7 +171,7 @@ const processCaptions = function() {
   while (walk.nextNode()) {
     const segment = walk.currentNode.nodeValue.trim();
     if (segment) {
-      const style = window.getComputedStyle(/** @type {Element} */ (walk.currentNode.parentNode));
+      const style = window.getComputedStyle(walk.currentNode.parentElement);
       if (style.fontStyle == 'italic') {
         caption += '<i>' + segment + '</i>';
       } else if (style.textDecoration == 'underline') {
@@ -288,6 +298,18 @@ const resources = {
   
   'curiositystream': {
     buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      const videoContainer = video.parentElement;
+      video.addEventListener('webkitbeginfullscreen', function(){
+        videoContainer.style.setProperty('height', Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw', 'important');
+        videoContainer.style.setProperty('max-height', video.videoHeight + 'px');
+      });
+      video.addEventListener('webkitendfullscreen', function(){
+        videoContainer.style.removeProperty('height');
+        videoContainer.style.removeProperty('max-height');
+      });
+    },
     buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
@@ -414,7 +436,7 @@ const resources = {
     },
     captionElement: function() {
       const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('.player-timedtext'));
+      return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
@@ -529,7 +551,7 @@ const resources = {
     buttonStyle: 'order:7',
     captionElement: function() {
       const e = currentResource.videoElement();
-      return /** @type {?Element} */ (e && e.parentNode.querySelector('.vjs-text-track-display'));
+      return e && e.parentElement.querySelector('.vjs-text-track-display');
     },
     videoElement: function() {
       return document.querySelector('video.vjs-tech');
@@ -628,6 +650,16 @@ const resources = {
         neighbourButton.title = neighbourTitle;
       });
       bypassBackgroundTimerThrottling();
+      
+      // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      document.addEventListener('spfrequest', function(){
+        showingCaptions = false;
+        removeCaptions(video);
+      });
+      document.addEventListener('spfdone', function(){
+        showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+      });
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
