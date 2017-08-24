@@ -298,6 +298,18 @@ const resources = {
   
   'curiositystream': {
     buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      const videoContainer = video.parentElement;
+      video.addEventListener('webkitbeginfullscreen', function(){
+        videoContainer.style.setProperty('height', Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw', 'important');
+        videoContainer.style.setProperty('max-height', video.videoHeight + 'px');
+      });
+      video.addEventListener('webkitendfullscreen', function(){
+        videoContainer.style.removeProperty('height');
+        videoContainer.style.removeProperty('max-height');
+      });
+    },
     buttonHoverStyle: 'opacity:1!important',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
