@@ -301,11 +301,11 @@ const resources = {
     buttonDidAppear: function() {
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
       const videoContainer = video.parentElement;
-      video.addEventListener('webkitbeginfullscreen', function(){
+      video.addEventListener('webkitbeginfullscreen', function() {
         videoContainer.style.setProperty('height', Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw', 'important');
         videoContainer.style.setProperty('max-height', video.videoHeight + 'px');
       });
-      video.addEventListener('webkitendfullscreen', function(){
+      video.addEventListener('webkitendfullscreen', function() {
         videoContainer.style.removeProperty('height');
         videoContainer.style.removeProperty('max-height');
       });
@@ -656,11 +656,11 @@ const resources = {
       
       // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-      document.addEventListener('spfrequest', function(){
+      document.addEventListener('spfrequest', function() {
         showingCaptions = false;
         removeCaptions(video);
       });
-      document.addEventListener('spfdone', function(){
+      document.addEventListener('spfdone', function() {
         showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
       });
     },
