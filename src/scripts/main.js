@@ -667,17 +667,14 @@ const resources = {
       return parent.lastChild;
     },
     buttonParent: function() {
-      const e = document.getElementById('movie_player') || document.getElementById('player');
-      return e && e.querySelector('.ytp-right-controls');
+      return document.querySelector('.ytp-right-controls');
     },
     buttonScale: 0.68,
     captionElement: function() {
-      const e = document.getElementById('movie_player') || document.getElementById('player');
-      return e && e.querySelector('.captions-text');      
+      return document.querySelector('.caption-window');      
     },
     videoElement: function() {
-      const e = document.getElementById('movie_player') || document.getElementById('player');
-      return e && e.querySelector('video.html5-main-video');
+      return document.querySelector('video.html5-main-video');
     },
   },
 };
