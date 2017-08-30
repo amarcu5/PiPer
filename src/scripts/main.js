@@ -127,13 +127,14 @@ const prepareCaptions = function(video) {
 /**
  * Removes visible Picture in Picture mode captions
  * @param {HTMLVideoElement} video - video element showing captions
+ * @param {boolean} workaround - apply Safari bug workaround
  */
-const removeCaptions = function(video) {
+const removeCaptions = function(video, workaround = true) {
   track.mode = 'showing';
   while (track.activeCues.length) track.removeCue(track.activeCues[0]);
   
   // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  track.addCue(new VTTCue(video.currentTime, video.currentTime, ''));
+  if (workaround) track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
 }
 
 /**
@@ -145,11 +146,9 @@ const processCaptions = function() {
   const captionElement = currentResource.captionElement();
   const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
 
-  // Remove old captions
-  removeCaptions(video);
-
-  // Show native captions if no longer showing captions or encountered an error
+  // Remove Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
+    removeCaptions(video);
     if (captionElement) captionElement.style.visibility = '';
     return;
   }
@@ -161,6 +160,9 @@ const processCaptions = function() {
   const unprocessedCaption = captionElement.textContent;
   if (unprocessedCaption == lastUnprocessedCaption) return;
   lastUnprocessedCaption = unprocessedCaption;
+    
+  // Remove old captions and apply Safari bug fix if caption has no content as otherwise causes flicker
+  removeCaptions(video, !unprocessedCaption);
     
   // Performance optimisation - early exit if caption has no content
   if (!unprocessedCaption) return;
