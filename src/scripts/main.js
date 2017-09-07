@@ -507,7 +507,6 @@ const resources = {
   'twitch': {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
-      const button = document.getElementById(BUTTON_ID);
       const neighbourButton = button.nextSibling;
       const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
       const /** string */ title = button.title;
@@ -613,7 +612,6 @@ const resources = {
   'vrv': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
-      const button = document.getElementById(BUTTON_ID);
       const neighbourButton = button.nextSibling;
       neighbourButton.addEventListener('click', function() {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
@@ -641,7 +639,6 @@ const resources = {
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
-      const button = document.getElementById(BUTTON_ID);
       const neighbourButton = button.previousSibling;
       const /** string */ title = button.title;
       const /** string */ neighbourTitle = neighbourButton.title;
