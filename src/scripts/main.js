@@ -414,6 +414,9 @@ const resources = {
   },
 
   'netflix': {
+    buttonDidAppear: function() {
+      currentResource.buttonParent().style.paddingRight = '50px';
+    },
     buttonElementType: 'span',
     buttonImage: 'netflix',
     buttonParent: function() {
@@ -421,9 +424,6 @@ const resources = {
       return e ? e.querySelector('.player-status') : null;
     },
     buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
-    buttonDidAppear: function() {
-      currentResource.buttonParent().style.paddingRight = '50px';
-    },
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
@@ -580,10 +580,10 @@ const resources = {
   
   'vice': {
     buttonClassName: 'vp__controls__icon__popup__container',
+    buttonElementType: 'div',
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
-    buttonElementType: 'div',
     buttonParent: function() {
       return document.querySelector('.vp__controls__icons');
     },
