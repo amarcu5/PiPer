@@ -326,6 +326,19 @@ const resources = {
       return document.getElementById('main-player_html5_api');
     },
   },
+  
+  'eurosportplayer': {
+    buttonElementType: 'div',
+    buttonHoverStyle: 'opacity:1!important',
+    buttonParent: function() {
+      return document.querySelector('.video-controls__group-right');
+    },
+    buttonScale: 0.7,
+    buttonStyle: 'margin-right:15px;height:100%;opacity:0.8;cursor:pointer',
+    videoElement: function() {
+      return document.querySelector('.video-player__screen');
+    },
+  },
 
   'hulu': {
     buttonClassName: 'simple-button',
