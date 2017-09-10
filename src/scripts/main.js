@@ -470,7 +470,7 @@ const resources = {
     buttonImage: 'netflix',
     buttonParent: function() {
       const e = document.getElementById('playerContainer');
-      return e ? e.querySelector('.player-status') : null;
+      return e && e.querySelector('.player-status');
     },
     buttonStyle: /** CSS */ (`
       position: absolute;
