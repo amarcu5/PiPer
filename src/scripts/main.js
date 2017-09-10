@@ -267,7 +267,7 @@ const bypassBackgroundTimerThrottling = function() {
 const resources = {
 
   'amazon': {
-    buttonHoverStyle: 'opacity:1!important',
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.querySelector('.fullscreenButtonWrapper');
     },
@@ -275,7 +275,18 @@ const resources = {
       const e = document.getElementById('dv-web-player');
       return e && e.querySelector('.hideableTopButtons');
     },
-    buttonStyle: 'border:0;padding:0;background-color:transparent;opacity:0.8;position:relative;left:8px;width:3vw;height:2vw;min-width:35px;min-height:24px',
+    buttonStyle: /** CSS */ (`
+      position: relative;
+      left: 8px;
+      width: 3vw;
+      height: 2vw;
+      min-width: 35px;
+      min-height: 24px;
+      border: 0px;
+      padding: 0px;
+      background-color: transparent;
+      opacity: 0.8;
+    `),
     captionElement: function() {
       const e = document.getElementById('dv-web-player');
       return e && e.querySelector('.captions');
@@ -296,7 +307,7 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
-    buttonStyle: 'cursor:pointer',
+    buttonStyle: /** CSS */ (`cursor: pointer`),
     videoElement: function() {
       return document.getElementById('vjs_video_3_html5_api');
     },
@@ -316,7 +327,7 @@ const resources = {
         videoContainer.style.removeProperty('max-height');
       });
     },
-    buttonHoverStyle: 'opacity:1!important',
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
@@ -325,7 +336,10 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.7,
-    buttonStyle: 'opacity:0.8;cursor:pointer',
+    buttonStyle: /** CSS */ (`
+      opacity: 0.8;
+      cursor: pointer;
+    `),
     videoElement: function() {
       return document.getElementById('main-player_html5_api');
     },
@@ -333,12 +347,17 @@ const resources = {
 
   'eurosportplayer': {
     buttonElementType: 'div',
-    buttonHoverStyle: 'opacity:1!important',
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonParent: function() {
       return document.querySelector('.video-controls__group-right');
     },
     buttonScale: 0.7,
-    buttonStyle: 'margin-right:15px;height:100%;opacity:0.8;cursor:pointer',
+    buttonStyle: /** CSS */ (`
+      height: 100%;
+      margin-right: 15px;
+      opacity: 0.8;
+      cursor: pointer;
+    `),
     videoElement: function() {
       return document.querySelector('.video-player__screen');
     },
@@ -351,13 +370,19 @@ const resources = {
       currentResource.buttonParent().querySelector('.progress-time-container').style.marginRight = '45px';
     },
     buttonElementType: 'div',
-    buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(58deg)saturate(160%)brightness(110%)!important',
+    buttonHoverStyle: /** CSS */ (`
+      filter: brightness(50%) sepia(1) hue-rotate(58deg) saturate(160%) brightness(110%) !important;
+    `),
     buttonParent: function() {
       const e = document.getElementById('site-player');
       return e && e.querySelector('.main-bar');
     },
     buttonScale: 0.7,
-    buttonStyle: 'top:-45px;left:-50px;filter:brightness(80%)',
+    buttonStyle: /** CSS */ (`
+      top: -45px;
+      left: -50px;
+      filter: brightness(80%);
+    `),
     captionElement: function() {
       return document.querySelector('.closed-caption-container');
     },
@@ -375,7 +400,7 @@ const resources = {
     buttonParent: function() {
       return document.querySelector('.jw-controlbar-right-group');
     },
-    buttonStyle: 'width:38px',
+    buttonStyle: /** CSS */ (`width: 38px`),
     videoElement: function() {
       return document.querySelector('video.jw-video');
     },
@@ -391,7 +416,10 @@ const resources = {
       const e = document.getElementById('player');
       return e && e.querySelector('.jw-controlbar-right-group');
     },
-    buttonStyle: 'width:38px;top:-2px',
+    buttonStyle: /** CSS */ (`
+      top: -2px;
+      width: 38px;
+    `),
     videoElement: function() {
       const e = document.getElementById('player');
       return e && e.querySelector('video.jw-video');
@@ -424,7 +452,11 @@ const resources = {
     buttonParent: function() {
       return document.querySelector('.control-container .toolbar');
     },
-    buttonStyle: 'position:relative;top:2px;cursor:pointer',
+    buttonStyle: /** CSS */ (`
+      position: relative;
+      top: 2px;
+      cursor: pointer;
+    `),
     videoElement: function() {
       return document.querySelector('.control-container + video');
     },
@@ -440,7 +472,15 @@ const resources = {
       const e = document.getElementById('playerContainer');
       return e ? e.querySelector('.player-status') : null;
     },
-    buttonStyle: 'position:absolute;right:0;top:0;width:2em;height:100%;cursor:pointer;background-color:#262626',
+    buttonStyle: /** CSS */ (`
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      width: 2em;
+      height: 100%;
+      background-color: #262626;
+      cursor: pointer;
+    `),
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
@@ -460,7 +500,16 @@ const resources = {
       return document.querySelector('.footer-block:last-child');
     },
     buttonScale: 1.2,
-    buttonStyle: 'border:0;margin-right:10px;padding:0;background-color:transparent;margin-bottom:-10px;display:block;width:25px;height:18px',
+    buttonStyle: /** CSS */ (`
+      display: block;
+      width: 25px;
+      height: 18px;
+      margin-right: 10px;
+      margin-bottom: -10px;
+      padding: 0px;
+      border: 0px;
+      background-color: transparent;
+    `),
     videoElement: function() {
       return document.getElementById('LgyVideoPlayer');
     },
@@ -476,7 +525,10 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
-    buttonStyle: 'left:5px;cursor:pointer',
+    buttonStyle: /** CSS */ (`
+      left: 5px;
+      cursor: pointer;
+    `),
     videoElement: function() {
       return document.getElementById('olvideo_html5_api');
     },
@@ -486,7 +538,7 @@ const resources = {
     buttonDidAppear: function() {
       bypassBackgroundTimerThrottling();
     },
-    buttonHoverStyle: 'opacity:1!important',
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
@@ -495,7 +547,15 @@ const resources = {
       return /** @type {?Element} */ (e && e.lastChild);
     },
     buttonScale: 0.6,
-    buttonStyle: 'border:0;background:transparent;opacity:0.7;position:relative;top:-3px;padding:10px;text-shadow:0 0 4px rgba(0,0,0,.45)',
+    buttonStyle: /** CSS */ (`
+      position: relative;
+      top: -3px;
+      padding: 10px;
+      border: 0px;
+      background: transparent;
+      opacity: 0.7;
+      text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.45);
+    `),
     captionElement: function() {
       return document.querySelector('.libjass-subs');
     },
@@ -514,7 +574,11 @@ const resources = {
       const e = document.getElementById('container');
       return e && e.querySelector('.jw-controlbar-right-group');
     },
-    buttonStyle: 'width:38px;top:-2px;left:10px',
+    buttonStyle: /** CSS */ (`
+      top: -2px;
+      left: 10px;
+      width: 38px;
+    `),
     videoElement: function() {
       const e = document.getElementById('container');
       return e && e.querySelector('video.jw-video');
@@ -542,7 +606,9 @@ const resources = {
         if (video) video.webkitSetPresentationMode('inline');
       });
     },
-    buttonHoverStyle: 'filter:brightness(50%)sepia(1)hue-rotate(219deg)saturate(117%)brightness(112%)',
+    buttonHoverStyle: /** CSS */ (`
+      filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);
+    `),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.querySelector('.player-button--fullscreen');
     },
@@ -569,7 +635,7 @@ const resources = {
       return document.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.7,
-    buttonStyle: 'order:7',
+    buttonStyle: /** CSS */ (`order: 7`),
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.vjs-text-track-display');
@@ -589,7 +655,10 @@ const resources = {
       return e && e.querySelector('.right-controls');
     },
     buttonScale: 0.7,
-    buttonStyle: 'border:0;background:transparent',
+    buttonStyle: /** CSS */ (`
+      border: 0px;
+      background: transparent;
+    `),
     videoElement: function() {
       return document.getElementById('html5-player');
     },
@@ -605,7 +674,7 @@ const resources = {
       return document.querySelector('.vp__controls__icons');
     },
     buttonScale: 0.6,
-    buttonStyle: 'top:-11px',
+    buttonStyle: /** CSS */ (`top: -11px`),
     videoElement: function() {
       return document.querySelector('video.jw-video');
     },
@@ -620,7 +689,13 @@ const resources = {
       return e && e.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.7,
-    buttonStyle: 'position:relative;left:9px;top:-2px;padding:0;margin:0',
+    buttonStyle: /** CSS */ (`
+      position: relative;
+      top: -2px;
+      left: 9px;
+      padding: 0px;
+      margin: 0px;
+    `),
     videoElement: function() {
       return document.getElementById('video_player_html5_api');
     },
@@ -636,7 +711,7 @@ const resources = {
       });
       bypassBackgroundTimerThrottling();
     },
-    buttonHoverStyle: 'opacity:1!important',
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
@@ -644,7 +719,13 @@ const resources = {
       return document.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
-    buttonStyle: 'position:absolute;right:calc(50px + 2.5rem);width:50px;cursor:pointer;opacity:0.6',
+    buttonStyle: /** CSS */ (`
+      position: absolute;
+      right: calc(50px + 2.5rem);
+      width: 50px;
+      cursor: pointer;
+      opacity: 0.6;
+    `),
     captionElement: function() {
       return document.querySelector('.libjass-subs');
     },

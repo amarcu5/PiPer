@@ -37,6 +37,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Google](https://github.com/google/material-design-icons) for the Picture in Picture icon
 
 ## Build tools
+* [csso](https://github.com/css/csso) (3.1.1) for compressing CSS
 * [svgo](https://github.com/svg/svgo) (0.7.2) for compressing SVG images
 * [xarjs](https://github.com/robertknight/xar-js) (0.2.0) for packaging Safari extension
 * [google-closure-compiler-js](https://github.com/google/closure-compiler-js) (20170806.0.0) for compiling JavaScript
