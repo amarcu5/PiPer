@@ -32,6 +32,7 @@ let /** string */ lastUnprocessedCaption = '';
 
 /**
  * Logs message to console
+ *
  * @param {string} message - Message to log
  */
 const log = function(message) {
@@ -40,27 +41,28 @@ const log = function(message) {
 
 /**
  * Injects Picture in Picture button into webpage
+ *
  * @param {Element} parent - Element button will be inserted into
  */
 const addButton = function(parent) {
-  
+
   // Create button if needed
   if (!button) {
     button = document.createElement(currentResource.buttonElementType || 'button');
-    
+
     // Set button properties
     button.id = BUTTON_ID;
     button.title = 'Open Picture in Picture mode';
     if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
     if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
-  
+
     // Add scaled SVG image to button
     const image = document.createElement('img');
     image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
     image.style.width = image.style.height = '100%';
     if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
     button.appendChild(image);
-  
+
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
     if (currentResource.buttonHoverStyle) {
       const style = document.createElement('style');
@@ -68,21 +70,21 @@ const addButton = function(parent) {
       style.appendChild(document.createTextNode(css));
       button.appendChild(style);
     }
-  
+
     // Toggle Picture in Picture mode when button is clicked
     button.addEventListener('click', function(event) {
       event.preventDefault();
-  
+
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
       if (!video) {
         log('Unable to find video');
         return;
       }
-  
+
       const mode = video.webkitPresentationMode == 'picture-in-picture' ? 'inline' : 'picture-in-picture';
       video.webkitSetPresentationMode(mode);
     });
-    
+
     log('Picture in Picture button created');
   }
 
@@ -93,10 +95,11 @@ const addButton = function(parent) {
 
 /**
  * Prepares video for captions
+ *
  * @param {HTMLVideoElement} video - an unprepared video element
  */
 const prepareCaptions = function(video) {
-  
+
   // Find existing caption track (if video element id changes function can be called twice)
   track = null;
   const allTracks = video.textTracks;
@@ -108,40 +111,41 @@ const prepareCaptions = function(video) {
     }
   }
   if (track) return;
-  
+
   // Otherwise create new caption track
   log('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
-  
+
   // Toggle captions when Picture in Picture mode changes
   const toggleCaptions = function() {
     showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
     lastUnprocessedCaption = '';
     processCaptions();
     log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
-  }
+  };
   video.addEventListener('webkitbeginfullscreen', toggleCaptions);
   video.addEventListener('webkitendfullscreen', toggleCaptions);
 };
 
 /**
  * Removes visible Picture in Picture mode captions
+ *
  * @param {HTMLVideoElement} video - video element showing captions
  * @param {boolean} workaround - apply Safari bug workaround
  */
 const removeCaptions = function(video, workaround = true) {
   track.mode = 'showing';
   while (track.activeCues.length) track.removeCue(track.activeCues[0]);
-  
+
   // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
   if (workaround) track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
-}
+};
 
 /**
  * Updates visible captions
  */
 const processCaptions = function() {
-  
+
   // Get handles to caption and video elements
   const captionElement = currentResource.captionElement();
   const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
@@ -152,21 +156,21 @@ const processCaptions = function() {
     if (captionElement) captionElement.style.visibility = '';
     return;
   }
-  
+
   // Otherwise ensure native captions remain hidden
   captionElement.style.visibility = 'hidden';
-  
+
   // Check if a new native caption needs to be processed
   const unprocessedCaption = captionElement.textContent;
   if (unprocessedCaption == lastUnprocessedCaption) return;
   lastUnprocessedCaption = unprocessedCaption;
-    
+
   // Remove old captions and apply Safari bug fix if caption has no content as otherwise causes flicker
   removeCaptions(video, !unprocessedCaption);
-    
+
   // Performance optimisation - early exit if caption has no content
   if (!unprocessedCaption) return;
-  
+
   // Show correctly spaced and formatted Picture in Picture mode caption
   let caption = '';
   const walk = document.createTreeWalker(captionElement, NodeFilter.SHOW_TEXT, null, false);
@@ -213,18 +217,18 @@ const mutationObserver = function() {
  */
 const initialiseCaches = function() {
   const cacheElementIds = {};
-  
+
   // Return element by native id or assign id for faster lookups
   const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
     const uniqueLabel = 'PiPer_' + elementFunction.name;
     cacheElementIds[uniqueLabel] = uniqueLabel;
-    
+
     return function() {
       let element = document.getElementById(cacheElementIds[uniqueLabel]);
-      
+
       if (!element) {
         element = elementFunction();
-        
+
         if (element) {
           if (!element.id) element.id = uniqueLabel;
           cacheElementIds[uniqueLabel] = element.id;
@@ -234,7 +238,7 @@ const initialiseCaches = function() {
       return element;
     };
   };
-  
+
   // Performance optimisation - prepare captions when new video found
   let videoElementChanged = null;
   if (currentResource.captionElement) {
@@ -246,7 +250,7 @@ const initialiseCaches = function() {
 };
 
 /**
- * Applies fix to bypass background DOM timer throttling 
+ * Applies fix to bypass background DOM timer throttling
  */
 const bypassBackgroundTimerThrottling = function() {
   const request = new XMLHttpRequest();
@@ -297,7 +301,7 @@ const resources = {
       return document.getElementById('vjs_video_3_html5_api');
     },
   },
-  
+
   'curiositystream': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
@@ -326,7 +330,7 @@ const resources = {
       return document.getElementById('main-player_html5_api');
     },
   },
-  
+
   'eurosportplayer': {
     buttonElementType: 'div',
     buttonHoverStyle: 'opacity:1!important',
@@ -361,7 +365,7 @@ const resources = {
       return document.getElementById('content-video-player');
     },
   },
-  
+
   'littlethings': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
@@ -376,7 +380,7 @@ const resources = {
       return document.querySelector('video.jw-video');
     },
   },
-  
+
   'mashable': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
@@ -409,7 +413,7 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
-  
+
   'mixer': {
     buttonClassName: 'control',
     buttonElementType: 'div',
@@ -446,7 +450,7 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
-  
+
   'ocs': {
     buttonClassName: 'footer-elt fltr',
     buttonInsertBefore: function(/** Element */ parent) {
@@ -477,7 +481,7 @@ const resources = {
       return document.getElementById('olvideo_html5_api');
     },
   },
-  
+
   'plex': {
     buttonDidAppear: function() {
       bypassBackgroundTimerThrottling();
@@ -499,7 +503,7 @@ const resources = {
       return document.querySelector('video[class^="VideoContainer-videoElement"]');
     },
   },
-  
+
   'theonion': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
@@ -552,7 +556,7 @@ const resources = {
       return e && e.querySelector('video');
     },
   },
-  
+
   'udemy': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
@@ -590,7 +594,7 @@ const resources = {
       return document.getElementById('html5-player');
     },
   },
-  
+
   'vice': {
     buttonClassName: 'vp__controls__icon__popup__container',
     buttonElementType: 'div',
@@ -642,8 +646,8 @@ const resources = {
     buttonScale: 0.6,
     buttonStyle: 'position:absolute;right:calc(50px + 2.5rem);width:50px;cursor:pointer;opacity:0.6',
     captionElement: function() {
-      return document.querySelector('.libjass-subs');      
-    }, 
+      return document.querySelector('.libjass-subs');
+    },
     videoElement: function() {
       return document.getElementById('player_html5_api');
     },
@@ -665,7 +669,7 @@ const resources = {
         neighbourButton.title = neighbourTitle;
       });
       bypassBackgroundTimerThrottling();
-      
+
       // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
       window.addEventListener('yt-navigate-start', function() {
@@ -684,7 +688,7 @@ const resources = {
     },
     buttonScale: 0.68,
     captionElement: function() {
-      return document.querySelector('.caption-window');      
+      return document.querySelector('.caption-window');
     },
     videoElement: function() {
       return document.querySelector('video.html5-main-video');
@@ -705,7 +709,7 @@ if (domainName in resources) {
   currentResource = resources[domainName];
 
   initialiseCaches();
-  
+
   const observer = new MutationObserver(mutationObserver);
 
   observer.observe(document, {
