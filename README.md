@@ -39,5 +39,5 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 ## Build tools
 * [svgo](https://github.com/svg/svgo) (0.7.2) for compressing SVG images
 * [xarjs](https://github.com/robertknight/xar-js) (0.2.0) for packaging Safari extension
-* [ccjs](https://github.com/google/closure-compiler-js) (1.6.1) for compiling JavaScript
+* [google-closure-compiler-js](https://github.com/google/closure-compiler-js) (20170806.0.0) for compiling JavaScript
 * [plistbuddy](https://github.com/amarcu5/PiPer/tree/master/build-tools/) for automated build numbering - reimplementation of utility from [Apple's Command Line Tools](https://developer.apple.com/download/)

@@ -5,7 +5,7 @@
 EXTENSION_NAME="PiPer"
 
 # Build tool paths; fallback to local build tools
-CCJS_PATH=$(type "ccjs" >/dev/null 2>&1 && echo "ccjs" || echo "./build-tools/ccjs")
+CCJS_PATH=$(type "google-closure-compiler-js" >/dev/null 2>&1 && echo "google-closure-compiler-js" || echo "./build-tools/google-closure-compiler-js")
 XARJS_PATH=$(type "xarjs" >/dev/null 2>&1 && echo "xarjs" || echo "./build-tools/xarjs")
 SVGO_PATH=$(type "svgo" >/dev/null 2>&1 && echo "svgo" || echo "./build-tools/svgo")
 PLISTBUDDY_PATH=$(type "/usr/libexec/PlistBuddy" >/dev/null 2>&1 && echo "/usr/libexec/PlistBuddy" || echo "./build-tools/plistbuddy")
