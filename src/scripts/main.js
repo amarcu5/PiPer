@@ -2,20 +2,20 @@
 
 /**
  * @typedef {{
- *    buttonClassName: (string|undefined),
- *    buttonDidAppear: (function(): undefined|undefined),
- *    buttonElementType: (string|undefined),
- *    buttonHoverStyle: (string|undefined),
- *    buttonImage: (string|undefined),
- *    buttonInsertBefore: (function(Element): ?Node|undefined),
- *    buttonParent: function(): ?Element,
- *    buttonScale: (number|undefined),
- *    buttonStyle: (string|undefined),
- *    captionElement: (function(): ?Element|undefined),
- *    videoElement: function(): ?Element,
+ *   buttonClassName: (string|undefined),
+ *   buttonDidAppear: (function():undefined|undefined),
+ *   buttonElementType: (string|undefined),
+ *   buttonHoverStyle: (string|undefined),
+ *   buttonImage: (string|undefined),
+ *   buttonInsertBefore: (function(Element):?Node|undefined),
+ *   buttonParent: function():?Element,
+ *   buttonScale: (number|undefined),
+ *   buttonStyle: (string|undefined),
+ *   captionElement: (function():?Element|undefined),
+ *   videoElement: function():?Element,
  * }}
  */
-let PIPResource;
+let PiperResource;
 
 
 /** @define {boolean} - Flag used by closure compiler to remove logging */
@@ -25,7 +25,7 @@ const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
 
 let /** ?Element */ button = null;
-let /** ?PIPResource */ currentResource = null;
+let /** ?PiperResource */ currentResource = null;
 let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
 let /** string */ lastUnprocessedCaption = '';
@@ -263,7 +263,7 @@ const bypassBackgroundTimerThrottling = function() {
   request.send();
 };
 
-/** @type {!IObject<string, PIPResource>} */
+/** @type {!IObject<string, PiperResource>} */
 const resources = {
 
   'amazon': {
