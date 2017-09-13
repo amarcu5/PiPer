@@ -363,6 +363,24 @@ const resources = {
     },
   },
 
+  'giantbomb': {
+    buttonElementType: 'div',
+    buttonParent: function() {
+      return document.querySelector('.av-controls--right');
+    },
+    buttonScale: 0.7,
+    buttonStyle: /** CSS */ (`
+      margin-left: 16px;
+      height: 100%;
+      opacity: 1.0;
+      cursor: pointer;
+    `),
+    videoElement: function() {
+      var video = document.getElementsByTagName('video')[0];
+      return video;
+    }
+  },
+
   'hulu': {
     buttonClassName: 'simple-button',
     buttonDidAppear: function() {
