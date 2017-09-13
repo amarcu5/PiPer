@@ -365,6 +365,9 @@ const resources = {
 
   'giantbomb': {
     buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('.js-vid-pin-wrap').nextSibling;
+    },
     buttonParent: function() {
       return document.querySelector('.av-controls--right');
     },
@@ -376,8 +379,7 @@ const resources = {
       cursor: pointer;
     `),
     videoElement: function() {
-      var video = document.getElementsByTagName('video')[0];
-      return video;
+      return document.querySelector('video[id^="video_js-vid-player"]');
     }
   },
 

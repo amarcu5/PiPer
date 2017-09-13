@@ -14,6 +14,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [CollegeHumor](http://www.collegehumor.com)
 * [CuriosityStream](http://www.curiositystream.com)
 * [Eurosport player](http://www.eurosportplayer.com)
+* [Giant Bomb](http://www.giantbomb.com)
 * [Hulu](http://www.hulu.com)
 * [LittleThings](http://www.littlethings.com)
 * [Mashable](http://www.mashable.com)
