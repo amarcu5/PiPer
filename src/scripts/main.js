@@ -12,6 +12,7 @@
  *   buttonScale: (number|undefined),
  *   buttonStyle: (string|undefined),
  *   captionElement: (function():?Element|undefined),
+ *   pageLoaded: (function():undefined|undefined),
  *   videoElement: function():?Element,
  * }}
  */
@@ -263,6 +264,69 @@ const bypassBackgroundTimerThrottling = function() {
   request.send();
 };
 
+/**
+ * Shows alert
+ *
+ * @param {string} message - a message to display
+ * @param {function()} callback - a function called after alert dismissed
+ */
+const showAlert = function(message, callback) {
+  const alert = document.createElement('div');
+  alert.style.cssText = /** CSS */ (`
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 80px);
+    max-width: 600px;
+    border-radius: 5px;
+    background-color: #E66;
+    padding: 10px;
+    z-index: 1;
+    font-family: -apple-system;
+    color: white;
+  `);
+
+  const image = document.createElement('img');
+  image.src = safari.extension.baseURI + 'images/default.svg';
+  image.style.cssText = /** CSS */ (`
+    float: left;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+  `);
+  alert.appendChild(image);
+
+  const close = document.createElement('div');
+  close.innerHTML = '×';
+  close.style.cssText = /** CSS */ (`
+    float: right;
+    width: 25px;
+    margin: 0px 5px;
+    font-size: 30px;
+    text-align: center;
+    opacity: 0.6;
+    cursor: pointer;
+  `);
+  alert.appendChild(close);
+
+  const content = document.createElement('div');
+  content.innerHTML = '<b style="font-size:18px">PiPer</b></br>' + message;
+  content.style.cssText = /** CSS */ (`
+    font-size: 16px;
+    margin: 0px 45px;
+  `);
+  alert.appendChild(content);
+
+  close.addEventListener('click', function() {
+    document.body.removeChild(alert);
+    callback();
+  });
+
+  log('Showing alert "' + message + '"');
+  document.body.appendChild(alert);
+};
+
 /** @type {!IObject<string, PiperResource>} */
 const resources = {
 
@@ -507,6 +571,29 @@ const resources = {
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
+    },
+    pageLoaded: function() {
+      const path = '/watch';
+      if (location.pathname.substr(0, path.length) === path) {
+        setTimeout(function() {
+          if (button) return;
+          if (window.localStorage['netflixTestAlertShown']) return;
+          const request = new XMLHttpRequest();
+          const testUrl = 'https://www.netflix.com/DoNotTest';
+          request.open('GET', testUrl);
+          request.onload = function() {
+            const parser = new DOMParser();
+            const page = parser.parseFromString(request.responseText, 'text/html');
+            const value = page.querySelector('.uiToggleSwitch').textContent;
+            if (value.trim().toUpperCase() === 'ON') {
+              showAlert('Picture in Picture mode isn\'t supported when previewing new Netflix designs. Switch back to the old design <a href="' + testUrl + '" style="text-decoration:underline">here</a>', function() {
+                window.localStorage['netflixTestAlertShown'] = true;
+              });
+            }
+          };
+          request.send();
+        }, 5000);
+      }
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
@@ -811,6 +898,8 @@ const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\
 if (domainName in resources) {
   log('Matched site ' + domainName + ' (' + location + ')');
   currentResource = resources[domainName];
+
+  if (currentResource.pageLoaded) currentResource.pageLoaded();
 
   initialiseCaches();
 
