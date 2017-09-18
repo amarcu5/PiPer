@@ -24,6 +24,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
 * [Plex](http://www.plex.tv)
+* [Streamable](http://streamable.com)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
 * [Udemy](http://www.udemy.com)
