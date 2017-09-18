@@ -319,8 +319,10 @@ const resources = {
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
       const videoContainer = video.parentElement;
       video.addEventListener('webkitbeginfullscreen', function() {
-        videoContainer.style.setProperty('height', Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw', 'important');
-        videoContainer.style.setProperty('max-height', video.videoHeight + 'px');
+        const height = Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw';
+        const maxHeight = video.videoHeight + 'px';
+        videoContainer.style.setProperty('height', height, 'important');
+        videoContainer.style.setProperty('max-height', maxHeight);
       });
       video.addEventListener('webkitendfullscreen', function() {
         videoContainer.style.removeProperty('height');
@@ -386,8 +388,9 @@ const resources = {
   'hulu': {
     buttonClassName: 'simple-button',
     buttonDidAppear: function() {
-      currentResource.buttonParent().querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
-      currentResource.buttonParent().querySelector('.progress-time-container').style.marginRight = '45px';
+      const buttonParent = currentResource.buttonParent();
+      buttonParent.querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
+      buttonParent.querySelector('.progress-time-container').style.marginRight = '45px';
     },
     buttonElementType: 'div',
     buttonHoverStyle: /** CSS */ (`
