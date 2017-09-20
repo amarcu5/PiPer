@@ -802,13 +802,17 @@ const resources = {
 
       // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
-      window.addEventListener('yt-navigate-start', function() {
+      const navigateStart = function() {
         showingCaptions = false;
         removeCaptions(video);
-      });
-      window.addEventListener('yt-navigate-finish', function() {
+      };
+      const navigateFinish = function() {
         showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
-      });
+      };
+      window.addEventListener('spfrequest', navigateStart);
+      window.addEventListener('spfdone', navigateFinish);
+      window.addEventListener('yt-navigate-start', navigateStart);
+      window.addEventListener('yt-navigate-finish', navigateFinish);
     },
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
