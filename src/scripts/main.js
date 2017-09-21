@@ -8,11 +8,11 @@
  *   buttonHoverStyle: (string|undefined),
  *   buttonImage: (string|undefined),
  *   buttonInsertBefore: (function(Element):?Node|undefined),
- *   buttonParent: function():?Element,
+ *   buttonParent: function(boolean=):?Element,
  *   buttonScale: (number|undefined),
  *   buttonStyle: (string|undefined),
- *   captionElement: (function():?Element|undefined),
- *   videoElement: function():?Element,
+ *   captionElement: (function(boolean=):?Element|undefined),
+ *   videoElement: function(boolean=):?Element,
  * }}
  */
 let PiperResource;
@@ -75,7 +75,8 @@ const addButton = function(parent) {
     button.addEventListener('click', function(event) {
       event.preventDefault();
 
-      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts) 
+      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement(true));
       if (!video) {
         log('Unable to find video');
         return;
@@ -216,26 +217,38 @@ const mutationObserver = function() {
  * Initialises caching for button, video, and caption elements
  */
 const initialiseCaches = function() {
-  const cacheElementIds = {};
+  
+  // Return a unique id
+  let uniqueIdCounter = 0;
+  const uniqueId = function() {
+    return 'PiPer_' + uniqueIdCounter++;
+  };
 
-  // Return element by native id or assign id for faster lookups
+  // Wraps a function that returns an element to provide faster lookups by id
   const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
-    const uniqueLabel = 'PiPer_' + elementFunction.name;
-    cacheElementIds[uniqueLabel] = uniqueLabel;
+    let cachedElementId = null;
 
-    return function() {
-      let element = document.getElementById(cacheElementIds[uniqueLabel]);
-
-      if (!element) {
-        element = elementFunction();
-
-        if (element) {
-          if (!element.id) element.id = uniqueLabel;
-          cacheElementIds[uniqueLabel] = element.id;
-          if (elementChangedCallback) elementChangedCallback(element);
+    return function(bypassCache) {
+      
+      // Return element by id if possible
+      const cachedElement = cachedElementId ? 
+          document.getElementById(cachedElementId) : null;
+      if (cachedElement && !bypassCache) return cachedElement;
+        
+      // Call the underlying function to get the element
+      const uncachedElement = elementFunction();
+      if (uncachedElement) {
+        
+        // Save the native id otherwise assign a unique id
+        if (!uncachedElement.id) uncachedElement.id = uniqueId();
+        cachedElementId = uncachedElement.id;
+        
+        // Call the optional element changed callback if needed
+        if (cachedElement != uncachedElement && elementChangedCallback) {
+          elementChangedCallback(uncachedElement);
         }
       }
-      return element;
+      return uncachedElement;
     };
   };
 
