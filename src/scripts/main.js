@@ -499,31 +499,26 @@ const resources = {
   },
 
   'netflix': {
-    buttonDidAppear: function() {
-      currentResource.buttonParent().style.paddingRight = '50px';
+    buttonClassName: 'touchable PlayerControls--control-element nfp-button-control default-control-button',
+    buttonHoverStyle: /** CSS */ (`
+      filter: brightness(130%);
+      transform: scale(1.1);
+    `),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
     },
-    buttonElementType: 'span',
     buttonImage: 'netflix',
     buttonParent: function() {
-      const e = document.getElementById('playerContainer');
-      return e && e.querySelector('.player-status');
+      return document.querySelector('.PlayerControls--button-control-row'); 
     },
-    buttonStyle: /** CSS */ (`
-      position: absolute;
-      right: 0px;
-      top: 0px;
-      width: 2em;
-      height: 100%;
-      background-color: #262626;
-      cursor: pointer;
-    `),
+    buttonScale: 0.6,
+    buttonStyle: /** CSS */ (`transition: all 0.1s linear`),
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
-      const e = document.querySelector('.player-video-wrapper');
-      return e && e.querySelector('video');
+      return document.querySelector('.video-container video');
     },
   },
 
