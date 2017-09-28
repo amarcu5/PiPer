@@ -484,10 +484,10 @@ const resources = {
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild.previousSibling;
     },
-    buttonScale: 0.65,
     buttonParent: function() {
       return document.querySelector('.control-container .toolbar');
     },
+    buttonScale: 0.65,
     buttonStyle: /** CSS */ (`
       position: relative;
       top: 2px;
