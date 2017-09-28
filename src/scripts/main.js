@@ -481,6 +481,7 @@ const resources = {
   'mixer': {
     buttonClassName: 'control',
     buttonElementType: 'div',
+    buttonHoverStyle: /** CSS */ (`background: rgba(255, 255, 255, 0.08)`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild.previousSibling;
     },
@@ -491,6 +492,7 @@ const resources = {
     buttonStyle: /** CSS */ (`
       position: relative;
       top: 2px;
+      border-radius: 50%;
       cursor: pointer;
     `),
     videoElement: function() {
