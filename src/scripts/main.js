@@ -573,11 +573,13 @@ const resources = {
       return e && e.parentElement.querySelector('.player-timedtext');
     },
     pageLoaded: function() {
-      const path = '/watch';
-      if (location.pathname.substr(0, path.length) === path) {
-        setTimeout(function() {
-          if (button) return;
-          if (window.localStorage['netflixTestAlertShown']) return;
+      const interval = setInterval(function() {
+        const path = '/watch';
+        if (location.pathname.substr(0, path.length) === path) {
+          if (button || window.localStorage['netflixTestAlertShown']) {
+            clearInterval(interval);
+            return;
+          }
           const request = new XMLHttpRequest();
           const testUrl = 'https://www.netflix.com/DoNotTest';
           request.open('GET', testUrl);
@@ -586,14 +588,17 @@ const resources = {
             const page = parser.parseFromString(request.responseText, 'text/html');
             const value = page.querySelector('.uiToggleSwitch').textContent;
             if (value.trim().toUpperCase() === 'ON') {
-              showAlert('Picture in Picture mode isn\'t supported when previewing new Netflix designs. Switch back to the old design <a href="' + testUrl + '" style="text-decoration:underline">here</a>', function() {
+              const message = 'Picture in Picture mode isn\'t supported when ' +
+                  'previewing new Netflix designs. Switch back to the old design ' + 
+                  '<a href="' + testUrl + '" style="text-decoration:underline">here</a>';
+              showAlert(message, function() {
                 window.localStorage['netflixTestAlertShown'] = true;
               });
             }
           };
           request.send();
-        }, 5000);
-      }
+        }
+      }, 10000);
     },
     videoElement: function() {
       const e = document.querySelector('.player-video-wrapper');
