@@ -52,6 +52,10 @@
 				<string>*.collegehumor.com</string>
 				<string>curiositystream.com</string>
 				<string>*.curiositystream.com</string>
+				<string>eurosportplayer.com</string>
+				<string>*.eurosportplayer.com</string>
+				<string>giantbomb.com</string>
+				<string>*.giantbomb.com</string>
 				<string>hulu.com</string>
 				<string>*.hulu.com</string>
 				<string>littlethings.com</string>
@@ -62,16 +66,18 @@
 				<string>*.metacafe.com</string>
 				<string>mixer.com</string>
 				<string>*.mixer.com</string>
-				<string>ncaa.com</string>
-				<string>*.ncaa.com</string>
 				<string>netflix.com</string>
 				<string>*.netflix.com</string>
+				<string>ocs.fr</string>
+				<string>*.ocs.fr</string>
 				<string>openload.co</string>
 				<string>*.openload.co</string>
 				<string>plex.tv</string>
 				<string>*.plex.tv</string>
 				<string>primevideo.com</string>
 				<string>*.primevideo.com</string>
+				<string>streamable.com</string>
+				<string>*.streamable.com</string>
 				<string>theonion.com</string>
 				<string>*.theonion.com</string>
 				<string>twitch.tv</string>
