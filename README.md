@@ -3,10 +3,16 @@ Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Vid
 
 <img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
+## Features
+* Adds a dedicated Picture in Picture button to the video player of [supported sites](#supported-sites)
+* Button integrates seamlessly with the player including hover effects and tooltips
+* Supports closed captions in Picture and Picture mode
+* Free and open source
+
 ## Installation
 Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
 
-<sub>...or live life on the edge with the latest [developer build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
+<sub>...or live life on the edge with the latest [development build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
