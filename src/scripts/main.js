@@ -669,7 +669,7 @@ const resources = {
       filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);
     `),
     buttonInsertBefore: function(/** Element */ parent) {
-      return parent.querySelector('.player-button--fullscreen');
+      return parent.querySelector('.qa-fullscreen-button');
     },
     buttonParent: function() {
       const e = document.getElementById('video-playback') || document.getElementById('player');
