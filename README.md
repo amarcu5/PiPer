@@ -29,6 +29,8 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
 * [Plex](http://www.plex.tv)
+* [Seznam Zprávy](https://www.seznam.cz/zpravy)
+* [Stream.cz](https://www.stream.cz)
 * [Streamable](http://streamable.com)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)

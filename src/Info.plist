@@ -76,6 +76,10 @@
 				<string>*.plex.tv</string>
 				<string>primevideo.com</string>
 				<string>*.primevideo.com</string>
+				<string>seznam.cz</string>
+				<string>*.seznam.cz</string>
+				<string>stream.cz</string>
+				<string>*.stream.cz</string>
 				<string>streamable.com</string>
 				<string>*.streamable.com</string>
 				<string>theonion.com</string>
