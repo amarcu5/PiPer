@@ -76,6 +76,8 @@
 				<string>*.openload.co</string>
 				<string>oload.stream</string>
 				<string>*.oload.stream</string>
+				<string>oload.tv</string>
+				<string>*.oload.tv</string>
 				<string>periscope.tv</string>
 				<string>*.periscope.tv</string>
 				<string>plex.tv</string>

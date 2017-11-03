@@ -591,8 +591,7 @@ const resources = {
       return parent.lastChild;
     },
     buttonParent: function() {
-      const e = document.getElementById('olvideo');
-      return e && e.querySelector('.vjs-control-bar');
+      return document.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
     buttonStyle: /** CSS */ (`
