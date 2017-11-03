@@ -696,13 +696,14 @@ const resources = {
       return parent.querySelector('.qa-fullscreen-button');
     },
     buttonParent: function() {
-      const e = document.getElementById('video-playback') || document.getElementById('player');
-      return e && e.querySelector('.player-buttons-right');
+      return document.querySelector('.player-buttons-right');
     },
     buttonScale: 0.8,
+    captionElement: function() {
+      return document.querySelector('.player-captions-container');
+    },
     videoElement: function() {
-      const e = document.getElementById('video-playback') || document.getElementById('player');
-      return e && e.querySelector('video');
+      return document.querySelector('.player-video video');
     },
   },
 
