@@ -597,6 +597,15 @@ const resources = {
     },
   },
 
+  'seznam' : {
+    buttonParent: function() {
+      return document.querySelector('.sznp-ui-ctrl-panel-layout-wrapper');
+    },
+    videoElement: function() {
+      return document.querySelector('.sznp-ui-tech-video-wrapper video');
+    },
+  },
+ 
   'streamable': {
     buttonDidAppear: function() {
       const progressBar = document.getElementById('player-progress');
@@ -842,6 +851,7 @@ const resources = {
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
 resources['primevideo'] = resources['amazon'];
+resources['stream'] = resources['seznam'];
 resources['youtu'] = resources['youtube'];
 resources['oload'] = resources['openload'];
 
