@@ -40,6 +40,22 @@ const log = function(message) {
 };
 
 /**
+ * Returns localized button title
+ *
+ * @return {string}
+ */
+const localizedButtonTitle = function() {
+  const language = navigator.language.substring(0, 2);
+  switch (language) {
+    case 'de':
+      return 'Bild-in-Bild starten';
+    case 'en':
+    default:
+      return 'Open Picture in Picture mode';
+  }
+};
+
+/**
  * Injects Picture in Picture button into webpage
  *
  * @param {Element} parent - Element button will be inserted into
@@ -52,7 +68,7 @@ const addButton = function(parent) {
 
     // Set button properties
     button.id = BUTTON_ID;
-    button.title = 'Open Picture in Picture mode';
+    button.title = localizedButtonTitle();
     if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
     if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
 
