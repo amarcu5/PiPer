@@ -905,11 +905,11 @@ const resources = {
 };
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
-resources['primevideo'] = resources['amazon'];
+resources['oload'] = resources['openload'];
 resources['periscope'] = resources['pscp'];
+resources['primevideo'] = resources['amazon'];
 resources['stream'] = resources['seznam'];
 resources['youtu'] = resources['youtube'];
-resources['oload'] = resources['openload'];
 
 
 // Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
