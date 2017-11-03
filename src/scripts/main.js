@@ -535,7 +535,7 @@ const resources = {
       return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
-      return document.querySelector('.video-container video');
+      return document.querySelector('.VideoContainer video');
     },
   },
 
