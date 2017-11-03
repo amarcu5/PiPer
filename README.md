@@ -28,6 +28,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Netflix](http://www.netflix.com)
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
+* [Periscope](http://www.periscope.tv)
 * [Plex](http://www.plex.tv)
 * [Seznam Zprávy](http://www.seznam.cz/zpravy)
 * [Stream.cz](http://www.stream.cz)

@@ -76,10 +76,14 @@
 				<string>*.openload.co</string>
 				<string>oload.stream</string>
 				<string>*.oload.stream</string>
+				<string>periscope.tv</string>
+				<string>*.periscope.tv</string>
 				<string>plex.tv</string>
 				<string>*.plex.tv</string>
 				<string>primevideo.com</string>
 				<string>*.primevideo.com</string>
+				<string>pscp.tv</string>
+				<string>*.pscp.tv</string>
 				<string>seznam.cz</string>
 				<string>*.seznam.cz</string>
 				<string>stream.cz</string>

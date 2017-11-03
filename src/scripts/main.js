@@ -612,6 +612,29 @@ const resources = {
     },
   },
 
+  'pscp': {
+    buttonClassName: 'Pill Pill--withIcon',
+    buttonElementType: 'span',
+    buttonHoverStyle: /** CSS */ (`
+      opacity: 0.8 !important;
+      filter: brightness(125%) !important;
+    `),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('.ShareBroadcast').nextSibling;
+    },
+    buttonParent: function() {
+      return document.querySelector('.VideoOverlayRedesign-BottomBar-Right');
+    },
+    buttonScale: 0.6,
+    buttonStyle: /** CSS */ (`
+      opacity: 0.5;
+      filter: brightness(200%);
+    `),
+    videoElement: function() {
+      return document.querySelector('.vjs-tech video[src]');
+    },
+  },
+
   'seznam' : {
     buttonParent: function() {
       return document.querySelector('.sznp-ui-ctrl-panel-layout-wrapper');
@@ -867,6 +890,7 @@ const resources = {
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
 resources['primevideo'] = resources['amazon'];
+resources['periscope'] = resources['pscp'];
 resources['stream'] = resources['seznam'];
 resources['youtu'] = resources['youtube'];
 resources['oload'] = resources['openload'];
