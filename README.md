@@ -38,6 +38,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Vevo](http://www.vevo.com)
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)
+* [Video Aktálně](http://video.aktualne.cz)
 * [VRV](http://www.vrv.co)
 * [YouTube](http://www.youtube.com)
 
