@@ -113,11 +113,11 @@ const addButton = function(parent) {
 /**
  * Prepares video for captions
  *
- * @param {HTMLVideoElement} video - an unprepared video element
+ * @param {HTMLVideoElement} video - video element that will display captions
  */
 const prepareCaptions = function(video) {
 
-  // Find existing caption track (if video element id changes function can be called twice)
+  // Find existing caption track
   track = null;
   const allTracks = video.textTracks;
   for (let trackId = allTracks.length; trackId--;) {
@@ -132,16 +132,27 @@ const prepareCaptions = function(video) {
   // Otherwise create new caption track
   log('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
+};
 
-  // Toggle captions when Picture in Picture mode changes
-  const toggleCaptions = function() {
-    showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
-    lastUnprocessedCaption = '';
-    processCaptions();
-    log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
-  };
-  video.addEventListener('webkitbeginfullscreen', toggleCaptions);
-  video.addEventListener('webkitendfullscreen', toggleCaptions);
+/**
+ * Toggles captions when video presentation mode changes
+ *
+ * @param {Event} event - a webkitpresentationmodechanged event
+ */
+const videoPresentationModeChanged = function(event) {
+  
+  // Ignore events from other video elements e.g. adverts
+  const video =  /** @type {HTMLVideoElement} */ (event.target);
+  const expectedVideo = currentResource.videoElement(true);
+  if (video != expectedVideo) return;
+  
+  // Toggle display of the captions and prepare video if needed
+  showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+  if (showingCaptions) prepareCaptions(video);
+  lastUnprocessedCaption = '';
+  processCaptions();
+  
+  log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
 };
 
 /**
@@ -241,7 +252,7 @@ const initialiseCaches = function() {
   };
 
   // Wraps a function that returns an element to provide faster lookups by id
-  const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
+  const cacheElementWrapper = function(elementFunction) {
     let cachedElementId = null;
 
     return function(bypassCache) {
@@ -258,23 +269,16 @@ const initialiseCaches = function() {
         // Save the native id otherwise assign a unique id
         if (!uncachedElement.id) uncachedElement.id = uniqueId();
         cachedElementId = uncachedElement.id;
-        
-        // Call the optional element changed callback if needed
-        if (cachedElement != uncachedElement && elementChangedCallback) {
-          elementChangedCallback(uncachedElement);
-        }
       }
       return uncachedElement;
     };
   };
 
   // Performance optimisation - prepare captions when new video found
-  let videoElementChanged = null;
   if (currentResource.captionElement) {
     currentResource.captionElement = cacheElementWrapper(currentResource.captionElement);
-    videoElementChanged = prepareCaptions;
   }
-  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement, videoElementChanged);
+  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement);
   currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
 };
 
@@ -933,13 +937,15 @@ if (domainName in resources) {
   currentResource = resources[domainName];
 
   initialiseCaches();
+  
+  document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
+    capture: true,
+  });
 
   const observer = new MutationObserver(mutationObserver);
-
   observer.observe(document, {
     childList: true,
     subtree: true,
   });
-
   mutationObserver();
 }
