@@ -38,6 +38,8 @@
 		<dict>
 			<key>Allowed Domains</key>
 			<array>
+				<string>aktualne.cz</string>
+				<string>*.aktualne.cz</string>
 				<string>amazon.co.uk</string>
 				<string>*.amazon.co.uk</string>
 				<string>amazon.com</string>
@@ -72,10 +74,22 @@
 				<string>*.ocs.fr</string>
 				<string>openload.co</string>
 				<string>*.openload.co</string>
+				<string>oload.stream</string>
+				<string>*.oload.stream</string>
+				<string>oload.tv</string>
+				<string>*.oload.tv</string>
+				<string>periscope.tv</string>
+				<string>*.periscope.tv</string>
 				<string>plex.tv</string>
 				<string>*.plex.tv</string>
 				<string>primevideo.com</string>
 				<string>*.primevideo.com</string>
+				<string>pscp.tv</string>
+				<string>*.pscp.tv</string>
+				<string>seznam.cz</string>
+				<string>*.seznam.cz</string>
+				<string>stream.cz</string>
+				<string>*.stream.cz</string>
 				<string>streamable.com</string>
 				<string>*.streamable.com</string>
 				<string>theonion.com</string>

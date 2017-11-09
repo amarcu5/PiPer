@@ -28,7 +28,10 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Netflix](http://www.netflix.com)
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
+* [Periscope](http://www.periscope.tv)
 * [Plex](http://www.plex.tv)
+* [Seznam Zprávy](http://www.seznam.cz/zpravy)
+* [Stream.cz](http://www.stream.cz)
 * [Streamable](http://streamable.com)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
@@ -36,6 +39,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Vevo](http://www.vevo.com)
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)
+* [Video Aktálně](http://video.aktualne.cz)
 * [VRV](http://www.vrv.co)
 * [YouTube](http://www.youtube.com)
 

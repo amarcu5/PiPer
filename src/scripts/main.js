@@ -40,6 +40,22 @@ const log = function(message) {
 };
 
 /**
+ * Returns localized button title
+ *
+ * @return {string}
+ */
+const localizedButtonTitle = function() {
+  const language = navigator.language.substring(0, 2);
+  switch (language) {
+    case 'de':
+      return 'Bild-in-Bild starten';
+    case 'en':
+    default:
+      return 'Open Picture in Picture mode';
+  }
+};
+
+/**
  * Injects Picture in Picture button into webpage
  *
  * @param {Element} parent - Element button will be inserted into
@@ -52,7 +68,7 @@ const addButton = function(parent) {
 
     // Set button properties
     button.id = BUTTON_ID;
-    button.title = 'Open Picture in Picture mode';
+    button.title = localizedButtonTitle();
     if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
     if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
 
@@ -97,11 +113,11 @@ const addButton = function(parent) {
 /**
  * Prepares video for captions
  *
- * @param {HTMLVideoElement} video - an unprepared video element
+ * @param {HTMLVideoElement} video - video element that will display captions
  */
 const prepareCaptions = function(video) {
 
-  // Find existing caption track (if video element id changes function can be called twice)
+  // Find existing caption track
   track = null;
   const allTracks = video.textTracks;
   for (let trackId = allTracks.length; trackId--;) {
@@ -116,16 +132,27 @@ const prepareCaptions = function(video) {
   // Otherwise create new caption track
   log('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
+};
 
-  // Toggle captions when Picture in Picture mode changes
-  const toggleCaptions = function() {
-    showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
-    lastUnprocessedCaption = '';
-    processCaptions();
-    log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
-  };
-  video.addEventListener('webkitbeginfullscreen', toggleCaptions);
-  video.addEventListener('webkitendfullscreen', toggleCaptions);
+/**
+ * Toggles captions when video presentation mode changes
+ *
+ * @param {Event} event - a webkitpresentationmodechanged event
+ */
+const videoPresentationModeChanged = function(event) {
+  
+  // Ignore events from other video elements e.g. adverts
+  const video =  /** @type {HTMLVideoElement} */ (event.target);
+  const expectedVideo = currentResource.videoElement(true);
+  if (video != expectedVideo) return;
+  
+  // Toggle display of the captions and prepare video if needed
+  showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+  if (showingCaptions) prepareCaptions(video);
+  lastUnprocessedCaption = '';
+  processCaptions();
+  
+  log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
 };
 
 /**
@@ -225,7 +252,7 @@ const initialiseCaches = function() {
   };
 
   // Wraps a function that returns an element to provide faster lookups by id
-  const cacheElementWrapper = function(/** (function(): ?Element|undefined) */ elementFunction, elementChangedCallback) {
+  const cacheElementWrapper = function(elementFunction) {
     let cachedElementId = null;
 
     return function(bypassCache) {
@@ -242,23 +269,16 @@ const initialiseCaches = function() {
         // Save the native id otherwise assign a unique id
         if (!uncachedElement.id) uncachedElement.id = uniqueId();
         cachedElementId = uncachedElement.id;
-        
-        // Call the optional element changed callback if needed
-        if (cachedElement != uncachedElement && elementChangedCallback) {
-          elementChangedCallback(uncachedElement);
-        }
       }
       return uncachedElement;
     };
   };
 
   // Performance optimisation - prepare captions when new video found
-  let videoElementChanged = null;
   if (currentResource.captionElement) {
     currentResource.captionElement = cacheElementWrapper(currentResource.captionElement);
-    videoElementChanged = prepareCaptions;
   }
-  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement, videoElementChanged);
+  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement);
   currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
 };
 
@@ -278,6 +298,27 @@ const bypassBackgroundTimerThrottling = function() {
 
 /** @type {!IObject<string, PiperResource>} */
 const resources = {
+
+  'aktualne': {
+    buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
+    buttonElementType: 'div',
+    buttonHoverStyle: /** CSS */ (`
+      filter: brightness(50%) sepia(1) hue-rotate(311deg) saturate(550%) brightness(49%) !important;
+    `),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      return document.querySelector('.jw-controlbar-right-group');
+    },
+    buttonStyle: /** CSS */ (`
+      width: 38px;
+      filter: brightness(80%);
+    `),
+    videoElement: function() {
+      return document.querySelector('video.jw-video');
+    },
+  },
 
   'amazon': {
     buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
@@ -481,6 +522,7 @@ const resources = {
   'mixer': {
     buttonClassName: 'control',
     buttonElementType: 'div',
+    buttonHoverStyle: /** CSS */ (`background: rgba(255, 255, 255, 0.08)`),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild.previousSibling;
     },
@@ -491,6 +533,7 @@ const resources = {
     buttonStyle: /** CSS */ (`
       position: relative;
       top: 2px;
+      border-radius: 50%;
       cursor: pointer;
     `),
     videoElement: function() {
@@ -518,7 +561,7 @@ const resources = {
       return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
-      return document.querySelector('.video-container video');
+      return document.querySelector('.VideoContainer video');
     },
   },
 
@@ -552,8 +595,7 @@ const resources = {
       return parent.lastChild;
     },
     buttonParent: function() {
-      const e = document.getElementById('olvideo');
-      return e && e.querySelector('.vjs-control-bar');
+      return document.querySelector('.vjs-control-bar');
     },
     buttonScale: 0.6,
     buttonStyle: /** CSS */ (`
@@ -595,6 +637,46 @@ const resources = {
     },
   },
 
+  'pscp': {
+    buttonClassName: 'Pill Pill--withIcon',
+    buttonElementType: 'span',
+    buttonHoverStyle: /** CSS */ (`
+      opacity: 0.8 !important;
+      filter: brightness(125%) !important;
+    `),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.querySelector('.ShareBroadcast').nextSibling;
+    },
+    buttonParent: function() {
+      return document.querySelector('.VideoOverlayRedesign-BottomBar-Right');
+    },
+    buttonScale: 0.6,
+    buttonStyle: /** CSS */ (`
+      opacity: 0.5;
+      filter: brightness(200%);
+    `),
+    videoElement: function() {
+      return document.querySelector('.vjs-tech video[src]');
+    },
+  },
+
+  'seznam' : {
+    buttonClassName: 'sznp-ui-widget-box',
+    buttonElementType: 'div',
+    buttonHoverStyle: /** CSS */ (`transform: scale(1.05)`),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      return document.querySelector('.sznp-ui-ctrl-panel-layout-wrapper');
+    },
+    buttonScale: 0.75,
+    buttonStyle: /** CSS */ (`cursor: pointer`),
+    videoElement: function() {
+      return document.querySelector('.sznp-ui-tech-video-wrapper video');
+    },
+  },
+ 
   'streamable': {
     buttonDidAppear: function() {
       const progressBar = document.getElementById('player-progress');
@@ -667,16 +749,17 @@ const resources = {
       filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);
     `),
     buttonInsertBefore: function(/** Element */ parent) {
-      return parent.querySelector('.player-button--fullscreen');
+      return parent.querySelector('.qa-fullscreen-button');
     },
     buttonParent: function() {
-      const e = document.getElementById('video-playback') || document.getElementById('player');
-      return e && e.querySelector('.player-buttons-right');
+      return document.querySelector('.player-buttons-right');
     },
     buttonScale: 0.8,
+    captionElement: function() {
+      return document.querySelector('.player-captions-container');
+    },
     videoElement: function() {
-      const e = document.getElementById('video-playback') || document.getElementById('player');
-      return e && e.querySelector('video');
+      return document.querySelector('.player-video video');
     },
   },
 
@@ -839,7 +922,10 @@ const resources = {
 };
 
 // Define domain name aliases and URL shorteners (e.g. youtu.be -> youtube.com)
+resources['oload'] = resources['openload'];
+resources['periscope'] = resources['pscp'];
 resources['primevideo'] = resources['amazon'];
+resources['stream'] = resources['seznam'];
 resources['youtu'] = resources['youtube'];
 
 
@@ -851,13 +937,15 @@ if (domainName in resources) {
   currentResource = resources[domainName];
 
   initialiseCaches();
+  
+  document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
+    capture: true,
+  });
 
   const observer = new MutationObserver(mutationObserver);
-
   observer.observe(document, {
     childList: true,
     subtree: true,
   });
-
   mutationObserver();
 }
