@@ -729,7 +729,7 @@ const resources = {
     buttonDidAppear: function() {
       const neighbourButton = document.querySelector('.qa-fullscreen-button');
       const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
-      const /** string */ title = button.title;
+      const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
       button.title = '';
       button.addEventListener('mouseover', function() {
@@ -877,7 +877,7 @@ const resources = {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
       const neighbourButton = button.previousSibling;
-      const /** string */ title = button.title;
+      const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourButton.title;
       button.title = '';
       button.addEventListener('mouseover', function() {
