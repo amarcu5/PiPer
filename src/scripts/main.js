@@ -727,7 +727,7 @@ const resources = {
   'twitch': {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.nextSibling;
+      const neighbourButton = document.querySelector('.qa-fullscreen-button');
       const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
       const /** string */ title = button.title;
       const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
@@ -744,17 +744,16 @@ const resources = {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
+      neighbourButton.style.order = 2;
     },
     buttonHoverStyle: /** CSS */ (`
       filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);
     `),
-    buttonInsertBefore: function(/** Element */ parent) {
-      return parent.querySelector('.qa-fullscreen-button');
-    },
     buttonParent: function() {
       return document.querySelector('.player-buttons-right');
     },
     buttonScale: 0.8,
+    buttonStyle: /** CSS */ (`order: 1`),
     captionElement: function() {
       return document.querySelector('.player-captions-container');
     },
