@@ -527,12 +527,15 @@ const resources = {
       return parent.lastChild.previousSibling;
     },
     buttonParent: function() {
-      return document.querySelector('.control-container .toolbar');
+      return document.querySelector('.control-container .toolbar .right');
+    },
+    buttonDidAppear: function () {
+      button.setAttribute('buibtn', '');
+      button.setAttribute('buitooltip', localizedButtonTitle());
+      button.setAttribute('buitooltipside', 'top');
     },
     buttonScale: 0.65,
     buttonStyle: /** CSS */ (`
-      position: relative;
-      top: 2px;
       border-radius: 50%;
       cursor: pointer;
     `),
