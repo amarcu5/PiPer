@@ -881,6 +881,7 @@ const resources = {
       parent.style.width = "210px";
       bypassBackgroundTimerThrottling();
     },
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonInsertBefore: function(/** Element */ parent) {
       return document.getElementsByTagName("player-fullscreen-button")[0];
     },
