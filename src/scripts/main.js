@@ -23,6 +23,7 @@ const COMPILED = false;
 
 const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
+const IMAGE_ID = 'PiPer_image';
 
 let /** ?Element */ button = null;
 let /** ?PiperResource */ currentResource = null;
@@ -75,8 +76,10 @@ const addButton = function(parent) {
     // Add scaled SVG image to button
     const image = document.createElement('img');
     image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
+    image.id = IMAGE_ID;
     image.style.width = image.style.height = '100%';
     if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
+    if (currentResource.imageStyle) image.style.cssText = currentResource.imageStyle;
     button.appendChild(image);
 
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
@@ -852,7 +855,7 @@ const resources = {
         bypassBackgroundTimerThrottling();
       },
       buttonParent: function() {
-          return document.getElementsByClassName("vjs-fullscreen-control")[0].parentNode;
+          return document.getElementsByClassName("vuplay-control-right")[0];
       },
       buttonStyle: /** CSS */ (`
         text-indent: 0! important;
@@ -861,6 +864,32 @@ const resources = {
         -webkit-order: 8;
         -ms-flex-order: 8;
         order: 9;
+      `),
+      videoElement: function() {
+          return document.querySelector('video[preload="metadata"]');
+      },
+  },
+
+  'vrt': {
+      buttonClassName: 'vuplay-control',
+      buttonInsertBefore: function(/** Element */ parent) {
+        return parent.lastChild;
+      },
+      buttonParent: function() {
+          return document.getElementsByClassName("vuplay-control-right")[0];
+      },
+      buttonScale: 1.2,
+      captionElement: function() {
+          return document.querySelector('.theoplayer-texttracks');
+      },
+      imageStyle: /** CSS */ (`
+        transform: scale(1.2);
+        height: 27px !important;
+        padding-top: 4px;
+        padding-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+        position: relative;
       `),
       videoElement: function() {
           return document.querySelector('video[preload="metadata"]');
