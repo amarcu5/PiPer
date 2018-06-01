@@ -859,7 +859,7 @@ const resources = {
         bypassBackgroundTimerThrottling();
       },
       buttonParent: function() {
-          return document.getElementsByClassName("vuplay-control-right")[0];
+          return document.getElementsByClassName("vjs-control-bar")[0];
       },
       buttonStyle: /** CSS */ (`
         text-indent: 0! important;
