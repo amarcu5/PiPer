@@ -104,6 +104,10 @@
 				<string>*.vice.com</string>
 				<string>vid.me</string>
 				<string>*.vid.me</string>
+				<string>vier.be</string>
+				<string>*.vier.be</string>
+				<string>vijf.be</string>
+				<string>*.vijf.be</string>
 				<string>vrv.co</string>
 				<string>*.vrv.co</string>
 				<string>yeloplay.be</string>
@@ -112,6 +116,8 @@
 				<string>*.youtu.be</string>
 				<string>youtube.com</string>
 				<string>*.youtube.com</string>
+				<string>zes.be</string>
+				<string>*.zes.be</string>
 			</array>
 			<key>Include Secure Pages</key>
 			<true/>

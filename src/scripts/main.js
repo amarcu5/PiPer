@@ -841,6 +841,32 @@ const resources = {
     },
   },
 
+  'viervijfzes': {
+      buttonClassName: 'vjs-control vjs-button',
+      buttonDidAppear: function() {
+        // move fullscreen button to the right so the pip button appears left of it
+        const fullScreenButton = document.getElementsByClassName("vjs-fullscreen-control")[0];
+        fullScreenButton.style.webkitBoxOrdinalGroup = 9;
+        fullScreenButton.style.webkitOrder = 9;
+        fullScreenButton.style.order = 10;
+        bypassBackgroundTimerThrottling();
+      },
+      buttonParent: function() {
+          return document.getElementsByClassName("vjs-fullscreen-control")[0].parentNode;
+      },
+      buttonStyle: /** CSS */ (`
+        text-indent: 0! important;
+        margin-left: 10px;
+        -webkit-box-ordinal-group: 8;
+        -webkit-order: 8;
+        -ms-flex-order: 8;
+        order: 9;
+      `),
+      videoElement: function() {
+          return document.querySelector('video[preload="metadata"]');
+      },
+  },
+
   'vrv': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
@@ -955,6 +981,9 @@ resources['oload'] = resources['openload'];
 resources['periscope'] = resources['pscp'];
 resources['primevideo'] = resources['amazon'];
 resources['stream'] = resources['seznam'];
+resources['vier'] = resources['viervijfzes'];
+resources['vijf'] = resources['viervijfzes'];
+resources['zes'] = resources['viervijfzes'];
 resources['youtu'] = resources['youtube'];
 
 
