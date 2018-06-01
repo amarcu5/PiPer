@@ -11,6 +11,7 @@
  *   buttonParent: function(boolean=):?Element,
  *   buttonScale: (number|undefined),
  *   buttonStyle: (string|undefined),
+ *   imageStyle: (string|undefined),
  *   captionElement: (function(boolean=):?Element|undefined),
  *   videoElement: function(boolean=):?Element,
  * }}
