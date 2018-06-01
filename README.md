@@ -40,8 +40,13 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)
 * [Video Aktálně](http://video.aktualne.cz)
+* [Vier](http://www.vier.be)
+* [Vijf](http://www.vijf.be)
 * [VRV](http://www.vrv.co)
+* [VRT NU](http://www.vrt.be/vrtnu/)
+* [Yelo Play](http://www.yeloplay.be)
 * [YouTube](http://www.youtube.com)
+* [Zes](http://www.zes.be)
 
 ## Changelog
 You can find information about releases [here](https://github.com/amarcu5/PiPer/releases)
