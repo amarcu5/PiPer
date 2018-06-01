@@ -50,6 +50,10 @@ const localizedButtonTitle = function() {
   switch (language) {
     case 'de':
       return 'Bild-in-Bild starten';
+    case 'nl':
+        return 'Beeld in beeld starten';
+    case 'fr':
+        return 'Démarrer Image dans l’image';
     case 'en':
     default:
       return 'Open Picture in Picture mode';
