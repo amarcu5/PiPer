@@ -90,7 +90,7 @@
   /**
    * Clears queued timeouts to be invoked with media 'timeupdate' events
    *
-   * @param {number} id
+   * @param {?number|undefined} id
    */
   const unthrottledClearTimeout = function(id) {
     delete timeouts[id];
@@ -124,12 +124,12 @@
 
     } else if (activeVideo) {
 
-      activeVideo = null;
-
       window.setTimeout = originalSetTimeout;
       window.clearTimeout = originalClearTimeout;
 
       activeVideo.removeEventListener('timeupdate', callAnimationFrameRequestsAndTimeouts);
+
+      activeVideo = null;
 
       for (let callbackId = callbacks.length; callbackId--;) {
         let request = originalRequestAnimationFrame(callbacks[callbackId]);
