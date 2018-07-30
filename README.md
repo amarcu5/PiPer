@@ -3,6 +3,19 @@ Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Vid
 
 <img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
+## Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Supported sites](#supported-sites)
+- [Changelog](#changelog)
+- [Development](#development)
+* [Building](#building)
++ [Prerequisites](#prerequisites)
++ [Build tools](#build-tools)
++ [Steps](#steps)
+* [Supporting a new site](#supporting-a-new-site)
+- [Acknowledgements](#acknowledgements)
+
 ## Features
 * Adds a dedicated Picture in Picture button to the video player of [supported sites](#supported-sites)
 * Button integrates seamlessly with the player including hover effects and tooltips
