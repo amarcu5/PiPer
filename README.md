@@ -38,6 +38,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Mashable](http://www.mashable.com)
 * [Metacafe](http://www.metacafe.com)
 * [Mixer](http://mixer.com)
+* [MLB](http://www.mlb.tv)
 * [Netflix](http://www.netflix.com)
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)

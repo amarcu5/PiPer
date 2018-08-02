@@ -70,6 +70,8 @@
 				<string>*.mixer.com</string>
 				<string>mlb.com</string>
 				<string>*.mlb.com</string>
+				<string>mlb.tv</string>
+				<string>*.mlb.tv</string>
 				<string>netflix.com</string>
 				<string>*.netflix.com</string>
 				<string>ocs.fr</string>
