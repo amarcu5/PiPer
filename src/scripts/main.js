@@ -529,13 +529,10 @@ const resources = {
     buttonParent: function() {
       return document.querySelector('.control-container .toolbar .right');
     },
-    buttonDidAppear: function () {
-      button.setAttribute('buibtn', '');
-      button.setAttribute('buitooltip', localizedButtonTitle());
-      button.setAttribute('buitooltipside', 'top');
-    },
     buttonScale: 0.65,
     buttonStyle: /** CSS */ (`
+      margin-top: 3px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
     `),
