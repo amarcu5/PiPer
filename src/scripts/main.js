@@ -407,7 +407,7 @@ const resources = {
     buttonParent: function() {
       return document.querySelector('.controls-bar-right-section');
     },
-    buttonScale: 0.7,
+    buttonScale: 0.9,
     buttonStyle: /** CSS */ (`
       height: 100%;
       margin-right: 15px;
