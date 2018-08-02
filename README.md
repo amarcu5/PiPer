@@ -9,11 +9,11 @@ Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Vid
 - [Supported sites](#supported-sites)
 - [Changelog](#changelog)
 - [Development](#development)
-* [Building](#building)
-+ [Prerequisites](#prerequisites)
-+ [Build tools](#build-tools)
-+ [Steps](#steps)
-* [Supporting a new site](#supporting-a-new-site)
+  * [Building](#building)
+    + [Prerequisites](#prerequisites)
+    + [Build tools](#build-tools)
+    + [Steps](#steps)
+  * [Supporting a new site](#supporting-a-new-site)
 - [Acknowledgements](#acknowledgements)
 
 ## Features
