@@ -47,6 +47,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Seznam Zprávy](http://www.seznam.cz/zpravy)
 * [Stream.cz](http://www.stream.cz)
 * [Streamable](http://streamable.com)
+* [TED](http://www.ted.com)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
 * [Udemy](http://www.udemy.com)

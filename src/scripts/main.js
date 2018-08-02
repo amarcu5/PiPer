@@ -721,7 +721,7 @@ const resources = {
       return document.getElementById('video-player-tag');
     },
   },
-  
+
   'ted': {
     buttonClassName: 'z-i:0 pos:r bottom:0 hover/bg:white.7 b-r:.1 p:1 cur:p',
     buttonElementType: 'div',
