@@ -68,6 +68,8 @@
 				<string>*.metacafe.com</string>
 				<string>mixer.com</string>
 				<string>*.mixer.com</string>
+				<string>mlb.com</string>
+				<string>*.mlb.com</string>
 				<string>netflix.com</string>
 				<string>*.netflix.com</string>
 				<string>ocs.fr</string>
