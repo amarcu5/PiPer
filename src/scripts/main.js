@@ -956,9 +956,11 @@ if (domainName in resources) {
 
   initialiseCaches();
   
-  document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
-    capture: true,
-  });
+  if (currentResource.captionElement) {
+    document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
+      capture: true,
+    });
+  }
 
   const observer = new MutationObserver(mutationObserver);
   observer.observe(document, {
