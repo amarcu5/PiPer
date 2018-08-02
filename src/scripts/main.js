@@ -405,7 +405,7 @@ const resources = {
     buttonElementType: 'div',
     buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonParent: function() {
-      return document.querySelector('.video-controls__group-right');
+      return document.querySelector('.controls-bar-right-section');
     },
     buttonScale: 0.7,
     buttonStyle: /** CSS */ (`
