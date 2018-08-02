@@ -1,3 +1,11 @@
+# Netflix No Test Participation - PiPer
+
+This is an experimental branch to address frequent user complaints from users enrolled in Netflix's test participation who report PiPer no longer works as the result of UI changes.
+
+Heuristic determines if Picture in Picture button has not appeared when it should have, the script then tests for enrollment in Netflix's test participation, and if necessary displays an alert advising to disable participation.
+
+---
+
 # PiPer
 Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Video, Twitch, and more!
 
