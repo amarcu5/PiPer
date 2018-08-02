@@ -895,7 +895,7 @@ const resources = {
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.previousSibling;
+      const neighbourButton = button.nextSibling;
       const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourButton.title;
       button.title = '';
