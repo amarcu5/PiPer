@@ -652,7 +652,7 @@ const resources = {
       return document.querySelector('.libjass-subs');
     },
     videoElement: function() {
-      return document.querySelector('video[class^="VideoContainer-videoElement"]');
+      return document.querySelector('video[class^="HTMLMedia-mediaElement"]');
     },
   },
 
