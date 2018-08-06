@@ -11,6 +11,7 @@
  *   buttonParent: function(boolean=):?Element,
  *   buttonScale: (number|undefined),
  *   buttonStyle: (string|undefined),
+ *   imageStyle: (string|undefined),
  *   captionElement: (function(boolean=):?Element|undefined),
  *   videoElement: function(boolean=):?Element,
  * }}
@@ -23,6 +24,7 @@ const COMPILED = false;
 
 const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
+const IMAGE_ID = 'PiPer_image';
 
 let /** ?Element */ button = null;
 let /** ?PiperResource */ currentResource = null;
@@ -49,6 +51,10 @@ const localizedButtonTitle = function() {
   switch (language) {
     case 'de':
       return 'Bild-in-Bild starten';
+    case 'nl':
+        return 'Beeld in beeld starten';
+    case 'fr':
+        return 'Démarrer Image dans l’image';
     case 'en':
     default:
       return 'Open Picture in Picture mode';
@@ -75,8 +81,10 @@ const addButton = function(parent) {
     // Add scaled SVG image to button
     const image = document.createElement('img');
     image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
+    image.id = IMAGE_ID;
     image.style.width = image.style.height = '100%';
     if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
+    if (currentResource.imageStyle) image.style.cssText = currentResource.imageStyle;
     button.appendChild(image);
 
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
@@ -879,6 +887,58 @@ const resources = {
     },
   },
 
+  'viervijfzes': {
+      buttonClassName: 'vjs-control vjs-button',
+      buttonDidAppear: function() {
+        // move fullscreen button to the right so the pip button appears left of it
+        const fullScreenButton = document.getElementsByClassName("vjs-fullscreen-control")[0];
+        fullScreenButton.style.webkitBoxOrdinalGroup = 9;
+        fullScreenButton.style.webkitOrder = 9;
+        fullScreenButton.style.order = 10;
+        bypassBackgroundTimerThrottling();
+      },
+      buttonParent: function() {
+          return document.getElementsByClassName("vjs-control-bar")[0];
+      },
+      buttonStyle: /** CSS */ (`
+        text-indent: 0! important;
+        margin-left: 10px;
+        -webkit-box-ordinal-group: 8;
+        -webkit-order: 8;
+        -ms-flex-order: 8;
+        order: 9;
+      `),
+      videoElement: function() {
+          return document.querySelector('video[preload="metadata"]');
+      },
+  },
+
+  'vrt': {
+      buttonClassName: 'vuplay-control',
+      buttonInsertBefore: function(/** Element */ parent) {
+        return parent.lastChild;
+      },
+      buttonParent: function() {
+          return document.getElementsByClassName("vuplay-control-right")[0];
+      },
+      buttonScale: 1.2,
+      captionElement: function() {
+          return document.querySelector('.theoplayer-texttracks');
+      },
+      imageStyle: /** CSS */ (`
+        transform: scale(1.2);
+        height: 27px !important;
+        padding-top: 4px;
+        padding-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+        position: relative;
+      `),
+      videoElement: function() {
+          return document.querySelector('video[preload="metadata"]');
+      },
+  },
+
   'vrv': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
@@ -909,6 +969,35 @@ const resources = {
     },
     videoElement: function() {
       return document.getElementById('player_html5_api');
+    },
+  },
+
+  'yeloplay': {
+    buttonClassName: 'button',
+    buttonDidAppear: function() {
+      const parent = document.getElementById("PiPer_0");
+      parent.style.width = "210px";
+      bypassBackgroundTimerThrottling();
+    },
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return document.getElementsByTagName("player-fullscreen-button")[0];
+    },
+    buttonParent: function() {
+      return document.getElementsByClassName("buttons")[0];
+    },
+    buttonScale: 0.8,
+    buttonStyle: /** CSS */ (`
+      margin-bottom: -10px;
+      margin-left: 10px;
+      width: 50px;
+      cursor: pointer;
+      opacity: 0.8;
+      height: 40px !important;
+      margin-bottom: 0px !important;
+    `),
+    videoElement: function() {
+      return document.querySelector("video[src]");
     },
   },
 
@@ -964,6 +1053,9 @@ resources['oload'] = resources['openload'];
 resources['periscope'] = resources['pscp'];
 resources['primevideo'] = resources['amazon'];
 resources['stream'] = resources['seznam'];
+resources['vier'] = resources['viervijfzes'];
+resources['vijf'] = resources['viervijfzes'];
+resources['zes'] = resources['viervijfzes'];
 resources['youtu'] = resources['youtube'];
 
 
