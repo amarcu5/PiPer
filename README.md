@@ -3,6 +3,19 @@ Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Vid
 
 <img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
 
+## Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Supported sites](#supported-sites)
+- [Changelog](#changelog)
+- [Development](#development)
+  * [Building](#building)
+    + [Prerequisites](#prerequisites)
+    + [Build tools](#build-tools)
+    + [Steps](#steps)
+  * [Supporting a new site](#supporting-a-new-site)
+- [Acknowledgements](#acknowledgements)
+
 ## Features
 * Adds a dedicated Picture in Picture button to the video player of [supported sites](#supported-sites)
 * Button integrates seamlessly with the player including hover effects and tooltips
@@ -25,6 +38,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Mashable](http://www.mashable.com)
 * [Metacafe](http://www.metacafe.com)
 * [Mixer](http://mixer.com)
+* [MLB](http://www.mlb.tv)
 * [Netflix](http://www.netflix.com)
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
@@ -33,6 +47,7 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Seznam Zprávy](http://www.seznam.cz/zpravy)
 * [Stream.cz](http://www.stream.cz)
 * [Streamable](http://streamable.com)
+* [TED](http://www.ted.com)
 * [The Onion](http://www.theonion.com)
 * [Twitch](http://www.twitch.tv)
 * [Udemy](http://www.udemy.com)
@@ -40,8 +55,13 @@ Get the latest release from the [Safari Extension Gallery](https://safari-extens
 * [Vice](http://www.vice.com)
 * [Vid.me](http://www.vid.me)
 * [Video Aktálně](http://video.aktualne.cz)
+* [Vier](http://www.vier.be)
+* [Vijf](http://www.vijf.be)
 * [VRV](http://www.vrv.co)
+* [VRT NU](http://www.vrt.be/vrtnu/)
+* [Yelo Play](http://www.yeloplay.be)
 * [YouTube](http://www.youtube.com)
+* [Zes](http://www.zes.be)
 
 ## Changelog
 You can find information about releases [here](https://github.com/amarcu5/PiPer/releases)
