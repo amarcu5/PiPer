@@ -28,6 +28,7 @@ let /** ?Element */ button = null;
 let /** ?PiperResource */ currentResource = null;
 let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
+let /** boolean */ showingEmptyCaption = false;
 let /** string */ lastUnprocessedCaption = '';
 
 /**
@@ -136,6 +137,7 @@ const prepareCaptions = function(video) {
   // Otherwise create new caption track
   log('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
+  track.mode = 'showing';
 };
 
 /**
@@ -166,11 +168,12 @@ const videoPresentationModeChanged = function(event) {
  * @param {boolean} workaround - apply Safari bug workaround
  */
 const removeCaptions = function(video, workaround = true) {
-  track.mode = 'showing';
   while (track.activeCues.length) track.removeCue(track.activeCues[0]);
 
   // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  if (workaround) track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
+  if (workaround && video) {
+    track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
+  }
 };
 
 /**
@@ -184,8 +187,9 @@ const processCaptions = function() {
 
   // Remove Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
-    removeCaptions(video);
+    removeCaptions(video, !showingEmptyCaption);
     if (captionElement) captionElement.style.visibility = '';
+    showingEmptyCaption = true;
     return;
   }
 
@@ -225,6 +229,7 @@ const processCaptions = function() {
   caption = caption.trim();
   log('Showing caption "' + caption + '"');
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
+  showingEmptyCaption = false;
 };
 
 /**
