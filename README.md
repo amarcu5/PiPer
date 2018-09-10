@@ -1,7 +1,22 @@
-# PiPer
-Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Video, Twitch, and more!
+<p align="center">
+  <img src="/promo/Icon-512.png" alt="PiPer logo" width="200" />
+</p>
 
-<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
+<h1 align="center">
+  PiPer
+</h1>
+
+<p align="center">
+  PiPer is the browser extension to watch video Picture in Picture.
+</p>
+
+<p align="center">
+  <a href="#installation">Install</a> · 
+  <a href="https://paypal.me/adampmarcus">Donate</a> · 
+  <a href="https://github.com/amarcu5/PiPer/issues">Report an issue</a>
+</p>
+
+***
 
 ## Contents
 - [Features](#features)
