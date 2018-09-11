@@ -151,7 +151,7 @@ if [[ "${update_version}" -eq 1 ]]; then
   # Helper performs multiline sed regular expression
   function multiline_sed_regex() {
     mv "$1" "$1.bak"
-    cat "$1.bak" | tr "\n" "\f" | sed -E "$2" | tr "\f" "\n" > "$1"
+    echo -n "$(cat "$1.bak")" | tr "\n" "\f" | sed -E "$2" | tr "\f" "\n" > "$1"
     rm -rf "$1.bak"
   }
 fi
