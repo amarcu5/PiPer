@@ -8,9 +8,9 @@
 			<key>CFBundleIdentifier</key>
 			<string>com.amarcus.safari.piper</string>
 			<key>CFBundleShortVersionString</key>
-			<string>0.2.5</string>
+			<string></string>
 			<key>CFBundleVersion</key>
-			<string>152</string>
+			<string>153</string>
 			<key>Developer Identifier</key>
 			<string>BQ6Q24MF9X</string>
 			<key>URL</key>
@@ -21,3 +21,11 @@
 	</array>
 </dict>
 </plist>
+
+
+
+
+
+
+
+

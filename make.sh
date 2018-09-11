@@ -9,7 +9,6 @@ CSSO_PATH=$(type "csso" >/dev/null 2>&1 && echo "csso" || echo "./build-tools/cs
 CCJS_PATH=$(type "google-closure-compiler-js" >/dev/null 2>&1 && echo "google-closure-compiler-js" || echo "./build-tools/google-closure-compiler-js")
 XARJS_PATH=$(type "xarjs" >/dev/null 2>&1 && echo "xarjs" || echo "./build-tools/xarjs")
 SVGO_PATH=$(type "svgo" >/dev/null 2>&1 && echo "svgo" || echo "./build-tools/svgo")
-PLISTBUDDY_PATH=$(type "/usr/libexec/PlistBuddy" >/dev/null 2>&1 && echo "/usr/libexec/PlistBuddy" || echo "./build-tools/plistbuddy")
 
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
@@ -82,6 +81,15 @@ while :; do
   shift
 done
 
+# Check for git and exit if not found
+if [[ "${update_version}" -eq 1 ]] && { ! type "git" &>/dev/null; }; then
+  echo "Error: 'git' command not found" >&2
+  echo "Please install the latest version of git (see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)" >&2
+  exit 1
+else
+  GIT_PATH=$(sh /etc/profile; which git)
+fi
+
 
 #
 # Build script
@@ -120,6 +128,34 @@ if [[ "$compress_css" -eq 1 ]]; then
   done
 fi
 
+# Get current version from git if automatic versioning enabled
+if [[ "${update_version}" -eq 1 ]]; then
+
+  # Check we're inside a git work tree
+  inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+  if [[ "${inside_git_repo}" ]]; then
+
+    # Get number of commits and release version from most recent tag
+    number_of_commits=$(($("${GIT_PATH}" rev-list HEAD --count) + 1))
+    git_release_version=$("${GIT_PATH}" describe --tags --always --abbrev=0)
+    git_release_version=${git_release_version%%-*};
+    git_release_version=${git_release_version#*v};    
+
+  # Otherwise issue warning and set blank version
+  else
+    echo "Warning: Unable to set version automatically as cannot find 'git' repository (ensure repository has been cloned to fix this)" >&2
+    number_of_commits="0"
+    git_release_version="0.0.0"
+  fi
+  
+  # Helper performs multiline sed regular expression
+  function multiline_sed_regex() {
+    mv "$1" "$1.bak"
+    cat "$1.bak" | tr "\n" "\f" | sed -E "$2" | tr "\f" "\n" > "$1"
+    rm -rf "$1.bak"
+  }
+fi
+
 # Use closure compiler to compress javascript
 if [[ "$compress_js" -eq 1 ]]; then
   for path in "out/${EXTENSION_NAME}.safariextension/scripts"/*.js; do
@@ -138,26 +174,18 @@ fi
 rm "out/${EXTENSION_NAME}.safariextension/scripts/externs.js"
 
 # Update version info from git
-if [[ "$update_version" -eq 1 ]]; then
-  git=$(sh /etc/profile; which git)
-  number_of_commits=$(($("$git" rev-list HEAD --count) + 1))
-  git_release_version=$("$git" describe --tags --always --abbrev=0)
-  git_release_version=${git_release_version%%-*};
-  git_release_version=${git_release_version#*v};
+if [[ "${update_version}" -eq 1 ]]; then
   info_plist="out/${EXTENSION_NAME}.safariextension/Info.plist"
   update_plist="update.plist"
-  ${PLISTBUDDY_PATH} -c "Set :CFBundleVersion $number_of_commits" "$info_plist"
-  ${PLISTBUDDY_PATH} -c "Set :CFBundleShortVersionString ${git_release_version}" "$info_plist"
-  ${PLISTBUDDY_PATH} -c "Set \":Extension Updates:0:CFBundleVersion\" $number_of_commits" "$update_plist"
-  ${PLISTBUDDY_PATH} -c "Set \":Extension Updates:0:CFBundleShortVersionString\" ${git_release_version#*v}" "$update_plist"
+  multiline_sed_regex "${info_plist}" "s|(> *CFBundleShortVersionString *</key>[^>]+>)[^<]+|\1${git_release_version}|g"
+  multiline_sed_regex "${info_plist}" "s|(> *CFBundleVersion *</key>[^>]+>)[^<]+|\1${number_of_commits}|g"
+  multiline_sed_regex "${update_plist}" "s|(> *CFBundleShortVersionString *</key>[^>]+>)[^<]+|\1${git_release_version}|g"
+  multiline_sed_regex "${update_plist}" "s|(> *CFBundleVersion *</key>[^>]+>)[^<]+|\1${number_of_commits}|g"
 fi
 
 # Package safari extension
-cd out || exit
-if [[ "$package_ext" -eq 1 ]] && [[ -f "${PRIVATE_KEY_PATH}" ]]; then
-  [[ ${XARJS_PATH} != /* ]] && ! type "${XARJS_PATH}" >/dev/null 2>&1 && XARJS_PATH="../${XARJS_PATH}"
-  ${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension"
-  rm -rf "${EXTENSION_NAME}.safariextension"
+if [[ "${package_ext}" -eq 1 ]] && [[ -f "out/${PRIVATE_KEY_PATH}" ]]; then
+  (cd out && ${XARJS_PATH} create "${EXTENSION_NAME}.safariextz" --cert "${LEAF_CERT_PATH}" --cert "${INTERMEDIATE_CERT_PATH}" --cert "${ROOT_CERT_PATH}" --private-key "${PRIVATE_KEY_PATH}" "${EXTENSION_NAME}.safariextension")
+  rm -rf "out/${EXTENSION_NAME}.safariextension"
 fi
-
 echo "Done."

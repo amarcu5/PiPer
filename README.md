@@ -103,8 +103,6 @@ npm install -g xar-js
 npm install -g google-closure-compiler-js
 ```
 
-Additionally a reimplementation of the utility PlistBuddy used for automated build numbering is [provided](https://github.com/amarcu5/PiPer/tree/master/build-tools/) but it is advisable to download the original as part of [Xcode](https://itunes.apple.com/gb/app/xcode/id497799835?mt=12) or from [Apple's Command Line Tools](https://developer.apple.com/download/) 
-
 #### Steps
 1. Clone the repository
 2. Run `make.sh` 
