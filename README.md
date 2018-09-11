@@ -192,4 +192,3 @@ For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon
-* [Google](https://github.com/google/material-design-icons) for the Picture in Picture icon
