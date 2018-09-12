@@ -69,7 +69,8 @@ const addButton = function(parent) {
 
   // Create button if needed
   if (!button) {
-    button = document.createElement(currentResource.buttonElementType || 'button');
+    const buttonElementType = currentResource.buttonElementType || 'button';
+    button = /** @type {HTMLElement} */ (document.createElement(buttonElementType));
 
     // Set button properties
     button.id = BUTTON_ID;
@@ -78,7 +79,7 @@ const addButton = function(parent) {
     if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
 
     // Add scaled SVG image to button
-    const image = document.createElement('img');
+    const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
     image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
     image.style.width = image.style.height = '100%';
     if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
@@ -253,28 +254,33 @@ const mutationObserver = function() {
  * Initialises caching for button, video, and caption elements
  */
 const initialiseCaches = function() {
-  
+
   // Return a unique id
   let uniqueIdCounter = 0;
-  const uniqueId = function() {
+  const /** function():string */ uniqueId = function() {
     return 'PiPer_' + uniqueIdCounter++;
   };
 
-  // Wraps a function that returns an element to provide faster lookups by id
+  /**
+   * Wraps a function that returns an element to provide faster lookups by id
+   *
+   * @param {function(boolean=):?Element} elementFunction
+   * @return {function(boolean=):?Element} 
+   */
   const cacheElementWrapper = function(elementFunction) {
-    let cachedElementId = null;
+    let /** ?string */ cachedElementId = null;
 
-    return function(bypassCache) {
-      
+    return /** function():?Element */ function(/** boolean= */ bypassCache) {
+
       // Return element by id if possible
       const cachedElement = cachedElementId ? 
           document.getElementById(cachedElementId) : null;
       if (cachedElement && !bypassCache) return cachedElement;
-        
+
       // Call the underlying function to get the element
       const uncachedElement = elementFunction();
       if (uncachedElement) {
-        
+
         // Save the native id otherwise assign a unique id
         if (!uncachedElement.id) uncachedElement.id = uniqueId();
         cachedElementId = uncachedElement.id;
@@ -283,12 +289,12 @@ const initialiseCaches = function() {
     };
   };
 
-  // Performance optimisation - prepare captions when new video found
+  // Wrap the button, video, and caption elements
+  currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
+  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement);
   if (currentResource.captionElement) {
     currentResource.captionElement = cacheElementWrapper(currentResource.captionElement);
   }
-  currentResource.videoElement = cacheElementWrapper(currentResource.videoElement);
-  currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
 };
 
 /**
@@ -305,7 +311,7 @@ const bypassBackgroundTimerThrottling = function() {
   request.send();
 };
 
-/** @type {!IObject<string, PiperResource>} */
+/** @type {!Object<string, PiperResource>} */
 const resources = {
 
   'aktualne': {
@@ -996,7 +1002,7 @@ const resources = {
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.nextSibling;
+      const neighbourButton = /** @type {?HTMLElement} */ (button.nextSibling);
       const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourButton.title;
       button.title = '';
