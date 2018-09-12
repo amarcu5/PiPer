@@ -3,10 +3,10 @@
 
   let activeVideo = null;
   let timeoutId = 0;
-  let timeouts = {};
+  let /** !Object<string, Array> */ timeouts = {};
 
-  const requests = [];
-  const callbacks = [];
+  const /** !Array<number> */ requests = [];
+  const /** !Array<function(number): undefined> */ callbacks = [];
 
   const originalSetTimeout = window.setTimeout;
   const originalClearTimeout = window.clearTimeout;
@@ -14,6 +14,8 @@
 
   /**
    * Tracks animation frame requests and forwards requests when page visible
+   *
+   * @param {function(number): undefined} callback - a requestAnimationFrame callback
    */
   const trackAnimationFrameRequest = function(callback) {
     let request = 0;
@@ -44,7 +46,7 @@
    * Calls tracked animation frame requests and timeouts
    */
   const callAnimationFrameRequestsAndTimeouts = function() {
-    
+
     // Copy animation frame callbacks before calling to prevent endless looping
     const callbacksCopy = callbacks.slice();
     callbacks.length = 0;
@@ -58,7 +60,7 @@
     // Copy timeouts to prevent endless looping
     const timeoutsCopy = timeouts;
     timeouts = {};
-    
+
     // Call elapsed timeouts
     for (let id in timeoutsCopy) {
       let timeout = timeoutsCopy[id];
@@ -77,23 +79,23 @@
   /**
    * Avoids background throttling by invoking timeouts with media 'timeupdate' events
    *
-   * @param {Function|string} callback
-   * @param {number=} timeout
+   * @param {Function|string} callback - a setTimeout callback
+   * @param {number=} timeout - a delay in ms
    * @return {number}
    */
   const unthrottledSetTimeout = function(callback, timeout) {
     const id = timeoutId++;
-    timeouts[id] = [window.performance.now() + (timeout || 0), callback];
+    timeouts[id.toString()] = [window.performance.now() + (timeout || 0), callback];
     return id;
   };
 
   /**
    * Clears queued timeouts to be invoked with media 'timeupdate' events
    *
-   * @param {?number|undefined} id
+   * @param {?number|undefined} id - an id returned by unthrottledSetTimeout
    */
   const unthrottledClearTimeout = function(id) {
-    delete timeouts[id];
+    if (id) delete timeouts[id.toString()];
   };
 
   /**
@@ -119,7 +121,7 @@
 
       window.setTimeout = unthrottledSetTimeout;
       window.clearTimeout = unthrottledClearTimeout;
-      
+
       activeVideo.addEventListener('timeupdate', callAnimationFrameRequestsAndTimeouts);
 
     } else if (activeVideo) {
