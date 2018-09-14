@@ -87,15 +87,16 @@ You can find information about releases [here](https://github.com/amarcu5/PiPer/
 
 #### Prerequisites
 * Mac running macOS 10.12 Sierra or later
+* [Node.js](https://nodejs.org)
 
 #### Build tools
-For convenience the following Node.js tools have been packaged with [nexe](https://github.com/nexe/nexe) and included in this repository:
-* [csso](https://github.com/css/csso) (3.1.1) for compressing CSS
-* [svgo](https://github.com/svg/svgo) (0.7.2) for compressing SVG images
-* [xarjs](https://github.com/robertknight/xar-js) (0.2.0) for packaging Safari extension
-* [google-closure-compiler-js](https://github.com/google/closure-compiler-js) (20170806.0.0) for compiling JavaScript
+The following build tools are used to build the extension:
+* [csso](https://github.com/css/csso) for compressing CSS
+* [svgo](https://github.com/svg/svgo) for compressing SVG images
+* [xarjs](https://github.com/robertknight/xar-js) for packaging Safari legacy extension
+* [google-closure-compiler-js](https://github.com/google/closure-compiler-js) for compiling JavaScript
 
-However it is recommended to install the latest versions with [Node.js](https://nodejs.org):
+These can be installed by executing the following command:
 ```Shell
 npm install -g csso-cli
 npm install -g svgo

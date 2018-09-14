@@ -4,12 +4,6 @@
 
 EXTENSION_NAME="PiPer"
 
-# Build tool paths; fallback to local build tools
-CSSO_PATH=$(type "csso" >/dev/null 2>&1 && echo "csso" || echo "./build-tools/csso")
-CCJS_PATH=$(type "google-closure-compiler-js" >/dev/null 2>&1 && echo "google-closure-compiler-js" || echo "./build-tools/google-closure-compiler-js")
-XARJS_PATH=$(type "xarjs" >/dev/null 2>&1 && echo "xarjs" || echo "./build-tools/xarjs")
-SVGO_PATH=$(type "svgo" >/dev/null 2>&1 && echo "svgo" || echo "./build-tools/svgo")
-
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
 INTERMEDIATE_CERT_PATH="../certs/apple-intermediate.pem"
@@ -80,6 +74,43 @@ while :; do
   esac
   shift
 done
+
+# Helper checks for build tool dependency and falls back to 'npx' if possible
+function get_node_command() {
+  if type "$1" &>/dev/null; then
+    echo "$1"
+  elif type "npx" &>/dev/null; then
+    npx_package=$([[ -z "$2" ]] && echo "$1" || echo "$2")
+    echo "npx --quiet --package ${npx_package} $1"
+    echo "Info: '$1' command not found therefore falling back to 'npx'; performance may suffer (avoid this by installing package with 'npm install ${npx_package} -g')" >&2
+  else
+    echo "Error: '$1' command not found and neither fallback 'npx'" >&2
+    echo "Please install the latest version of Node.js (see https://nodejs.org/en/download/package-manager/)" >&2
+    return 1
+  fi
+  return 0
+}
+
+# Check for google closure compiler requirements and exit if not found
+CCJS_PATH=$(get_node_command "google-closure-compiler") || exit 1;
+if ${CCJS_PATH} --platform native --version &>/dev/null; then
+  CCJS_PATH="${CCJS_PATH} --platform native";
+elif ${CCJS_PATH} --platform java --version &>/dev/null; then
+  CCJS_PATH="${CCJS_PATH} --platform java";
+else
+  echo "Error: Java runtime required by 'google-closure-compiler' not found" >&2
+  echo "Please install the latest version of Java (see https://www.java.com/en/download/)" >&2
+  exit 1
+fi
+
+# Check for csso and exit if not found 
+[[ "${compress_css}" -eq 1 ]] && { CSSO_PATH=$(get_node_command "csso" "csso-cli") || exit 1; }
+
+# Check for svgo and exit if not found 
+[[ "${compress_svg}" -eq 1 ]] && { SVGO_PATH=$(get_node_command "svgo") || exit 1; }
+
+# Check for xarjs and exit if not found 
+[[ "${package_ext}" -eq 1 ]] && { XARJS_PATH=$(get_node_command "xarjs" "xar-js") || exit 1; }
 
 # Check for git and exit if not found
 if [[ "${update_version}" -eq 1 ]] && { ! type "git" &>/dev/null; }; then
@@ -162,10 +193,15 @@ if [[ "$compress_js" -eq 1 ]]; then
     [[ $(basename $path) == "externs.js" ]] && continue
     path=${path%.*}
     ${CCJS_PATH} \
-      --compilationLevel ADVANCED \
-      --warningLevel VERBOSE \
-      --newTypeInf \
-      --useTypesForOptimization \
+      --compilation_level ADVANCED \
+      --warning_level VERBOSE \
+      --use_types_for_optimization \
+      --assume_function_wrapper \
+      --jscomp_error strictCheckTypes \
+      --jscomp_error strictMissingProperties \
+      --jscomp_error checkTypes \
+      --jscomp_error checkVars \
+      --jscomp_error reportUnknownTypes \
       --externs "out/${EXTENSION_NAME}.safariextension/scripts/externs.js" \
     "${path}.js" > "${path}.min.js"
       mv "${path}.min.js" "${path}.js"
