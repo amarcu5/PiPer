@@ -40,7 +40,7 @@
 ## Installation
 Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
 
-<sub>...or live life on the edge with the latest [development build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
+<sub>...or live life on the edge with the latest [development build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer-safari-legacy.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
