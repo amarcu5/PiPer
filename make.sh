@@ -4,6 +4,8 @@
 
 EXTENSION_NAME="PiPer"
 
+SOURCE_FILES=("main.js" "fix.js")
+
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
 INTERMEDIATE_CERT_PATH="../certs/apple-intermediate.pem"
@@ -24,6 +26,7 @@ Options:
   -j --compress-js                              Compress JavaScript
   -s --compress-svg                             Compress SVG
   -e --package-extension                        Package extension for distribution (safari-legacy requires private key)
+  -d --no-debug-js                              Remove JavaScript source maps to prevent debugging
   -v --no-version-increment                     Disable automatic version incrementing
 
 EOF
@@ -51,19 +54,23 @@ case $profile in
     compress_svg=1
     compress_css=1
     compress_js=1
+    debug_js=0
     package_ext=1
     ;;
   release)
     compress_svg=1
     compress_css=1
     compress_js=1
+    debug_js=1
     package_ext=0
     ;;
   *)
     compress_svg=0
     compress_css=0
     compress_js=0
+    debug_js=1
     package_ext=0
+    profile="debug"
     ;;
 esac
 update_version=1
@@ -78,6 +85,7 @@ while :; do
     -j|--compress-js) compress_js=1 ;;
     -s|--compress-svg) compress_svg=1 ;;
     -e|--package-extension) package_ext=1 ;;
+    -d|--no-debug-js) debug_js=0 ;;
     -v|--no-version-increment) update_version=0 ;;
     -t|--target) [[ "$2" ]] && targets=$2 && shift ;;
     --target=?*) targets=${1#*=} ;;
@@ -87,6 +95,9 @@ while :; do
   esac
   shift
 done
+
+# Highlight selected build profile 
+echo "Setting '${profile}' profile"
 
 # Validate targets
 case $targets in
@@ -177,7 +188,8 @@ if [[ "${compress_css}" -eq 1 ]]; then
   }
   export -f minify_css
   export CSSO_PATH
-  for path in "out/${EXTENSION_NAME}/scripts"/*.js; do
+  for path in "out/${EXTENSION_NAME}/scripts"/{*,**/*}.js; do
+    [[ ! -f "${path}" ]] && continue
     source=$(cat "${path}")
     echo "echo \"$(sed -e 's/\\/\\\\/g' -e 's/\$/\\$/g' -e 's/`/\\`/g' -e 's/\"/\\\"/g' -e 's/\\n/\\\\n/g' <<< "$source" \
       | tr '\n' '\f' \
@@ -239,14 +251,110 @@ for target in "${targets[@]}"; do
   # Copy target specific items to target output folder
   cp -r "src/${target}"/* "out/${EXTENSION_NAME}-${target}${target_extension}/" 2>/dev/null
   
+  
   # Use closure compiler to compress javascript
-  if [[ "$compress_js" -eq 1 ]]; then
-    for path in "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts"/*.js; do
-      [[ ${path##*/} == "externs.js" ]] && continue
-      path=${path%.*}
-      ${CCJS_PATH} \
+  function remove_element() {
+    for i in "${!files[@]}"; do
+      if [[ ${files[$i]} = "$1" ]]; then
+        unset "files[$i]"
+      fi
+    done
+  }
+  
+  function add_element() {
+    remove_element "$1"
+    files+=("$1")
+  }
+  
+  function get_absolute_path() {
+    local dirname="${1%/*}"
+    local basename="${1##*/}"
+    
+    echo "$(cd "$dirname" 2>/dev/null; pwd)/$basename"
+  }
+  
+  # Convert absolute paths to platform native path on Windows 
+  function fix_absolute_path() {
+    case "$(uname -s)" in
+      CYGWIN*|MINGW32*|MSYS*)
+        echo "$(cygpath -wa ${1})"
+        ;;
+      *) echo "$1"
+    esac
+  }
+  
+  function process_file() {
+    local dirname="${1%/*}"
+    local imports=()
+    
+    if [[ ! -f "$1" ]]; then
+      remove_element "$1"
+      return
+    fi
+    
+    local source=$(<"$1")
+    regex="(^| |"$'\n'")(import|export)["$'\n'" ]+(([*a-zA-Z0-9_,{}"$'\n'" $]+)from["$'\n'" ]+)?['\"]([^'\"]+)['\"][ "$'\n'";]"
+    while true; do
+      if [[ "$source" =~ $regex ]]; then
+        source="${source##*${BASH_REMATCH[0]}}"
+        imports+=("${BASH_REMATCH[5]}")
+      else
+        break
+      fi
+    done
+  
+    for i in "${!imports[@]}"; do
+      imports[$i]=$(cd "$dirname"; get_absolute_path "${imports[$i]}")
+      add_element "${imports[$i]}"
+    done
+    
+    for i in "${!imports[@]}"; do
+      process_file "${imports[$i]}"
+    done
+  }
+
+
+  scripts_path=$(get_absolute_path "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts")
+  extern_path=$(fix_absolute_path "${scripts_path}/externs.js")
+
+  for entry in "${SOURCE_FILES[@]}"; do
+    files=()
+    
+    absolute_entry="${scripts_path}/${entry}"
+    [[ ! -f "$absolute_entry" ]] && continue
+    
+    add_element "$absolute_entry"
+    process_file "$absolute_entry"
+
+    absolute_entry=$(fix_absolute_path "$absolute_entry")
+
+    defines=()
+    js_code=()
+    for path in "${files[@]}"; do
+      path=$(fix_absolute_path "$path")
+      js_code=("--js" "$path" "${js_code[@]}")
+    done 
+  
+    if [[ "$debug_js" -eq 0 ]]; then
+      source_map_options=()
+    else
+      source_map_options=(
+        --create_source_map "${absolute_entry}.map"
+        --source_map_location_mapping "$scripts_path|."
+        --source_map_include_content
+      )
+    fi
+
+    if [[ "$compress_js" -eq 0 ]]; then
+      compression_options=(
+        --compilation_level WHITESPACE_ONLY \
+        --js_module_root "$scripts_path" \
+        --formatting PRETTY_PRINT \
+        --formatting PRINT_INPUT_DELIMITER \
+      )
+    else
+      compression_options=(
         --compilation_level ADVANCED \
-        --warning_level VERBOSE \
         --use_types_for_optimization \
         --assume_function_wrapper \
         --jscomp_error strictCheckTypes \
@@ -254,12 +362,47 @@ for target in "${targets[@]}"; do
         --jscomp_error checkTypes \
         --jscomp_error checkVars \
         --jscomp_error reportUnknownTypes \
-        --externs "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts/externs.js" \
-      "${path}.js" > "${path}.min.js"
-        mv "${path}.min.js" "${path}.js"
+        --externs "$extern_path" \
+      )
+    fi
+        
+    ${CCJS_PATH} \
+      "${compression_options[@]}" \
+      --warning_level VERBOSE \
+      "${source_map_options[@]}" \
+      "${js_code[@]}" \
+    > "${absolute_entry%.*}.cjs"
+
+  done
+
+  # Remove uncompiled JavaScript
+  rm -f "${scripts_path}/"{*,**/*}.js
+  
+  # Remove any empty folders
+  for path in "${scripts_path}/"{*,**/*}; do
+    if [[ -d "$path" ]] && [[ ! -f "$path"/* ]]; then
+      rm -rf "$path"
+    fi
+  done
+  
+  # Restore '.js' extension for compiled JavaScript
+  for entry in "${SOURCE_FILES[@]}"; do
+    entry="${scripts_path}/"${entry%.*}
+    [ ! -f "${entry}.cjs" ] && continue
+    mv "${entry}.cjs" "${entry}.js"
+  done
+  
+  # Embed source maps and remove map files
+  if [[ "$debug_js" -eq 1 ]]; then
+    for entry in "${SOURCE_FILES[@]}"; do
+      entry="${scripts_path}/${entry}"
+      [[ ! -f "${entry}" ]] && continue
+      source_map=$(base64 "${entry}.map" | tr -d \\n)
+      echo "//# sourceMappingURL=data:application/json;base64,${source_map}" >> "${entry}"
+      rm -f "${entry}.map"
     done
   fi
-  rm "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts/externs.js"
+
 
   # Safari specific build steps
   if [[ "${target}" == "safari-legacy" ]]; then
