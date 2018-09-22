@@ -25,6 +25,7 @@ Options:
   -c --compress-css                             Compress CSS
   -j --compress-js                              Compress JavaScript
   -s --compress-svg                             Compress SVG
+  -l --logging-level <number>                   Set logging level (0=all 10=trace 20=info 30=warning 40=error)
   -e --package-extension                        Package extension for distribution (safari-legacy requires private key)
   -d --no-debug-js                              Remove JavaScript source maps to prevent debugging
   -v --no-version-increment                     Disable automatic version incrementing
@@ -41,7 +42,7 @@ while :; do
     -h|-\?|--help) show_help ;;
     -p|--profile) [[ "$2" ]] && profile=$2 ;;
     --profile=?*) profile=${1#*=} ;;
-    -t|--target) shift ;;
+    -l|-t|--logging-level|--target) shift ;;
     -?*) ;;
     *) break
   esac
@@ -56,6 +57,7 @@ case $profile in
     compress_js=1
     debug_js=0
     package_ext=1
+    logging_level=100
     ;;
   release)
     compress_svg=1
@@ -63,6 +65,7 @@ case $profile in
     compress_js=1
     debug_js=1
     package_ext=0
+    logging_level=40
     ;;
   *)
     compress_svg=0
@@ -70,6 +73,7 @@ case $profile in
     compress_js=0
     debug_js=1
     package_ext=0
+    logging_level=0
     profile="debug"
     ;;
 esac
@@ -89,6 +93,8 @@ while :; do
     -v|--no-version-increment) update_version=0 ;;
     -t|--target) [[ "$2" ]] && targets=$2 && shift ;;
     --target=?*) targets=${1#*=} ;;
+    -l|--logging-level) [[ "$2" ]] && logging_level=$2 && shift ;;
+    --logging-level=?*) logging_level=${1#*=} ;;
     -p|--profile) shift ;;
     -?*) ;;
     *) break ;;
@@ -315,7 +321,12 @@ for target in "${targets[@]}"; do
 
 
   scripts_path=$(get_absolute_path "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts")
+  defines_path="${scripts_path}/defines.js"
   extern_path=$(fix_absolute_path "${scripts_path}/externs.js")
+
+  defines_processed_path=$(echo "${defines_path%.*}" | sed -E 's|[/@\]|$|g' | sed -E 's/[-. ]/_/g' | sed -e 's/\[/%5B/g' -e 's/]/%5D/g' -e 's/>/%3E/g' -e 's/</%3C/g')
+  logging_flag="LOGGING_LEVEL$\$module${defines_processed_path}=${logging_level}"
+
 
   for entry in "${SOURCE_FILES[@]}"; do
     files=()
@@ -333,6 +344,11 @@ for target in "${targets[@]}"; do
     for path in "${files[@]}"; do
       path=$(fix_absolute_path "$path")
       js_code=("--js" "$path" "${js_code[@]}")
+      if [[ "$path" = "$defines_path" ]]; then
+        defines=(
+          "--define" "$logging_flag"
+        )
+      fi
     done 
   
     if [[ "$debug_js" -eq 0 ]]; then
@@ -363,6 +379,7 @@ for target in "${targets[@]}"; do
         --jscomp_error checkVars \
         --jscomp_error reportUnknownTypes \
         --externs "$extern_path" \
+        "${defines[@]}" \
       )
     fi
         

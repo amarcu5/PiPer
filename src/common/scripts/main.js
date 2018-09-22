@@ -1,4 +1,4 @@
-'use strict';
+import { info, error } from './logger.js'
 
 /**
  * @typedef {{
@@ -18,9 +18,6 @@
 let PiperResource;
 
 
-/** @define {boolean} - Flag used by closure compiler to remove logging */
-const COMPILED = false;
-
 const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
 
@@ -30,15 +27,6 @@ let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
 let /** boolean */ showingEmptyCaption = false;
 let /** string */ lastUnprocessedCaption = '';
-
-/**
- * Logs message to console
- *
- * @param {string} message - Message to log
- */
-const log = function(message) {
-  !COMPILED && console.log('PiPer: ' + message);
-};
 
 /**
  * Returns localized button title
@@ -100,7 +88,7 @@ const addButton = function(parent) {
       // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts) 
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement(true));
       if (!video) {
-        log('Unable to find video');
+        error('Unable to find video');
         return;
       }
 
@@ -108,7 +96,7 @@ const addButton = function(parent) {
       video.webkitSetPresentationMode(mode);
     });
 
-    log('Picture in Picture button created');
+    info('Picture in Picture button created');
   }
 
   // Inject button into correct place
@@ -129,14 +117,14 @@ const prepareCaptions = function(video) {
   for (let trackId = allTracks.length; trackId--;) {
     if (allTracks[trackId].label === TRACK_ID) {
       track = allTracks[trackId];
-      log('Existing caption track found');
+      info('Existing caption track found');
       break;
     }
   }
   if (track) return;
 
   // Otherwise create new caption track
-  log('Caption track created');
+  info('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
   track.mode = 'showing';
 };
@@ -159,7 +147,7 @@ const videoPresentationModeChanged = function(event) {
   lastUnprocessedCaption = '';
   processCaptions();
   
-  log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
+  info('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
 };
 
 /**
@@ -228,7 +216,7 @@ const processCaptions = function() {
     }
   }
   caption = caption.trim();
-  log('Showing caption "' + caption + '"');
+  info('Showing caption "' + caption + '"');
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
   showingEmptyCaption = false;
 };
@@ -246,7 +234,7 @@ const mutationObserver = function() {
   if (buttonParent) {
     addButton(buttonParent);
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
-    log('Picture in Picture button added to webpage');
+    info('Picture in Picture button added to webpage');
   }
 };
 
@@ -1061,7 +1049,7 @@ resources['youtu'] = resources['youtube'];
 const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
 if (domainName in resources) {
-  log('Matched site ' + domainName + ' (' + location + ')');
+  info('Matched site ' + domainName + ' (' + location + ')');
   currentResource = resources[domainName];
 
   initialiseCaches();
