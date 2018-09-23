@@ -1,4 +1,5 @@
 import { info, error } from './logger.js'
+import { localizedButtonTitle } from './localization.js'
 
 /**
  * @typedef {{
@@ -27,26 +28,6 @@ let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
 let /** boolean */ showingEmptyCaption = false;
 let /** string */ lastUnprocessedCaption = '';
-
-/**
- * Returns localized button title
- *
- * @return {string}
- */
-const localizedButtonTitle = function() {
-  const language = navigator.language.substring(0, 2);
-  switch (language) {
-    case 'de':
-      return 'Bild-in-Bild starten';
-    case 'nl':
-      return 'Beeld in beeld starten';
-    case 'fr':
-      return 'Démarrer Image dans l’image';
-    case 'en':
-    default:
-      return 'Open Picture in Picture mode';
-  }
-};
 
 /**
  * Injects Picture in Picture button into webpage
