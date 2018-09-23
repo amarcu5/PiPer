@@ -1,4 +1,5 @@
 import { info, error } from './logger.js'
+import { videoPlayingPictureInPicture, togglePictureInPicture } from './video.js'
 import { localizedButtonTitle } from './localization.js'
 
 /**
@@ -73,8 +74,7 @@ const addButton = function(parent) {
         return;
       }
 
-      const mode = video.webkitPresentationMode == 'picture-in-picture' ? 'inline' : 'picture-in-picture';
-      video.webkitSetPresentationMode(mode);
+      togglePictureInPicture(video);
     });
 
     info('Picture in Picture button created');
@@ -123,7 +123,7 @@ const videoPresentationModeChanged = function(event) {
   if (video != expectedVideo) return;
   
   // Toggle display of the captions and prepare video if needed
-  showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+  showingCaptions = videoPlayingPictureInPicture(video);
   if (showingCaptions) prepareCaptions(video);
   lastUnprocessedCaption = '';
   processCaptions();
@@ -993,7 +993,7 @@ const resources = {
         removeCaptions(video);
       };
       const navigateFinish = function() {
-        showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
+        showingCaptions = videoPlayingPictureInPicture(video);
       };
       window.addEventListener('spfrequest', navigateStart);
       window.addEventListener('spfdone', navigateFinish);
