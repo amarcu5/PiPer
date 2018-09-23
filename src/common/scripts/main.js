@@ -293,6 +293,7 @@ const bypassBackgroundTimerThrottling = function() {
   request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
   request.onload = function() {
     const script = document.createElement('script');
+    script.setAttribute('type', 'module');
     script.appendChild(document.createTextNode(request.responseText));
     button.appendChild(script);
   };
