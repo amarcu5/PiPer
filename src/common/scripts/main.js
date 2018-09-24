@@ -1,77 +1,16 @@
 import { info, error } from './logger.js'
 import { getResource, setResource } from './common.js'
 import { videoPlayingPictureInPicture, togglePictureInPicture } from './video.js'
+import { getButton, checkButton, addButton } from './button.js'
 import { initialiseCaches } from './cache.js'
 import { localizedButtonTitle } from './localization.js'
 
-const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
 
-let /** ?Element */ button = null;
 let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
 let /** boolean */ showingEmptyCaption = false;
 let /** string */ lastUnprocessedCaption = '';
-
-/**
- * Injects Picture in Picture button into webpage
- *
- * @param {Element} parent - Element button will be inserted into
- */
-const addButton = function(parent) {
-
-  // Create button if needed
-  if (!button) {
-    const buttonElementType = getResource().buttonElementType || 'button';
-    button = /** @type {HTMLElement} */ (document.createElement(buttonElementType));
-
-    // Set button properties
-    button.id = BUTTON_ID;
-    button.title = localizedButtonTitle();
-    const buttonStyle = getResource().buttonStyle;
-    if (buttonStyle) button.style.cssText = buttonStyle;
-    const buttonClassName = getResource().buttonClassName;
-    if (buttonClassName) button.className = buttonClassName;
-
-    // Add scaled SVG image to button
-    const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
-    const buttonImage = getResource().buttonImage || 'default';
-    image.src = safari.extension.baseURI + 'images/' + buttonImage + '.svg';
-    image.style.width = image.style.height = '100%';
-    const buttonScale = getResource().buttonScale;
-    if (buttonScale) image.style.transform = 'scale(' + buttonScale + ')';
-    button.appendChild(image);
-
-    // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
-    const buttonHoverStyle = getResource().buttonHoverStyle;
-    if (buttonHoverStyle) {
-      const style = document.createElement('style');
-      const css = '#' + BUTTON_ID + ':hover{' + buttonHoverStyle + '}';
-      style.appendChild(document.createTextNode(css));
-      button.appendChild(style);
-    }
-
-    // Toggle Picture in Picture mode when button is clicked
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-
-      // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts) 
-      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement(true));
-      if (!video) {
-        error('Unable to find video');
-        return;
-      }
-
-      togglePictureInPicture(video);
-    });
-
-    info('Picture in Picture button created');
-  }
-
-  // Inject button into correct place
-  const referenceNode = getResource().buttonInsertBefore ? getResource().buttonInsertBefore(parent) : null;
-  parent.insertBefore(button, referenceNode);
-};
 
 /**
  * Prepares video for captions
@@ -197,8 +136,8 @@ const mutationObserver = function() {
 
   if (showingCaptions && getResource().captionElement) processCaptions();
 
-  if (document.getElementById(BUTTON_ID)) return;
-
+  // Try adding the button to the page if needed
+  if (checkButton()) return;
   const currentResource = getResource();
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
@@ -218,7 +157,7 @@ const bypassBackgroundTimerThrottling = function() {
     const script = document.createElement('script');
     script.setAttribute('type', 'module');
     script.appendChild(document.createTextNode(request.responseText));
-    button.appendChild(script);
+    document.head.appendChild(script);
   };
   request.send();
 };
@@ -626,7 +565,7 @@ const resources = {
     buttonDidAppear: function() {
       const progressBar = document.getElementById('player-progress');
       const progressBarStyle = window.getComputedStyle(progressBar);
-      button.style.right = progressBarStyle.right;
+      getButton().style.right = progressBarStyle.right;
       progressBar.style.right = (parseInt(progressBarStyle.right, 10) + 40) + 'px';
     },
     buttonElementType: 'div',
@@ -659,7 +598,7 @@ const resources = {
       return playButton.parentElement.parentElement;
     },
     buttonDidAppear: function() {
-      const img = button.querySelector('img');
+      const img = getButton().querySelector('img');
       img.classList.add('w:2');
       img.classList.add('h:2');
     },
@@ -692,6 +631,7 @@ const resources = {
   'twitch': {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
+      const button = getButton();
       const neighbourButton = document.querySelector('.qa-fullscreen-button');
       const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
       const title = localizedButtonTitle();
@@ -852,7 +792,7 @@ const resources = {
   'vrv': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.nextSibling;
+      const neighbourButton = getButton().nextSibling;
       neighbourButton.addEventListener('click', function() {
         const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
         if (video) video.webkitSetPresentationMode('inline');
@@ -913,6 +853,7 @@ const resources = {
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
+      const button = getButton();
       const neighbourButton = /** @type {?HTMLElement} */ (button.nextSibling);
       const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourButton.title;
