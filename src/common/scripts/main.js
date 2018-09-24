@@ -1,30 +1,12 @@
 import { info, error } from './logger.js'
+import { getResource, setResource } from './common.js'
 import { videoPlayingPictureInPicture, togglePictureInPicture } from './video.js'
 import { localizedButtonTitle } from './localization.js'
-
-/**
- * @typedef {{
- *   buttonClassName: (string|undefined),
- *   buttonDidAppear: (function():undefined|undefined),
- *   buttonElementType: (string|undefined),
- *   buttonHoverStyle: (string|undefined),
- *   buttonImage: (string|undefined),
- *   buttonInsertBefore: (function(Element):?Node|undefined),
- *   buttonParent: function(boolean=):?Element,
- *   buttonScale: (number|undefined),
- *   buttonStyle: (string|undefined),
- *   captionElement: (function(boolean=):?Element|undefined),
- *   videoElement: function(boolean=):?Element,
- * }}
- */
-let PiperResource;
-
 
 const BUTTON_ID = 'PiPer_button';
 const TRACK_ID = 'PiPer_track';
 
 let /** ?Element */ button = null;
-let /** ?PiperResource */ currentResource = null;
 let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
 let /** boolean */ showingEmptyCaption = false;
@@ -39,26 +21,31 @@ const addButton = function(parent) {
 
   // Create button if needed
   if (!button) {
-    const buttonElementType = currentResource.buttonElementType || 'button';
+    const buttonElementType = getResource().buttonElementType || 'button';
     button = /** @type {HTMLElement} */ (document.createElement(buttonElementType));
 
     // Set button properties
     button.id = BUTTON_ID;
     button.title = localizedButtonTitle();
-    if (currentResource.buttonStyle) button.style.cssText = currentResource.buttonStyle;
-    if (currentResource.buttonClassName) button.className = currentResource.buttonClassName;
+    const buttonStyle = getResource().buttonStyle;
+    if (buttonStyle) button.style.cssText = buttonStyle;
+    const buttonClassName = getResource().buttonClassName;
+    if (buttonClassName) button.className = buttonClassName;
 
     // Add scaled SVG image to button
     const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
-    image.src = safari.extension.baseURI + 'images/' + (currentResource.buttonImage || 'default') + '.svg';
+    const buttonImage = getResource().buttonImage || 'default';
+    image.src = safari.extension.baseURI + 'images/' + buttonImage + '.svg';
     image.style.width = image.style.height = '100%';
-    if (currentResource.buttonScale) image.style.transform = 'scale(' + currentResource.buttonScale + ')';
+    const buttonScale = getResource().buttonScale;
+    if (buttonScale) image.style.transform = 'scale(' + buttonScale + ')';
     button.appendChild(image);
 
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
-    if (currentResource.buttonHoverStyle) {
+    const buttonHoverStyle = getResource().buttonHoverStyle;
+    if (buttonHoverStyle) {
       const style = document.createElement('style');
-      const css = '#' + BUTTON_ID + ':hover{' + currentResource.buttonHoverStyle + '}';
+      const css = '#' + BUTTON_ID + ':hover{' + buttonHoverStyle + '}';
       style.appendChild(document.createTextNode(css));
       button.appendChild(style);
     }
@@ -68,7 +55,7 @@ const addButton = function(parent) {
       event.preventDefault();
 
       // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts) 
-      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement(true));
+      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement(true));
       if (!video) {
         error('Unable to find video');
         return;
@@ -81,7 +68,7 @@ const addButton = function(parent) {
   }
 
   // Inject button into correct place
-  const referenceNode = currentResource.buttonInsertBefore ? currentResource.buttonInsertBefore(parent) : null;
+  const referenceNode = getResource().buttonInsertBefore ? getResource().buttonInsertBefore(parent) : null;
   parent.insertBefore(button, referenceNode);
 };
 
@@ -119,7 +106,7 @@ const videoPresentationModeChanged = function(event) {
   
   // Ignore events from other video elements e.g. adverts
   const video =  /** @type {HTMLVideoElement} */ (event.target);
-  const expectedVideo = currentResource.videoElement(true);
+  const expectedVideo = getResource().videoElement(true);
   if (video != expectedVideo) return;
   
   // Toggle display of the captions and prepare video if needed
@@ -152,8 +139,8 @@ const removeCaptions = function(video, workaround = true) {
 const processCaptions = function() {
 
   // Get handles to caption and video elements
-  const captionElement = currentResource.captionElement();
-  const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+  const captionElement = getResource().captionElement();
+  const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
 
   // Remove Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
@@ -207,10 +194,11 @@ const processCaptions = function() {
  */
 const mutationObserver = function() {
 
-  if (showingCaptions && currentResource.captionElement) processCaptions();
+  if (showingCaptions && getResource().captionElement) processCaptions();
 
   if (document.getElementById(BUTTON_ID)) return;
 
+  const currentResource = getResource();
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
     addButton(buttonParent);
@@ -259,6 +247,7 @@ const initialiseCaches = function() {
   };
 
   // Wrap the button, video, and caption elements
+  const currentResource = getResource();
   currentResource.buttonParent = cacheElementWrapper(currentResource.buttonParent);
   currentResource.videoElement = cacheElementWrapper(currentResource.videoElement);
   if (currentResource.captionElement) {
@@ -281,7 +270,6 @@ const bypassBackgroundTimerThrottling = function() {
   request.send();
 };
 
-/** @type {!Object<string, PiperResource>} */
 const resources = {
 
   'aktualne': {
@@ -355,7 +343,7 @@ const resources = {
   'curiositystream': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
-      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
       const videoContainer = video.parentElement;
       video.addEventListener('webkitbeginfullscreen', function() {
         const height = Math.floor(100 * video.videoHeight / video.videoWidth) + 'vw';
@@ -427,7 +415,7 @@ const resources = {
   'hulu': {
     buttonClassName: 'simple-button',
     buttonDidAppear: function() {
-      const buttonParent = currentResource.buttonParent();
+      const buttonParent = getResource().buttonParent();
       buttonParent.querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
       buttonParent.querySelector('.progress-time-container').style.marginRight = '45px';
     },
@@ -561,7 +549,7 @@ const resources = {
     buttonScale: 0.6,
     buttonStyle: /** CSS */ (`transition: all 0.1s linear`),
     captionElement: function() {
-      const e = currentResource.videoElement();
+      const e = getResource().videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
     },
     videoElement: function() {
@@ -765,7 +753,7 @@ const resources = {
         neighbourTooltip.dataset['tip'] = neighbourTitle;
       });
       neighbourButton.addEventListener('click', function() {
-        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
       neighbourButton.style.order = 2;
@@ -790,7 +778,7 @@ const resources = {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
       document.querySelector('.vjs-fullscreen-control').addEventListener('click', function() {
-        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
     },
@@ -800,7 +788,7 @@ const resources = {
     buttonScale: 0.7,
     buttonStyle: /** CSS */ (`order: 7`),
     captionElement: function() {
-      const e = currentResource.videoElement();
+      const e = getResource().videoElement();
       return e && e.parentElement.querySelector('.vjs-text-track-display');
     },
     videoElement: function() {
@@ -913,7 +901,7 @@ const resources = {
     buttonDidAppear: function() {
       const neighbourButton = button.nextSibling;
       neighbourButton.addEventListener('click', function() {
-        const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+        const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
       bypassBackgroundTimerThrottling();
@@ -944,7 +932,7 @@ const resources = {
   'yeloplay': {
     buttonClassName: 'button',
     buttonDidAppear: function() {
-      const parent = currentResource.buttonParent();
+      const parent = getResource().buttonParent();
       parent.style.width = "210px";
     },
     buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
@@ -987,7 +975,7 @@ const resources = {
       bypassBackgroundTimerThrottling();
 
       // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
-      const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
+      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
       const navigateStart = function() {
         showingCaptions = false;
         removeCaptions(video);
@@ -1032,11 +1020,11 @@ const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\
 
 if (domainName in resources) {
   info('Matched site ' + domainName + ' (' + location + ')');
-  currentResource = resources[domainName];
+  setResource(resources[domainName]);
 
   initialiseCaches();
   
-  if (currentResource.captionElement) {
+  if (getResource().captionElement) {
     document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
       capture: true,
     });
