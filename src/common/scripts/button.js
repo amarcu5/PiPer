@@ -1,5 +1,5 @@
 import { info, error } from './logger.js'
-import { getResource } from './common.js'
+import { getResource, getExtensionURL } from './common.js'
 import { togglePictureInPicture } from './video.js'
 import { localizedButtonTitle } from './localization.js'
 
@@ -30,7 +30,7 @@ export const addButton = function(parent) {
     // Add scaled SVG image to button
     const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
     const buttonImage = getResource().buttonImage || 'default';
-    image.src = safari.extension.baseURI + 'images/' + buttonImage + '.svg';
+    image.src = getExtensionURL('images/' + buttonImage + '.svg');
     image.style.width = image.style.height = '100%';
     const buttonScale = getResource().buttonScale;
     if (buttonScale) image.style.transform = 'scale(' + buttonScale + ')';

@@ -1,5 +1,5 @@
 import { info, error } from './logger.js'
-import { getResource, setResource } from './common.js'
+import { getResource, setResource, bypassBackgroundTimerThrottling } from './common.js'
 import { videoPlayingPictureInPicture, togglePictureInPicture } from './video.js'
 import { getButton, checkButton, addButton } from './button.js'
 import { shouldProcessCaptions, enableCaptions, disableCaptions, processCaptions } from './captions.js'
@@ -23,21 +23,6 @@ const mutationObserver = function() {
     if (currentResource.buttonDidAppear) currentResource.buttonDidAppear();
     info('Picture in Picture button added to webpage');
   }
-};
-
-/**
- * Applies fix to bypass background DOM timer throttling
- */
-const bypassBackgroundTimerThrottling = function() {
-  const request = new XMLHttpRequest();
-  request.open('GET', safari.extension.baseURI + 'scripts/fix.js');
-  request.onload = function() {
-    const script = document.createElement('script');
-    script.setAttribute('type', 'module');
-    script.appendChild(document.createTextNode(request.responseText));
-    document.head.appendChild(script);
-  };
-  request.send();
 };
 
 const resources = {
