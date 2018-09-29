@@ -124,72 +124,46 @@ If we wanted to support `example.com` with the source:
   </div>
 </div>
 ```
-We would start by adding a new entry in the `resources` object in `main.js`:
+We would start by adding a new file `example.js`  in the [resources directory](https://github.com/amarcu5/PiPer/tree/master/src/common/scripts/resources):
 ```JavaScript
-const resources = {
-  ...
-  'example' : {
-    buttonParent: function() {
-      // Returns the element that will contain the button
-      return document.querySelector('.video-controls');
-    },
-    videoElement: function() {
-      // Returns the video element
-      return document.querySelector('.video-container video');
-    },
-    
-    // Optional
-    captionElement: function() {
-      // Returns the element that contains the video captions
-      return document.querySelector('.video-captions');
-    },
+export const domain = 'example';
+
+export const resource = {
+  buttonParent: function() {
+    // Returns the element that will contain the button
+    return document.querySelector('.video-controls');
+  },
+  videoElement: function() {
+    // Returns the video element
+    return document.querySelector('.video-container video');
+  },
+  
+  // Optional
+  captionElement: function() {
+    // Returns the element that contains the video captions
+    return document.querySelector('.video-captions');
   },
 };
-```
-We also need to update the extension permissions to support the new site by editing `./src/Info.plist`:
-```XML
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Permissions</key>
-  <dict>
-    <key>Website Access</key>
-    <dict>
-      ...
-      <key>Allowed Domains</key>
-      <array>
-        ...
-        <string>example.com</string>
-        <string>*.example.com</string>
-      </array>
-    </dict>
-  </dict>
-</dict>
-</plist>
 ```
 We might want to style the button so that it integrates with the page better:
 ```JavaScript
-const resources = {
+export const resource = {
   ...
-  'example' : {
-    ...
-    // Assign a CSS class
-    buttonClassName: 'control',
-    // Scale the button
-    buttonScale: 0.5,
-    // Apply custom CSS styles
-    buttonStyle: /** CSS */ (`
-      /* Declaring CSS this way ensures it gets optimized when the extension is built */
-      cursor: pointer;
-      opacity: 0.5;
-    `),
-    // Apply a custom CSS hover style
-    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
-  },
+  // Assign a CSS class
+  buttonClassName: 'control',
+  // Scale the button
+  buttonScale: 0.5,
+  // Apply custom CSS styles
+  buttonStyle: /** CSS */ (`
+    /* Declaring CSS this way ensures it gets optimized when the extension is built */
+    cursor: pointer;
+    opacity: 0.5;
+  `),
+  // Apply a custom CSS hover style
+  buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
 };
 ```
-For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree/master/src/scripts)
+For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree/master/src/)
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon

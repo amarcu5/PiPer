@@ -233,6 +233,43 @@ if [[ "${update_version}" -eq 1 ]]; then
   }
 fi
 
+# Make resources index file
+import_list=""
+resource_list=""
+alias_list=""
+resource_count=0
+for path in "out/${EXTENSION_NAME}/scripts/resources"/*.js; do
+  path="${path##*/}"
+  [[ $path == "index.js" ]] && continue
+  resource_count=$((resource_count+1))
+  import_list="${import_list}"$'\n'"import * as r${resource_count} from \"./${path}\";"
+  resource=$(<"out/${EXTENSION_NAME}/scripts/resources/${path}")
+  regex_arr="(^|[ "$'\n'"])(const|let|var)[ "$'\n'"]+domain[ "$'\n'"]*=[ "$'\n'"]*\[([^]]+)\]"
+  regex_val="(^|[ "$'\n'"])(const|let|var)[ "$'\n'"]+domain[ "$'\n'"]*="
+  if [[ "$resource" =~ $regex_arr ]]; then
+    IFS=", " read -a arr <<< "${BASH_REMATCH[3]}"
+    resource_list="${resource_list}"$'\n'"resources[${arr[0]}] = r${resource_count}.resource;"
+    for ((i=1;i<${#arr[@]};i++)); do
+      alias_list="${alias_list}"$'\n'"resources[${arr[$i]}] = resources[${arr[0]}];"
+    done
+  elif [[ "$resource" =~ $regex_val ]]; then
+    resource_list="${resource_list}"$'\n'"resources[r${resource_count}.domain] = r${resource_count}.resource;"
+  else
+    echo "Warning: No domain's listed for resource '${path}'" >&2
+  fi
+done
+
+{
+cat <<EOF
+/** Auto-generated file **/
+${import_list}
+
+export const resources = {};
+${resource_list}
+${alias_list}
+EOF
+} >"out/${EXTENSION_NAME}/scripts/resources/index.js"
+
 
 for target in "${targets[@]}"; do
   
