@@ -1,7 +1,7 @@
 import { info, error } from './logger.js'
 import { getResource, getExtensionURL } from './common.js'
 import { togglePictureInPicture } from './video.js'
-import { localizedButtonTitle } from './localization.js'
+import { localizedString } from './localization.js'
 
 const BUTTON_ID = 'PiPer_button';
 
@@ -21,7 +21,7 @@ export const addButton = function(parent) {
 
     // Set button properties
     button.id = BUTTON_ID;
-    button.title = localizedButtonTitle();
+    button.title = localizedString('button-title');
     const buttonStyle = getResource().buttonStyle;
     if (buttonStyle) button.style.cssText = buttonStyle;
     const buttonClassName = getResource().buttonClassName;
