@@ -1,3 +1,5 @@
+import { warn } from './logger.js'
+
 /**
  * @typedef {{
  *   buttonClassName: (string|undefined),
@@ -49,6 +51,12 @@ export const getExtensionURL = function(path) {
  * Applies fix to bypass background DOM timer throttling
  */
 export const bypassBackgroundTimerThrottling = function() {
+
+  // Issue warning for unnecessary use of background timer throttling
+  if (!currentResource.captionElement) {
+    warn('Unnecessary bypassing of background timer throttling on page without caption support');
+  }
+
   const request = new XMLHttpRequest();
   request.open('GET', getExtensionURL('scripts/fix.js'));
   request.onload = function() {
