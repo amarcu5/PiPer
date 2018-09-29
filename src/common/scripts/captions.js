@@ -101,7 +101,7 @@ export const videoPresentationModeChanged = function(event) {
   lastUnprocessedCaption = '';
   processCaptions();
 
-  info('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
+  info(`Video presentation mode changed (showingCaptions: ${showingCaptions})`);
 };
 
 /**
@@ -131,7 +131,7 @@ const removeCaptions = function(video, workaround = true) {
  */
 const addCaption = function(video, caption) {
 
-  info('Showing caption "' + caption + '"');
+  info(`Showing caption '${caption}'`);
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
 
   showingEmptyCaption = false;
@@ -175,9 +175,9 @@ export const processCaptions = function() {
     if (segment) {
       const style = window.getComputedStyle(walk.currentNode.parentElement);
       if (style.fontStyle == 'italic') {
-        caption += '<i>' + segment + '</i>';
+        caption += `<i>${segment}</i>`;
       } else if (style.textDecoration == 'underline') {
-        caption += '<u>' + segment + '</u>';
+        caption += `<u>${segment}</u>`;
       } else {
         caption += segment;
       }

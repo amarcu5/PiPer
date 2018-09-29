@@ -29,7 +29,7 @@ const mutationObserver = function() {
 const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
 
 if (domainName in resources) {
-  info('Matched site ' + domainName + ' (' + location + ')');
+  info(`Matched site ${domainName} (${location})`);
   setResource(resources[domainName]);
 
   initialiseCaches();

@@ -30,17 +30,17 @@ export const addButton = function(parent) {
     // Add scaled SVG image to button
     const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
     const buttonImage = getResource().buttonImage || 'default';
-    image.src = getExtensionURL('images/' + buttonImage + '.svg');
+    image.src = getExtensionURL(`images/${buttonImage}.svg`);
     image.style.width = image.style.height = '100%';
     const buttonScale = getResource().buttonScale;
-    if (buttonScale) image.style.transform = 'scale(' + buttonScale + ')';
+    if (buttonScale) image.style.transform = `scale(${buttonScale})`;
     button.appendChild(image);
 
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
     const buttonHoverStyle = getResource().buttonHoverStyle;
     if (buttonHoverStyle) {
       const style = document.createElement('style');
-      const css = '#' + BUTTON_ID + ':hover{' + buttonHoverStyle + '}';
+      const css = `#${BUTTON_ID}:hover{${buttonHoverStyle}}`;
       style.appendChild(document.createTextNode(css));
       button.appendChild(style);
     }
