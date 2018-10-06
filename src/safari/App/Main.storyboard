@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Application-->
+        <scene sceneID="JPo-4y-FX3">
+            <objects>
+                <application id="hnw-xV-0zn" sceneMemberID="viewController">
+                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
+                        <items>
+                            <menuItem title="PiPer" id="1Xt-HY-uBw">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="PiPer" systemMenu="apple" id="uQy-DD-JDr">
+                                    <items>
+                                        <menuItem title="Quit PiPer" keyEquivalent="q" id="4sb-4s-VLi">
+                                            <connections>
+                                                <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
+                    </connections>
+                </application>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PiPer" customModuleProvider="target"/>
+                <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+                <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="360" y="-44"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="R2V-B0-nI4">
+            <objects>
+                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                    <window key="window" title="PiPer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="IQv-IB-iLA">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="356" height="220"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="356" height="220"/>
+                        <value key="maxSize" type="size" width="356" height="220"/>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                    </connections>
+                </windowController>
+                <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="55"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="hIz-AP-VOD">
+            <objects>
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="PiPer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="m2S-Jp-Qdl">
+                        <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="underWindowBackground" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="fhh-nv-kqK">
+                                <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fhh-nv-kqK" secondAttribute="trailing" id="R1a-1n-kYy"/>
+                            <constraint firstItem="fhh-nv-kqK" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Vgc-sd-EOP"/>
+                            <constraint firstItem="fhh-nv-kqK" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="ZHb-JW-3Uc"/>
+                            <constraint firstAttribute="bottom" secondItem="fhh-nv-kqK" secondAttribute="bottom" id="f4x-N6-X6o"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="extensionDisabledView" destination="Wtu-CL-ZAO" id="yuV-8q-YtZ"/>
+                        <outlet property="mainView" destination="3Hb-XS-UyM" id="yUU-7Q-ncx"/>
+                        <outlet property="viewContainer" destination="fhh-nv-kqK" id="c0U-Yq-xxu"/>
+                    </connections>
+                </viewController>
+                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView id="Wtu-CL-ZAO">
+                    <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SlA-kL-hiD">
+                            <rect key="frame" x="16" y="94" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="ZWA-Q4-Gnv"/>
+                                <constraint firstAttribute="width" constant="32" id="sOE-7r-348"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSCaution" id="dJM-ez-eQ2"/>
+                        </imageView>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5oh-0M-Zn6" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="265" y="93" width="81" height="32"/>
+                            <buttonCell key="cell" type="push" title="enable" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HcB-QW-aQq">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="clickedEnableExtensionWithSender:" target="XfG-lQ-9wD" id="jgv-vd-Hd3"/>
+                            </connections>
+                        </button>
+                        <textField horizontalHuggingPriority="200" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="500" translatesAutoresizingMaskIntoConstraints="NO" id="Gzc-Eb-L1r" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="56" y="102" width="207" height="17"/>
+                            <textFieldCell key="cell" alignment="left" title="safari-disabled-warning" drawsBackground="YES" id="LEL-vU-9sz">
+                                <font key="font" metaFont="systemMedium" size="13"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="5oh-0M-Zn6" firstAttribute="leading" secondItem="Gzc-Eb-L1r" secondAttribute="trailing" constant="8" id="Hcd-kf-9uY"/>
+                        <constraint firstItem="Gzc-Eb-L1r" firstAttribute="leading" secondItem="SlA-kL-hiD" secondAttribute="trailing" constant="8" id="IAC-H1-5u2"/>
+                        <constraint firstItem="SlA-kL-hiD" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="P98-CO-DBI"/>
+                        <constraint firstItem="5oh-0M-Zn6" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="Ttv-0y-TAb"/>
+                        <constraint firstItem="Gzc-Eb-L1r" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="cWx-Ul-bxK"/>
+                        <constraint firstItem="SlA-kL-hiD" firstAttribute="leading" secondItem="Wtu-CL-ZAO" secondAttribute="leading" constant="16" id="gUm-TC-3DN"/>
+                        <constraint firstAttribute="trailing" secondItem="5oh-0M-Zn6" secondAttribute="trailing" constant="16" id="rAw-aH-ZXO"/>
+                    </constraints>
+                </customView>
+                <customView id="3Hb-XS-UyM">
+                    <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="l9e-rg-eUq">
+                            <rect key="frame" x="58" y="88" width="80" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="52v-J9-pFo"/>
+                                <constraint firstAttribute="height" constant="80" id="9ic-ED-CML"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Icon" id="655-Gm-l0p"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aXl-MI-TCo">
+                            <rect key="frame" x="61" y="45" width="73" height="39"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="PiPer" drawsBackground="YES" id="pyu-MO-9NT">
+                                <font key="font" metaFont="system" size="32"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h9M-Bg-2Qi" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="196" y="104" width="107" height="32"/>
+                            <buttonCell key="cell" type="push" title="report-bug" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HPq-wV-jsz">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="clickedReportBugWithSender:" target="XfG-lQ-9wD" id="GA1-uc-3Zx"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l7Q-NM-lYD" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="196" y="70" width="107" height="32"/>
+                            <buttonCell key="cell" type="push" title="donate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jbL-wE-6Bb">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="clickedDonateWithSender:" target="XfG-lQ-9wD" id="DRM-9J-vKO"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="l9e-rg-eUq" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="0.55" id="0rd-47-5ke"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" multiplier="1.2" id="1yu-Ya-ffe"/>
+                        <constraint firstItem="aXl-MI-TCo" firstAttribute="top" secondItem="l9e-rg-eUq" secondAttribute="bottom" constant="4" id="9A4-i3-Pj0"/>
+                        <constraint firstItem="l9e-rg-eUq" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" constant="-18" id="NqP-Fs-Cka"/>
+                        <constraint firstItem="aXl-MI-TCo" firstAttribute="centerX" secondItem="l9e-rg-eUq" secondAttribute="centerX" id="SqJ-aZ-Yox"/>
+                        <constraint firstItem="h9M-Bg-2Qi" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" multiplier="0.9" id="XJe-gR-gCd"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="1.4" id="b0H-tS-xdf"/>
+                        <constraint firstItem="h9M-Bg-2Qi" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="1.4" id="bh5-aa-dpw"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="width" secondItem="h9M-Bg-2Qi" secondAttribute="width" id="orO-L8-WbF"/>
+                    </constraints>
+                </customView>
+            </objects>
+            <point key="canvasLocation" x="75" y="645"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Icon" width="512" height="512"/>
+        <image name="NSCaution" width="128" height="128"/>
+    </resources>
+</document>

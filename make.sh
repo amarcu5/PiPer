@@ -4,7 +4,7 @@
 
 EXTENSION_NAME="PiPer"
 
-SOURCE_FILES=("main.js" "fix.js")
+SOURCE_FILES=("main.js" "fix.js" "localization_bridge.js")
 
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
@@ -20,12 +20,14 @@ Usage: make.sh [options]
 
 Options:
   -h -? --help                                  Show this screen
-  -t --target (all|safari-legacy)               Make extension for target browser [default: all]
+  -t --target (all|safari|safari-legacy)        Make extension for target browser [default: all]
   -p --profile (release|debug|distribute)       Set settings according to profile [default: debug]
   -c --compress-css                             Compress CSS
   -j --compress-js                              Compress JavaScript
   -s --compress-svg                             Compress SVG
   -l --logging-level <number>                   Set logging level (0=all 10=trace 20=info 30=warning 40=error)
+  -i --development-team <id>                    Set development team ID
+  -a --archive-to-xcode                         Archive Safari extension to Xcode for Mac App Store distribution
   -e --package-extension                        Package extension for distribution (safari-legacy requires private key)
   -d --no-debug-js                              Remove JavaScript source maps to prevent debugging
   -v --no-version-increment                     Disable automatic version incrementing
@@ -42,7 +44,7 @@ while :; do
     -h|-\?|--help) show_help ;;
     -p|--profile) [[ "$2" ]] && profile=$2 ;;
     --profile=?*) profile=${1#*=} ;;
-    -l|-t|--logging-level|--target) shift ;;
+    -l|-t|-i|--logging-level|--target|--development-team) shift ;;
     -?*) ;;
     *) break
   esac
@@ -78,6 +80,8 @@ case $profile in
     ;;
 esac
 update_version=1
+archive_xcode=0
+development_team=""
 targets="all"
 
 set -- "${arguments[@]}"
@@ -95,6 +99,9 @@ while :; do
     --target=?*) targets=${1#*=} ;;
     -l|--logging-level) [[ "$2" ]] && logging_level=$2 && shift ;;
     --logging-level=?*) logging_level=${1#*=} ;;
+    -i|--development-team) [[ "$2" ]] && development_team=$2 && shift ;;
+    --development-team=?*) development_team=${1#*=} ;;
+    -a|--archive-to-xcode) archive_xcode=1 ;;
     -p|--profile) shift ;;
     -?*) ;;
     *) break ;;
@@ -107,9 +114,11 @@ echo "Setting '${profile}' profile"
 
 # Validate targets
 case $targets in
+  safari) targets=("safari") ;;
   safari-legacy) targets=("safari-legacy") ;;
-  *) targets=("safari-legacy")
+  *) targets=("safari" "safari-legacy")
 esac
+
 
 # Helper checks for build tool dependency and falls back to 'npx' if possible
 function get_node_command() {
@@ -130,7 +139,28 @@ function get_node_command() {
 # Target specific build checks
 for i in "${!targets[@]}"; do
   
-  if [[ "${targets[$i]}" = "safari-legacy" ]]; then
+  if [[ "${targets[$i]}" = "safari" ]]; then
+    
+    # Only build 'safari' extension target when running under macOS
+    if [[ "$(uname)" != "Darwin" ]]; then
+      echo "Warning: Building 'safari' extension skipped as requires macOS" >&2
+      unset "targets[$i]"
+      continue
+    fi
+    
+    # Ensure with have Xcode command line tools installed
+    if [[ -z $(xcode-select --print-path) ]]; then
+      echo "Installing Xcode Command Line Tools (expect a GUI popup)"
+      xcode-select --install &>/dev/null
+      echo "Press any key after installation has completed"
+      read -rsn1
+      if [[ -z $(xcode-select --print-path) ]]; then
+        echo "Unable to find Xcode Command Line Tools"
+        exit 1
+      fi
+    fi
+  
+  elif [[ "${targets[$i]}" = "safari-legacy" ]]; then
     
     # Get 'safari-legacy' specific build tool path and exit if not found
     [[ "${package_ext}" -eq 1 ]] && { XARJS_PATH=$(get_node_command "xarjs" "xar-js") || exit 1; }
@@ -277,6 +307,11 @@ for target in "${targets[@]}"; do
   
   # Set target specific flags
   case $target in
+    safari)
+      browser=1
+      target_extension=""
+      common_file_path="/Extension/Resources"
+      ;;
     safari-legacy)
       browser=1
       target_extension=".safariextension"
@@ -457,9 +492,81 @@ for target in "${targets[@]}"; do
     done
   fi
 
-
   # Safari specific build steps
-  if [[ "${target}" == "safari-legacy" ]]; then
+  if [[ "${target}" == "safari" ]]; then
+
+    # Update version info from git
+    if [[ "${update_version}" -eq 1 ]]; then
+      multiline_sed_regex "out/${EXTENSION_NAME}-${target}/Extension/Info.plist" "s|(> *CFBundleShortVersionString *</key>[^>]+>)[^<]+|\1${git_release_version}|g"
+      multiline_sed_regex "out/${EXTENSION_NAME}-${target}/Extension/Info.plist" "s|(> *CFBundleVersion *</key>[^>]+>)[^<]+|\1${number_of_commits}|g"
+      multiline_sed_regex "out/${EXTENSION_NAME}-${target}/App/Info.plist" "s|(> *CFBundleShortVersionString *</key>[^>]+>)[^<]+|\1${git_release_version}|g"
+      multiline_sed_regex "out/${EXTENSION_NAME}-${target}/App/Info.plist" "s|(> *CFBundleVersion *</key>[^>]+>)[^<]+|\1${number_of_commits}|g"
+    fi
+    
+    # Get development team id automatically if needed
+    if [[ -z "${development_team}" ]]; then
+      
+      # Helper maintains unique list of ids
+      team_ids=()
+      function add_unique_team_ids() {
+        for i in "${!team_ids[@]}"; do
+          [[ ${team_ids[$i]} = "$1" ]] && return
+        done
+        team_ids+=("$1")
+      }
+
+      # Search mobileprovision files for team identifiers
+      regex="TeamIdentifier<\/key>[^\/]+>([A-Z0-9]{10})<\/"
+      for path in "${HOME}/Library/MobileDevice/Provisioning Profiles"/*.mobileprovision; do
+        source=$(cat "${path}" | iconv -f "ISO-8859-1" -t "UTF-8")
+        if [[ "${source}" =~ $regex ]]; then
+          add_unique_team_ids "${BASH_REMATCH[1]}"
+        fi
+      done
+      
+      # If multiple or no identifiers found then prompt the user
+      development_team_hint="(avoid this message in future by specifying --development-team)"
+      if (( ${#team_ids[@]} == 0 )); then
+        echo "Unable to find development team automatically, please enter below: ${development_team_hint}"
+        read development_team </dev/tty
+      elif (( ${#team_ids[@]} == 1 )); then
+        development_team="${team_ids[0]}"
+      else
+        echo "Multiple development team's found"
+        for (( i=0; i < ${#team_ids[@]}; i++ )); do
+          echo "  [${i}]: ${team_ids[$i]}"
+        done
+        echo "Please select development team to use: ${development_team_hint}"
+        read selection </dev/tty
+        development_team="${team_ids[$selection]}"
+      fi
+      
+    fi
+
+    # Build the xcode project
+    config_profile=$([[ "${profile}" == "debug" ]] && echo "Debug" || echo "Release")
+    xcodebuild -allowProvisioningUpdates -allowProvisioningDeviceRegistration -quiet -project "./out/${EXTENSION_NAME}-${target}/PiPer.xcodeproj" -scheme "PiPer" archive -archivePath "./out/${EXTENSION_NAME}-${target}.xcarchive" -configuration "${config_profile}" CODE_SIGN_STYLE="Automatic" CODE_SIGN_IDENTITY="Mac Developer" DEVELOPMENT_TEAM="${development_team}"
+    xcodebuild -allowProvisioningUpdates -allowProvisioningDeviceRegistration -quiet -exportArchive -archivePath "./out/${EXTENSION_NAME}-${target}.xcarchive" -exportPath "./out/"  -exportOptionsPlist "./out/${EXTENSION_NAME}-${target}/exportOptions.plist" CODE_SIGN_STYLE="Automatic" CODE_SIGN_IDENTITY="Mac Developer" DEVELOPMENT_TEAM="${development_team}" &>/dev/null
+
+    # Copy archive to Xcode if needed
+    if [[ "${archive_xcode}" -eq 1 ]]; then
+      archive_time=$(date '+%d-%m-%Y, %H.%M')
+      mv "./out/${EXTENSION_NAME}-${target}.xcarchive" "${HOME}/Library/Developer/Xcode/Archives/${EXTENSION_NAME} ${archive_time}.xcarchive"
+    fi
+    
+    # Package extension
+    if [[ "${package_ext}" -eq 1 ]]; then
+      productbuild --quiet --component "./out/PiPer.app" "/Applications" "./out/${EXTENSION_NAME}-${target}.pkg"
+      rm -rf "./out/PiPer.app"
+    else
+      mv "out/PiPer.app" "out/${EXTENSION_NAME}-${target}.app"
+    fi
+    
+    # Remove everything else
+    rm -rf "out/${EXTENSION_NAME}-${target}.xcarchive"
+    rm -rf "out/${EXTENSION_NAME}-${target}"
+
+  elif [[ "${target}" == "safari-legacy" ]]; then
 
     # Remove irrelevant target file
     rm -f "out/${EXTENSION_NAME}-${target}${target_extension}/update.plist"

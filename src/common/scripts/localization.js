@@ -9,6 +9,24 @@ localizations['button-title'] = {
   'fr': 'Démarrer Image dans l’image',
 };
 
+localizations['donate'] = {
+  'en': 'Donate',
+  'de': 'Spenden',
+};
+
+localizations['report-bug'] = {
+  'en': 'Report a bug',
+  'de': 'Einen Fehler melden',
+};
+
+localizations['enable'] = {
+  'en': 'Enable',
+};
+
+localizations['safari-disabled-warning'] = {
+  'en': 'Extension is currently disabled, enable in Safari preferences',
+};
+
 // Set English as the default fallback language
 const defaultLanguage = 'en';
 
