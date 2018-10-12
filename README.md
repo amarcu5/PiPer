@@ -21,6 +21,8 @@
 ## Contents
 - [Features](#features)
 - [Installation](#installation)
+  * [Safari](#safari)
+  * [Chrome](#chrome)
 - [Supported sites](#supported-sites)
 - [Changelog](#changelog)
 - [Development](#development)
@@ -34,13 +36,18 @@
 ## Features
 * Adds a dedicated Picture in Picture button to the video player of [supported sites](#supported-sites)
 * Button integrates seamlessly with the player including hover effects and tooltips
-* Supports closed captions in Picture and Picture mode
+* Supports closed captions in Picture and Picture mode (Safari only)
+* Supports Safari and Chrome
 * Free and open source
 
 ## Installation
-Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
-
-<sub>...or live life on the edge with the latest [development build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer-safari-legacy.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
+### Safari
+Install from the [Mac App Store](https://itunes.apple.com/app/1421915518?mt=12&ls=1)  by clicking "Get"  
+<sub>(The [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X) is now [deprecated](https://developer.apple.com/documentation/safariextensions))</sub>
+### Chrome
+Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/piper/jbjleapidaddpbncgofepljddfeoghkc) by clicking "Add to Chrome"
+  
+<sub>...or live life on the edge with the latest [development build](https://github.com/amarcu5/PiPer/tree/develop/out) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
@@ -86,8 +93,14 @@ You can find information about releases [here](https://github.com/amarcu5/PiPer/
 ### Building
 
 #### Prerequisites
-* Mac running macOS 10.12 Sierra or later
-* [Node.js](https://nodejs.org)
+* Operating system
+  * macOS: 10.12 Sierra or newer (required to build Safari extension)
+  * Windows: Vista or newer using [Cygwin](https://cygwin.com/install.html)
+  * Linux: 64-bit Ubuntu 14.04+, Debian 8+, openSUSE 13.3+, or Fedora Linux 24+
+* Software
+  * [Node.js](https://nodejs.org)
+  * [Java](https://www.java.com/en/download/) (Windows only)
+
 
 #### Build tools
 The following build tools are used to build the extension:
@@ -107,8 +120,11 @@ npm install -g google-closure-compiler-js
 #### Steps
 1. Clone the repository
 2. Run `make.sh` 
-    1. By default this builds the unoptimized and unpackaged development version into the `./out/` directory that can then be installed using Safari's Extension Builder
-    2. Alternatively run `./make.sh -p release` to build the optimized and packaged release version (note that packaging requires a private key)
+    1. By default this builds the unoptimized and unpackaged development version for all targets into the `./out/` directory
+    2. Alternatively:
+       * `./make.sh -p release` to build the optimized release versions for all targets
+       * `./make.sh -p release -t chrome` to build the optimized release version for the Chrome browser
+       * `./make.sh -h` to see the full list of options
 
 ### Supporting a new site
 If we wanted to support `example.com` with the source:

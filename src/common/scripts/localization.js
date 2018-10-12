@@ -19,12 +19,28 @@ localizations['report-bug'] = {
   'de': 'Einen Fehler melden',
 };
 
+localizations['options'] = {
+  'en': 'Options',
+};
+
+localizations['install-thanks'] = {
+  'en': 'Thanks for adding PiPer!',
+};
+
 localizations['enable'] = {
   'en': 'Enable',
 };
 
 localizations['safari-disabled-warning'] = {
   'en': 'Extension is currently disabled, enable in Safari preferences',
+};
+
+localizations['chrome-flags-open'] = {
+  'en': 'Open Chrome Flags',
+};
+
+localizations['chrome-flags-warning'] = {
+  'en': 'Before you get started you need to enable the chrome flag [emphasis]"SurfaceLayer objects for videos"[/emphasis]',
 };
 
 // Set English as the default fallback language
