@@ -26,6 +26,7 @@ Options:
   -j --compress-js                              Compress JavaScript
   -s --compress-svg                             Compress SVG
   -l --logging-level <number>                   Set logging level (0=all 10=trace 20=info 30=warning 40=error)
+  -o --optimize-strings                         Remove unused localized strings by static program analysis
   -i --development-team <id>                    Set development team ID
   -a --archive-to-xcode                         Archive Safari extension to Xcode for Mac App Store distribution
   -e --package-extension                        Package extension for distribution (safari-legacy requires private key)
@@ -60,6 +61,7 @@ case $profile in
     debug_js=0
     package_ext=1
     logging_level=100
+    optimize_strings=1
     ;;
   release)
     compress_svg=1
@@ -68,6 +70,7 @@ case $profile in
     debug_js=1
     package_ext=0
     logging_level=40
+    optimize_strings=1
     ;;
   *)
     compress_svg=0
@@ -76,6 +79,7 @@ case $profile in
     debug_js=1
     package_ext=0
     logging_level=0
+    optimize_strings=0
     profile="debug"
     ;;
 esac
@@ -93,6 +97,7 @@ while :; do
     -j|--compress-js) compress_js=1 ;;
     -s|--compress-svg) compress_svg=1 ;;
     -e|--package-extension) package_ext=1 ;;
+    -o|--optimize-localizations) optimize_strings=1 ;;
     -d|--no-debug-js) debug_js=0 ;;
     -v|--no-version-increment) update_version=0 ;;
     -t|--target) [[ "$2" ]] && targets=$2 && shift ;;
@@ -411,6 +416,11 @@ for target in "${targets[@]}"; do
   logging_flag="LOGGING_LEVEL$\$module${defines_processed_path}=${logging_level}"
 
 
+  if [[ "$optimize_strings" -eq 1 ]]; then
+    localization_path="${scripts_path}/localization.js"
+    localization_source=$(<"$localization_path")
+  fi
+
   for entry in "${SOURCE_FILES[@]}"; do
     files=()
 
@@ -419,6 +429,56 @@ for target in "${targets[@]}"; do
 
     add_element "$absolute_entry"
     process_file "$absolute_entry"
+
+
+    # Statically analyze javascript and remove unused localized strings
+    if [[ "$optimize_strings" -eq 1 ]]; then
+      locale_keys=()
+      regex="(=[ \t"$'\n'"]*localizedString(WithReplacements)?[ \t"$'\n'";,])|(localizedString(WithReplacements)?\([ \t"$'\n'"]*(\"([^\"]+)\"|'([^']+)'|([^'\",)]+))[ \t"$'\n'"]*[,)])"
+      dynamic_access=0
+      for path in "${files[@]}"; do
+        [[ "$path" == "$localization_path" ]] && continue
+        source=$(<"$path")
+        while true; do
+          if [[ "$source" =~ $regex ]]; then
+            source="${source##*${BASH_REMATCH[0]}}"
+            locale_key="${BASH_REMATCH[6]:-${BASH_REMATCH[7]}}"
+            if [[ ! -z "$locale_key" ]]; then
+              locale_keys+=("$locale_key")
+            else
+              dynamic_access=1
+              break
+            fi
+          else
+            break
+          fi
+        done
+      done
+      source="$localization_source"
+      if [[ "$dynamic_access" -eq 0 ]]; then
+        processing="$localization_source"
+        regex="localizations\[[ \t"$'\n'"]*('([^']+)'|\"([^\"]+)\")[ \t"$'\n'"]*\][^=]+=[ "$'\n'"]*{([^}'\"]*('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")?)*}[ \t"$'\n'"]*;?"
+        while true; do
+          if [[ "$processing" =~ $regex ]]; then
+            processing=${processing##*"${BASH_REMATCH[0]}"}
+            locale_key="${BASH_REMATCH[2]:-${BASH_REMATCH[3]}}"
+            found=0
+            for key in "${locale_keys[@]}"; do
+              if [[ "$key" == "$locale_key" ]]; then
+                found=1
+                break
+              fi
+            done
+            if [[ "$found" -eq 0 ]]; then
+              source=${source/"${BASH_REMATCH[0]}"/}
+            fi
+          else
+            break
+          fi
+        done
+      fi
+      echo "$source" > "${localization_path}"
+    fi
 
     absolute_entry=$(fix_absolute_path "$absolute_entry")
 
@@ -433,7 +493,7 @@ for target in "${targets[@]}"; do
           "--define" "$browser_flag"
         )
       fi
-    done 
+    done
 
     if [[ "$debug_js" -eq 0 ]]; then
       source_map_options=()
@@ -466,7 +526,7 @@ for target in "${targets[@]}"; do
         "${defines[@]}" \
       )
     fi
-    
+
     ${CCJS_PATH} \
       "${compression_options[@]}" \
       --warning_level VERBOSE \
