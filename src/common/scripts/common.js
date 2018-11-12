@@ -1,4 +1,30 @@
+import { BROWSER } from './defines.js'
 import { warn } from './logger.js'
+
+/** @enum {number} - Enum for browser */
+export const Browser = {
+  UNKNOWN: 0,
+  SAFARI: 1,
+  CHROME: 2,
+};
+
+/**
+ * Returns current web browser
+ *
+ * @return {Browser} 
+ */
+export const getBrowser = function() {
+	if (BROWSER != Browser.UNKNOWN) {
+    return /** @type {Browser} */ (BROWSER);
+  }
+  if (/Safari/.test(navigator.userAgent) && /Apple/.test(navigator.vendor)) {
+    return Browser.SAFARI;
+  }
+	if (/Chrome/.test(navigator.userAgent) && /Google/.test(navigator.vendor)) {
+    return Browser.CHROME;
+  }
+  return Browser.UNKNOWN;
+};
 
 /**
  * @typedef {{
@@ -44,7 +70,15 @@ export const setResource = function(resource) {
  * @return {string} 
  */
 export const getExtensionURL = function(path) {
-  return safari.extension.baseURI + path;
+  switch (getBrowser()) {
+    case Browser.SAFARI:
+      return safari.extension.baseURI + path;
+    case Browser.CHROME:
+      return chrome.runtime.getURL(path);
+    case Browser.UNKNOWN:
+    default:
+      return path;
+  }
 };
 
 /**

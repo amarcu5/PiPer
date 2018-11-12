@@ -1,5 +1,5 @@
 import { info } from './logger.js'
-import { getResource } from './common.js'
+import { Browser, getBrowser, getResource } from './common.js'
 import { videoPlayingPictureInPicture } from './video.js'
 
 const TRACK_ID = 'PiPer_track';
@@ -117,7 +117,7 @@ const removeCaptions = function(video, workaround = true) {
   }
 
   // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  if (workaround && video && !showingEmptyCaption) {
+  if (getBrowser() == Browser.SAFARI && workaround && video && !showingEmptyCaption) {
     track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
     showingEmptyCaption = true;
   }
@@ -134,7 +134,9 @@ const addCaption = function(video, caption) {
   info(`Showing caption '${caption}'`);
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
 
-  showingEmptyCaption = false;
+  if (getBrowser() == Browser.SAFARI) {
+    showingEmptyCaption = false;
+  }
 };
 
 /**

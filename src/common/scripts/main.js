@@ -1,5 +1,5 @@
 import { info } from './logger.js'
-import { getResource, setResource } from './common.js'
+import { Browser, getBrowser, getResource, setResource } from './common.js'
 import { addVideoElementListeners } from './video.js'
 import { resources } from './resources/index.js';
 import { checkButton, addButton } from './button.js'
@@ -13,7 +13,10 @@ const mutationObserver = function() {
 
   // Process video captions if needed
   if (shouldProcessCaptions()) processCaptions();
-  
+
+  // Workaround Chrome's lack of an entering Picture in Picture mode event by monitoring all video elements
+  if (getBrowser() == Browser.CHROME) addVideoElementListeners();
+
   // Try adding the button to the page if needed
   if (checkButton()) return;
   const currentResource = getResource();
@@ -33,8 +36,10 @@ if (domainName in resources) {
   setResource(resources[domainName]);
 
   initialiseCaches();
-  
-  enableCaptions(true);
+
+  if (getBrowser() == Browser.SAFARI) {
+    enableCaptions(true);
+  }
 
   const observer = new MutationObserver(mutationObserver);
   observer.observe(document, {

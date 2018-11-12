@@ -1,10 +1,11 @@
-import { getResource } from './../common.js'
+import { Browser, getBrowser, getResource } from './../common.js'
 
 export const domain = 'curiositystream';
 
 export const resource = {
   buttonClassName: 'vjs-control vjs-button',
   buttonDidAppear: function() {
+    if (getBrowser() != Browser.SAFARI) return;
     const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
     const videoContainer = video.parentElement;
     video.addEventListener('webkitbeginfullscreen', function() {

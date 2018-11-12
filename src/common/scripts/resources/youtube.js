@@ -1,4 +1,4 @@
-import { getResource, bypassBackgroundTimerThrottling } from './../common.js'
+import { Browser, getBrowser, getResource, bypassBackgroundTimerThrottling } from './../common.js'
 import { getButton } from './../button.js'
 import { enableCaptions, disableCaptions, shouldProcessCaptions } from './../captions.js'
 
@@ -23,19 +23,21 @@ export const resource = {
     bypassBackgroundTimerThrottling();
 
     // Workaround Safari bug; old captions persist in Picture in Picture mode when MediaSource buffers change
-    const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
-    let captionsVisible = false;
-    const navigateStart = function() {
-      captionsVisible = shouldProcessCaptions();
-      if (captionsVisible) disableCaptions();
-    };
-    const navigateFinish = function() {
-      if (captionsVisible) enableCaptions();
-    };
-    window.addEventListener('spfrequest', navigateStart);
-    window.addEventListener('spfdone', navigateFinish);
-    window.addEventListener('yt-navigate-start', navigateStart);
-    window.addEventListener('yt-navigate-finish', navigateFinish);
+    if (getBrowser() == Browser.SAFARI) {
+      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
+      let captionsVisible = false;
+      const navigateStart = function() {
+        captionsVisible = shouldProcessCaptions();
+        if (captionsVisible) disableCaptions();
+      };
+      const navigateFinish = function() {
+        if (captionsVisible) enableCaptions();
+      };
+      window.addEventListener('spfrequest', navigateStart);
+      window.addEventListener('spfdone', navigateFinish);
+      window.addEventListener('yt-navigate-start', navigateStart);
+      window.addEventListener('yt-navigate-finish', navigateFinish);
+    }
   },
   buttonInsertBefore: function(/** Element */ parent) {
     return parent.lastChild;

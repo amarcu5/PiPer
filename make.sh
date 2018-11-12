@@ -4,7 +4,7 @@
 
 EXTENSION_NAME="PiPer"
 
-SOURCE_FILES=("main.js" "fix.js" "localization_bridge.js")
+SOURCE_FILES=("main.js" "fix.js" "background.js" "install.js" "localization_bridge.js")
 
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
@@ -20,7 +20,7 @@ Usage: make.sh [options]
 
 Options:
   -h -? --help                                  Show this screen
-  -t --target (all|safari|safari-legacy)        Make extension for target browser [default: all]
+  -t --target (all|safari|safari-legacy|chrome) Make extension for target browser [default: all]
   -p --profile (release|debug|distribute)       Set settings according to profile [default: debug]
   -c --compress-css                             Compress CSS
   -j --compress-js                              Compress JavaScript
@@ -116,9 +116,13 @@ echo "Setting '${profile}' profile"
 case $targets in
   safari) targets=("safari") ;;
   safari-legacy) targets=("safari-legacy") ;;
-  *) targets=("safari" "safari-legacy")
+  chrome) targets=("chrome") ;;
+  *) targets=("safari" "safari-legacy" "chrome")
 esac
 
+# Validate logging level
+logging_level="${logging_level//[!0-9]/}"
+[[ -z "$logging_level" ]] && logging_level=0
 
 # Helper checks for build tool dependency and falls back to 'npx' if possible
 function get_node_command() {
@@ -301,6 +305,7 @@ EOF
 } >"out/${EXTENSION_NAME}/scripts/resources/index.js"
 
 
+
 for target in "${targets[@]}"; do
   
   echo "Building '${target}' extension"
@@ -315,6 +320,11 @@ for target in "${targets[@]}"; do
     safari-legacy)
       browser=1
       target_extension=".safariextension"
+      common_file_path=""
+      ;;
+    chrome) 
+      browser=2
+      target_extension=""
       common_file_path=""
       ;;
     *) exit 1
@@ -397,15 +407,16 @@ for target in "${targets[@]}"; do
   extern_path=$(fix_absolute_path "${scripts_path}/externs.js")
 
   defines_processed_path=$(echo "${defines_path%.*}" | sed -E 's|[/@\]|$|g' | sed -E 's/[-. ]/_/g' | sed -e 's/\[/%5B/g' -e 's/]/%5D/g' -e 's/>/%3E/g' -e 's/</%3C/g')
+  browser_flag="BROWSER$\$module${defines_processed_path}=${browser}"
   logging_flag="LOGGING_LEVEL$\$module${defines_processed_path}=${logging_level}"
 
 
   for entry in "${SOURCE_FILES[@]}"; do
     files=()
-    
+
     absolute_entry="${scripts_path}/${entry}"
     [[ ! -f "$absolute_entry" ]] && continue
-    
+
     add_element "$absolute_entry"
     process_file "$absolute_entry"
 
@@ -419,10 +430,11 @@ for target in "${targets[@]}"; do
       if [[ "$path" = "$defines_path" ]]; then
         defines=(
           "--define" "$logging_flag"
+          "--define" "$browser_flag"
         )
       fi
     done 
-  
+
     if [[ "$debug_js" -eq 0 ]]; then
       source_map_options=()
     else
@@ -454,7 +466,7 @@ for target in "${targets[@]}"; do
         "${defines[@]}" \
       )
     fi
-        
+    
     ${CCJS_PATH} \
       "${compression_options[@]}" \
       --warning_level VERBOSE \
@@ -587,6 +599,20 @@ for target in "${targets[@]}"; do
       rm -rf "out/${EXTENSION_NAME}-${target}${target_extension}"
     fi
 
+  elif [[ "${target}" == "chrome" ]]; then
+
+    # Update manifest version information
+    if [[ "${update_version}" -eq 1 ]]; then
+      sed -i.bak -E "s|\"version\": *\"[^\"]+\"|\"version\": \"${git_release_version}\"|g" "out/${EXTENSION_NAME}-${target}/manifest.json"
+      rm -rf "out/${EXTENSION_NAME}-${target}/manifest.json.bak"
+    fi
+    
+    # Package chrome extension
+    if [[ "${package_ext}" -eq 1 ]]; then
+      (cd "out/${EXTENSION_NAME}-${target}${target_extension}" && zip -rq "${EXTENSION_NAME}-${target}${target_extension}.zip" *)
+      mv "out/${EXTENSION_NAME}-${target}${target_extension}/${EXTENSION_NAME}-${target}${target_extension}.zip" "out/"
+      rm -rf "out/${EXTENSION_NAME}-${target}${target_extension}"
+    fi
   fi
   
 done
