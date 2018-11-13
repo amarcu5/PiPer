@@ -29,7 +29,7 @@ class LocalizationManager {
     context.evaluateScript("const window = {};")
     
     if let extensionBundleURL = ResourceHelper.extensionBundleURL {
-      let localizationFile = extensionBundleURL.appendingPathComponent("scripts/localization_bridge.js").path
+      let localizationFile = extensionBundleURL.appendingPathComponent("scripts/localization-bridge.js").path
 
       let localizationFileContents = try? String(contentsOfFile: localizationFile,
                                                  encoding: String.Encoding.utf8)

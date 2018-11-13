@@ -4,7 +4,7 @@
 
 EXTENSION_NAME="PiPer"
 
-SOURCE_FILES=("main.js" "fix.js" "background.js" "install.js" "localization_bridge.js")
+SOURCE_FILES=("main.js" "fix.js" "background.js" "install.js" "localization-bridge.js")
 
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
