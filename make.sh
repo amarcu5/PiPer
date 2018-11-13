@@ -663,7 +663,8 @@ for target in "${targets[@]}"; do
 
     # Update manifest version information
     if [[ "${update_version}" -eq 1 ]]; then
-      sed -i.bak -E "s|\"version\": *\"[^\"]+\"|\"version\": \"${git_release_version}\"|g" "out/${EXTENSION_NAME}-${target}/manifest.json"
+      sed -i.bak -E "s|\"version\": *\"[^\"]+\"|\"version\": \"${git_release_version}.${number_of_commits}\"|g" "out/${EXTENSION_NAME}-${target}/manifest.json"
+      sed -i.bak -E "s|\"version_name\": *\"[^\"]+\"|\"version_name\": \"${git_release_version}\"|g" "out/${EXTENSION_NAME}-${target}/manifest.json"
       rm -rf "out/${EXTENSION_NAME}-${target}/manifest.json.bak"
     fi
     
