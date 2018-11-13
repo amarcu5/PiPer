@@ -1,6 +1,6 @@
 import { info, error } from './logger.js'
 import { getResource, getExtensionURL } from './common.js'
-import { togglePictureInPicture } from './video.js'
+import { togglePictureInPicture, addPictureInPictureEventListener } from './video.js'
 import { localizedString } from './localization.js'
 
 const BUTTON_ID = 'PiPer_button';
@@ -27,14 +27,28 @@ export const addButton = function(parent) {
     const buttonClassName = getResource().buttonClassName;
     if (buttonClassName) button.className = buttonClassName;
 
-    // Add scaled SVG image to button
+    // Add scaled image to button
     const image = /** @type {HTMLImageElement} */ (document.createElement('img'));
-    const buttonImage = getResource().buttonImage || 'default';
-    image.src = getExtensionURL(`images/${buttonImage}.svg`);
     image.style.width = image.style.height = '100%';
     const buttonScale = getResource().buttonScale;
     if (buttonScale) image.style.transform = `scale(${buttonScale})`;
     button.appendChild(image);
+
+    // Set image paths
+    let buttonImage = getResource().buttonImage;
+    let buttonExitImage = getResource().buttonExitImage;
+    if (!buttonImage) {
+      buttonImage = 'default';
+      buttonExitImage = 'default-exit';
+    }
+    const buttonImageURL = getExtensionURL(`images/${buttonImage}.svg`);
+    image.src = buttonImageURL;
+    if (buttonExitImage) {
+      const buttonExitImageURL = getExtensionURL(`images/${buttonExitImage}.svg`);
+      addPictureInPictureEventListener(function(video, isPlayingPictureInPicture) {
+        image.src = (isPlayingPictureInPicture) ? buttonExitImageURL : buttonImageURL;
+      });
+    }
 
     // Add hover style to button (a nested stylesheet is used to avoid tracking another element)
     const buttonHoverStyle = getResource().buttonHoverStyle;

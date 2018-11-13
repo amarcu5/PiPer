@@ -1,7 +1,9 @@
 import { info } from './logger.js'
-import { Browser, getBrowser } from './common.js'
+import { Browser, getBrowser, getResource } from './common.js'
 
 const CHROME_PLAYING_PIP_ATTRIBUTE = 'data-playing-picture-in-picture';
+
+const /** !Array<function(HTMLVideoElement, boolean)> */ eventListeners = [];
 
 /**
  * Toggles video Picture in Picture
@@ -36,6 +38,74 @@ export const togglePictureInPicture = function(video) {
 };
 
 /**
+ * Adds a Picture in Picture event listener
+ *
+ * @param {function(HTMLVideoElement, boolean)} listener - an event listener to add
+ */
+export const addPictureInPictureEventListener = function(listener) {
+  if (!eventListeners.includes(listener)) {
+    eventListeners.push(listener);
+  }
+
+  if (getBrowser() == Browser.SAFARI) {
+    document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
+      capture: true,
+    });
+  }
+};
+
+/**
+ * Removes a Picture in Picture event listener
+ *
+ * @param {function(HTMLVideoElement,boolean)} listener - an event listener to remove
+ */
+export const removePictureInPictureEventListener = function(listener) {
+  const index = eventListeners.indexOf(listener);
+  if (index > -1) {
+    eventListeners.splice(index, 1);
+  }
+  
+  if (getBrowser() == Browser.SAFARI && eventListeners.length == 0) {
+    document.removeEventListener('webkitpresentationmodechanged', videoPresentationModeChanged);    
+  }
+};
+
+/**
+ * Dispatches a Picture in Picture event
+ *
+ * @param {HTMLVideoElement} video - target video element
+ */
+const dispatchPictureInPictureEvent = function(video) {
+  
+  // Ignore events from other video elements e.g. adverts
+  const expectedVideo = getResource().videoElement(true);
+  if (video != expectedVideo) return;
+
+  const isPlayingPictureInPicture = videoPlayingPictureInPicture(video);
+  if (isPlayingPictureInPicture) {
+    info('Video entering Picture in Picture mode');
+  } else {
+    info('Video leaving Picture in Picture mode');
+  }
+
+  // Call event listeners using a copy to prevent possiblity of endless looping
+  const eventListenersCopy = eventListeners.slice();
+  for (let listener; listener = eventListenersCopy.pop();) {
+    listener(video, isPlayingPictureInPicture);
+  }
+}
+
+/**
+ * Dispatches a Picture in Picture event for every 'webkitpresentationmodechanged' event
+ *
+ * @param {!Event} event - a webkitpresentationmodechanged event
+ */
+const videoPresentationModeChanged = function(event) {
+  const video =  /** @type {HTMLVideoElement} */ (event.target);
+  dispatchPictureInPictureEvent(video);
+};
+
+/**
  * Returns true if video is playing Picture in Picture
  *
  * @param {HTMLVideoElement} video - video element to test
@@ -59,22 +129,16 @@ export const videoPlayingPictureInPicture = function(video) {
  * @param {!Event} event - an enterpictureinpicture event
  */
 const videoDidEnterPictureInPicture = function(event) {
-  info('Video entering Picture in Picture mode');
-
   const video = /** @type {HTMLVideoElement} */ (event.target);
 
-  // Toggle captions; Avoid circular referencing by calling 'videoPresentationModeChanged' directly
-  const presentationEvent = new Event('webkitpresentationmodechanged', { bubbles: true });
-  video.dispatchEvent(presentationEvent);
-
-  // Set playing in Picture in Picture mode attribute
+  // Set playing in Picture in Picture mode attribute and dispatch event
   video.setAttribute(CHROME_PLAYING_PIP_ATTRIBUTE, true);
+  dispatchPictureInPictureEvent(video);
 
-  // Remove Picture in Picture attribute and toggle captions on leaving Picture in Picture mode
+  // Remove Picture in Picture attribute and dispatch event on leaving Picture in Picture mode
   video.addEventListener('leavepictureinpicture', function(event) {
-    info('Video leaving Picture in Picture mode');
     video.removeAttribute(CHROME_PLAYING_PIP_ATTRIBUTE);
-    video.dispatchEvent(presentationEvent);
+    dispatchPictureInPictureEvent(video);
   }, { once: true });
 };
 

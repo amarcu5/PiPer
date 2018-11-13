@@ -31,6 +31,7 @@ export const getBrowser = function() {
  *   buttonClassName: (string|undefined),
  *   buttonDidAppear: (function():undefined|undefined),
  *   buttonElementType: (string|undefined),
+ *   buttonExitImage: (string|undefined),
  *   buttonHoverStyle: (string|undefined),
  *   buttonImage: (string|undefined),
  *   buttonInsertBefore: (function(Element):?Node|undefined),

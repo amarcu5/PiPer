@@ -1,6 +1,6 @@
 import { info } from './logger.js'
 import { Browser, getBrowser, getResource } from './common.js'
-import { videoPlayingPictureInPicture } from './video.js'
+import { videoPlayingPictureInPicture, addPictureInPictureEventListener, removePictureInPictureEventListener } from './video.js'
 
 const TRACK_ID = 'PiPer_track';
 
@@ -17,7 +17,7 @@ export const disableCaptions = function() {
   captionsEnabled = false;
   showingCaptions = false;
   processCaptions();
-  document.removeEventListener('webkitpresentationmodechanged', videoPresentationModeChanged);
+  removePictureInPictureEventListener(pictureInPictureEventListener);
 
   info('Closed caption support disabled');
 };
@@ -32,10 +32,8 @@ export const enableCaptions = function(ignoreNowPlayingCheck) {
   if (!getResource().captionElement) return;
 
   captionsEnabled = true;
-  document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
-    capture: true,
-  });
-
+  addPictureInPictureEventListener(pictureInPictureEventListener);
+  
   info('Closed caption support enabled');
 
   if (ignoreNowPlayingCheck) return;
@@ -82,21 +80,15 @@ const prepareCaptions = function(video) {
 };
 
 /**
- * Toggles captions when video presentation mode changes
+ * Toggles captions when video enters or exits Picture in Picture mode
  *
- * @param {!Event} event - a webkitpresentationmodechanged event
+ * @param {HTMLVideoElement} video - target video element
+ * @param {boolean} isPlayingPictureInPicture - true if video playing Picture in Picture
  */
-export const videoPresentationModeChanged = function(event) {
-
-  if (!captionsEnabled) return;
+const pictureInPictureEventListener = function(video, isPlayingPictureInPicture) {
   
-  // Ignore events from other video elements e.g. adverts
-  const video =  /** @type {HTMLVideoElement} */ (event.target);
-  const expectedVideo = getResource().videoElement(true);
-  if (video != expectedVideo) return;
-
   // Toggle display of the captions and prepare video if needed
-  showingCaptions = videoPlayingPictureInPicture(video);
+  showingCaptions = isPlayingPictureInPicture;
   if (showingCaptions) prepareCaptions(video);
   lastUnprocessedCaption = '';
   processCaptions();
