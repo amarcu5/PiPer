@@ -107,14 +107,14 @@ The following build tools are used to build the extension:
 * [csso](https://github.com/css/csso) for compressing CSS
 * [svgo](https://github.com/svg/svgo) for compressing SVG images
 * [xarjs](https://github.com/robertknight/xar-js) for packaging Safari legacy extension
-* [google-closure-compiler-js](https://github.com/google/closure-compiler-js) for compiling JavaScript
+* [google-closure-compiler](https://github.com/google/closure-compiler) for compiling JavaScript
 
 These can be installed by executing the following command:
 ```Shell
 npm install -g csso-cli
 npm install -g svgo
 npm install -g xar-js
-npm install -g google-closure-compiler-js
+npm install -g google-closure-compiler
 ```
 
 #### Steps
