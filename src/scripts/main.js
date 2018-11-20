@@ -28,6 +28,7 @@ let /** ?Element */ button = null;
 let /** ?PiperResource */ currentResource = null;
 let /** ?TextTrack */ track = null;
 let /** boolean */ showingCaptions = false;
+let /** boolean */ showingEmptyCaption = false;
 let /** string */ lastUnprocessedCaption = '';
 
 /**
@@ -49,6 +50,10 @@ const localizedButtonTitle = function() {
   switch (language) {
     case 'de':
       return 'Bild-in-Bild starten';
+    case 'nl':
+      return 'Beeld in beeld starten';
+    case 'fr':
+      return 'Démarrer Image dans l’image';
     case 'en':
     default:
       return 'Open Picture in Picture mode';
@@ -132,6 +137,7 @@ const prepareCaptions = function(video) {
   // Otherwise create new caption track
   log('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
+  track.mode = 'showing';
 };
 
 /**
@@ -162,11 +168,12 @@ const videoPresentationModeChanged = function(event) {
  * @param {boolean} workaround - apply Safari bug workaround
  */
 const removeCaptions = function(video, workaround = true) {
-  track.mode = 'showing';
   while (track.activeCues.length) track.removeCue(track.activeCues[0]);
 
   // Workaround Safari bug; 'removeCue' doesn't immediately remove captions shown in Picture in Picture mode
-  if (workaround) track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
+  if (workaround && video) {
+    track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, ''));
+  }
 };
 
 /**
@@ -180,8 +187,9 @@ const processCaptions = function() {
 
   // Remove Picture in Picture mode captions and show native captions if no longer showing captions or encountered an error
   if (!showingCaptions || !captionElement) {
-    removeCaptions(video);
+    removeCaptions(video, !showingEmptyCaption);
     if (captionElement) captionElement.style.visibility = '';
+    showingEmptyCaption = true;
     return;
   }
 
@@ -221,6 +229,7 @@ const processCaptions = function() {
   caption = caption.trim();
   log('Showing caption "' + caption + '"');
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
+  showingEmptyCaption = false;
 };
 
 /**
@@ -405,9 +414,9 @@ const resources = {
     buttonElementType: 'div',
     buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
     buttonParent: function() {
-      return document.querySelector('.video-controls__group-right');
+      return document.querySelector('.controls-bar-right-section');
     },
-    buttonScale: 0.7,
+    buttonScale: 0.9,
     buttonStyle: /** CSS */ (`
       height: 100%;
       margin-right: 15px;
@@ -527,17 +536,36 @@ const resources = {
       return parent.lastChild.previousSibling;
     },
     buttonParent: function() {
-      return document.querySelector('.control-container .toolbar');
+      return document.querySelector('.control-container .toolbar .right');
     },
     buttonScale: 0.65,
     buttonStyle: /** CSS */ (`
-      position: relative;
-      top: 2px;
+      margin-top: 3px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
     `),
     videoElement: function() {
       return document.querySelector('.control-container + video');
+    },
+  },
+
+  'mlb': {
+    buttonScale: 0.7,
+    buttonStyle: /** CSS */ (`
+      border: 0px;
+      background: transparent;
+      filter: brightness(80%);
+    `),
+    buttonHoverStyle: /** CSS */ (`filter: brightness(120%) !important`),
+    buttonParent: function() {
+      return document.querySelector('.bottom-controls-right');
+    },
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    videoElement: function() {
+      return document.querySelector('.mlbtv-media-player video');
     },
   },
 
@@ -628,7 +656,7 @@ const resources = {
       return document.querySelector('.libjass-subs');
     },
     videoElement: function() {
-      return document.querySelector('video[class^="VideoContainer-videoElement"]');
+      return document.querySelector('video[class^="HTMLMedia-mediaElement"]');
     },
   },
 
@@ -698,6 +726,26 @@ const resources = {
     },
   },
 
+  'ted': {
+    buttonClassName: 'z-i:0 pos:r bottom:0 hover/bg:white.7 b-r:.1 p:1 cur:p',
+    buttonElementType: 'div',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      const playButton = document.querySelector('[aria-controls="video1"]');
+      return playButton.parentElement.parentElement;
+    },
+    buttonDidAppear: function() {
+      const img = button.querySelector('img');
+      img.classList.add('w:2');
+      img.classList.add('h:2');
+    },
+    videoElement: function() {
+      return document.querySelector('video[id^="ted-player-"]');
+    }
+  },
+
   'theonion': {
     buttonClassName: 'jw-icon jw-icon-inline jw-button-color jw-reset jw-icon-logo',
     buttonElementType: 'div',
@@ -722,9 +770,9 @@ const resources = {
   'twitch': {
     buttonClassName: 'player-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.nextSibling;
+      const neighbourButton = document.querySelector('.qa-fullscreen-button');
       const neighbourTooltip = /** @type {HTMLElement} */ (neighbourButton.querySelector('.player-tip'));
-      const /** string */ title = button.title;
+      const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourTooltip.dataset['tip'];
       button.title = '';
       button.addEventListener('mouseover', function() {
@@ -739,17 +787,16 @@ const resources = {
         const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement());
         if (video) video.webkitSetPresentationMode('inline');
       });
+      neighbourButton.style.order = 2;
     },
     buttonHoverStyle: /** CSS */ (`
       filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);
     `),
-    buttonInsertBefore: function(/** Element */ parent) {
-      return parent.querySelector('.qa-fullscreen-button');
-    },
     buttonParent: function() {
       return document.querySelector('.player-buttons-right');
     },
     buttonScale: 0.8,
+    buttonStyle: /** CSS */ (`order: 1`),
     captionElement: function() {
       return document.querySelector('.player-captions-container');
     },
@@ -836,6 +883,50 @@ const resources = {
     },
   },
 
+  'viervijfzes': {
+    buttonClassName: 'vjs-control vjs-button',
+    buttonDidAppear: function() {
+      // Move fullscreen button to the right so the pip button appears left of it
+      const fullScreenButton = document.getElementsByClassName("vjs-fullscreen-control")[0];
+      fullScreenButton.style.order = 10;
+    },
+    buttonParent: function() {
+      return document.getElementsByClassName("vjs-control-bar")[0];
+    },
+    buttonStyle: /** CSS */ (`
+      text-indent: 0! important;
+      margin-left: 10px;
+      order: 9;
+    `),
+    videoElement: function() {
+      return document.querySelector('video[preload="metadata"]');
+    },
+  },
+
+  'vrt': {
+    buttonClassName: 'vuplay-control',
+    buttonInsertBefore: function(/** Element */ parent) {
+      return parent.lastChild;
+    },
+    buttonParent: function() {
+      return document.getElementsByClassName("vuplay-control-right")[0];
+    },
+    captionElement: function() {
+      return document.querySelector('.theoplayer-texttracks');
+    },
+    buttonStyle: /** CSS */ (`
+      width: 30px;
+      height: 47px;
+      padding: 0;
+      position: relative;
+      top: -9px;
+      right: 8px;
+    `),
+    videoElement: function() {
+      return document.querySelector('video[preload="metadata"]');
+    },
+  },
+
   'vrv': {
     buttonClassName: 'vjs-control vjs-button',
     buttonDidAppear: function() {
@@ -869,11 +960,39 @@ const resources = {
     },
   },
 
+  'yeloplay': {
+    buttonClassName: 'button',
+    buttonDidAppear: function() {
+      const parent = currentResource.buttonParent();
+      parent.style.width = "210px";
+    },
+    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
+    buttonInsertBefore: function(/** Element */ parent) {
+      return document.getElementsByTagName("player-fullscreen-button")[0];
+    },
+    buttonParent: function() {
+      return document.getElementsByClassName("buttons")[0];
+    },
+    buttonScale: 0.8,
+    buttonStyle: /** CSS */ (`
+      margin-bottom: -10px;
+      margin-left: 10px;
+      width: 50px;
+      cursor: pointer;
+      opacity: 0.8;
+      height: 40px !important;
+      margin-bottom: 0px !important;
+    `),
+    videoElement: function() {
+      return document.querySelector("video[src]");
+    },
+  },
+
   'youtube': {
     buttonClassName: 'ytp-button',
     buttonDidAppear: function() {
-      const neighbourButton = button.previousSibling;
-      const /** string */ title = button.title;
+      const neighbourButton = button.nextSibling;
+      const title = localizedButtonTitle();
       const /** string */ neighbourTitle = neighbourButton.title;
       button.title = '';
       button.addEventListener('mouseover', function() {
@@ -921,6 +1040,9 @@ resources['oload'] = resources['openload'];
 resources['periscope'] = resources['pscp'];
 resources['primevideo'] = resources['amazon'];
 resources['stream'] = resources['seznam'];
+resources['vier'] = resources['viervijfzes'];
+resources['vijf'] = resources['viervijfzes'];
+resources['zes'] = resources['viervijfzes'];
 resources['youtu'] = resources['youtube'];
 
 
@@ -933,9 +1055,11 @@ if (domainName in resources) {
 
   initialiseCaches();
 
-  document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
-    capture: true,
-  });
+  if (currentResource.captionElement) {
+    document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
+      capture: true,
+    });
+  }
 
   const observer = new MutationObserver(mutationObserver);
   observer.observe(document, {
