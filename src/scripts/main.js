@@ -575,6 +575,7 @@ const resources = {
       return parent.lastChild;
     },
     buttonImage: 'netflix',
+    buttonHoverStyle: /** CSS */ (`transform: scale(1.2);`),
     buttonParent: function() {
       return document.querySelector('.PlayerControlsNeo__button-control-row');
     },
