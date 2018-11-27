@@ -59,11 +59,5 @@ class ViewController: NSViewController {
       NSWorkspace.shared.open(url)
     }
   }
-  
-  @IBAction func clickedDonate(sender: NSButton) {
-    if let url = URL(string: "https://paypal.me/adampmarcus") {
-      NSWorkspace.shared.open(url)
-    }
-  }
 
 }

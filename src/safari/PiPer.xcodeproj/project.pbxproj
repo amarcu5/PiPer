@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		851545D721A1D23E002B149F /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */; };
+		851545D921A1D430002B149F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 851545D821A1D430002B149F /* StoreKit.framework */; };
+		851A5FA6219F971000A6E0CD /* DonateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A5FA5219F971000A6E0CD /* DonateViewController.swift */; };
 		85254C902100C6CA000CDDE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254C8F2100C6CA000CDDE0 /* AppDelegate.swift */; };
 		85254C922100C6CA000CDDE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254C912100C6CA000CDDE0 /* ViewController.swift */; };
 		85254CA92100C703000CDDE0 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254CA82100C703000CDDE0 /* SafariExtensionHandler.swift */; };
@@ -19,6 +22,10 @@
 		85A0EA8121726E30000DB27C /* images in Resources */ = {isa = PBXBuildFile; fileRef = 85A0EA7B21726E2B000DB27C /* images */; };
 		85A0EA8621726F05000DB27C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85A0EA8521726F05000DB27C /* Main.storyboard */; };
 		85A0EA8C2172850D000DB27C /* ResourceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A0EA8B2172850D000DB27C /* ResourceHelper.swift */; };
+		85CBAE6B21A32FF40004C5E6 /* DonateProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */; };
+		85CBAE6E21A359520004C5E6 /* DonateContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */; };
+		85CBAE8F21A6083A0004C5E6 /* DonationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */; };
+		85CBAEB321A74BFF0004C5E6 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */; };
 		85E505AB211E330F003B446B /* Defines.c in Sources */ = {isa = PBXBuildFile; fileRef = 85E505AA211E330F003B446B /* Defines.c */; };
 		85E505AC211E3339003B446B /* Defines.c in Sources */ = {isa = PBXBuildFile; fileRef = 85E505AA211E330F003B446B /* Defines.c */; };
 /* End PBXBuildFile section */
@@ -48,6 +55,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseHelper.swift; sourceTree = "<group>"; };
+		851545D821A1D430002B149F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		851A5FA5219F971000A6E0CD /* DonateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateViewController.swift; sourceTree = "<group>"; };
 		851C3AE62113D4F90052505E /* PiPer_App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPer_App.entitlements; sourceTree = "<group>"; };
 		851C3AE72113D4FE0052505E /* PiPer_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPer_Extension.entitlements; sourceTree = "<group>"; };
 		85254C8C2100C6CA000CDDE0 /* PiPer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +75,10 @@
 		85A0EA7B21726E2B000DB27C /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		85A0EA8521726F05000DB27C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		85A0EA8B2172850D000DB27C /* ResourceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHelper.swift; sourceTree = "<group>"; };
+		85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateProgressViewController.swift; sourceTree = "<group>"; };
+		85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateContainerViewController.swift; sourceTree = "<group>"; };
+		85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationManager.swift; sourceTree = "<group>"; };
+		85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		85E505A7211E22A4003B446B /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		85E505AA211E330F003B446B /* Defines.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Defines.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				851545D921A1D430002B149F /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,10 +127,16 @@
 			children = (
 				85254C8F2100C6CA000CDDE0 /* AppDelegate.swift */,
 				85A0EA8B2172850D000DB27C /* ResourceHelper.swift */,
+				851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */,
+				85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */,
 				85254C912100C6CA000CDDE0 /* ViewController.swift */,
 				854061A7217167EA00F60C11 /* LocalizedButton.swift */,
 				854061A92172234300F60C11 /* LocalizedTextField.swift */,
 				854061A52171599100F60C11 /* LocalizationManager.swift */,
+				85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */,
+				85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */,
+				851A5FA5219F971000A6E0CD /* DonateViewController.swift */,
+				85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */,
 				85A0EA8521726F05000DB27C /* Main.storyboard */,
 				857DA7322116237700B38873 /* Icon.icns */,
 				851C3AE62113D4F90052505E /* PiPer_App.entitlements */,
@@ -138,6 +159,7 @@
 		8589A341211E42FD006F9C65 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				851545D821A1D430002B149F /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,10 +238,19 @@
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
 							};
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.NetworkExtensions = {
 								enabled = 0;
 							};
 							com.apple.Sandbox = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -228,6 +259,9 @@
 						CreatedOnToolsVersion = 10.0;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+							com.apple.HardenedRuntime = {
 								enabled = 1;
 							};
 							com.apple.NetworkExtensions = {
@@ -284,11 +318,17 @@
 			files = (
 				854061A8217167EA00F60C11 /* LocalizedButton.swift in Sources */,
 				85E505AB211E330F003B446B /* Defines.c in Sources */,
+				85CBAE8F21A6083A0004C5E6 /* DonationManager.swift in Sources */,
 				85254C922100C6CA000CDDE0 /* ViewController.swift in Sources */,
+				851545D721A1D23E002B149F /* InAppPurchaseHelper.swift in Sources */,
 				85254C902100C6CA000CDDE0 /* AppDelegate.swift in Sources */,
 				85A0EA8C2172850D000DB27C /* ResourceHelper.swift in Sources */,
 				854061A62171599100F60C11 /* LocalizationManager.swift in Sources */,
 				854061AA2172234300F60C11 /* LocalizedTextField.swift in Sources */,
+				851A5FA6219F971000A6E0CD /* DonateViewController.swift in Sources */,
+				85CBAE6B21A32FF40004C5E6 /* DonateProgressViewController.swift in Sources */,
+				85CBAEB321A74BFF0004C5E6 /* ConfettiView.swift in Sources */,
+				85CBAE6E21A359520004C5E6 /* DonateContainerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +489,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -472,6 +513,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -492,6 +534,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Extension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -513,6 +556,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Extension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

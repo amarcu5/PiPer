@@ -12,6 +12,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
+    // Preload donation in-app purchases
+    DonationManager.shared.getDonationProducts()
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {

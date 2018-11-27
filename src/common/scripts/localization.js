@@ -14,6 +14,26 @@ localizations['donate'] = {
   'de': 'Spenden',
 };
 
+localizations['donate-small'] = {
+  'en': 'Small donation',
+};
+
+localizations['donate-medium'] = {
+  'en': 'Medium donation',
+};
+
+localizations['donate-large'] = {
+  'en': 'Grand donation',
+};
+
+localizations['total-donations'] = {
+  'en': 'Total donations:',
+};
+
+localizations['donate-error'] = {
+  'en': 'In-app purchase unavailable',
+};
+
 localizations['report-bug'] = {
   'en': 'Report a bug',
   'de': 'Einen Fehler melden',
