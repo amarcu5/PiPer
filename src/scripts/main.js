@@ -96,7 +96,7 @@ const addButton = function(parent) {
     button.addEventListener('click', function(event) {
       event.preventDefault();
 
-      // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts) 
+      // Get the video element and bypass caching to accomodate for the underlying video changing (e.g. pre-roll adverts)
       const video = /** @type {?HTMLVideoElement} */ (currentResource.videoElement(true));
       if (!video) {
         log('Unable to find video');
@@ -146,18 +146,18 @@ const prepareCaptions = function(video) {
  * @param {Event} event - a webkitpresentationmodechanged event
  */
 const videoPresentationModeChanged = function(event) {
-  
+
   // Ignore events from other video elements e.g. adverts
   const video =  /** @type {HTMLVideoElement} */ (event.target);
   const expectedVideo = currentResource.videoElement(true);
   if (video != expectedVideo) return;
-  
+
   // Toggle display of the captions and prepare video if needed
   showingCaptions = video.webkitPresentationMode == 'picture-in-picture';
   if (showingCaptions) prepareCaptions(video);
   lastUnprocessedCaption = '';
   processCaptions();
-  
+
   log('Video presentation mode changed (showingCaptions: ' + showingCaptions + ')');
 };
 
@@ -253,7 +253,7 @@ const mutationObserver = function() {
  * Initialises caching for button, video, and caption elements
  */
 const initialiseCaches = function() {
-  
+
   // Return a unique id
   let uniqueIdCounter = 0;
   const uniqueId = function() {
@@ -265,16 +265,16 @@ const initialiseCaches = function() {
     let cachedElementId = null;
 
     return function(bypassCache) {
-      
+
       // Return element by id if possible
-      const cachedElement = cachedElementId ? 
+      const cachedElement = cachedElementId ?
           document.getElementById(cachedElementId) : null;
       if (cachedElement && !bypassCache) return cachedElement;
-        
+
       // Call the underlying function to get the element
       const uncachedElement = elementFunction();
       if (uncachedElement) {
-        
+
         // Save the native id otherwise assign a unique id
         if (!uncachedElement.id) uncachedElement.id = uniqueId();
         cachedElementId = uncachedElement.id;
@@ -571,19 +571,15 @@ const resources = {
 
   'netflix': {
     buttonClassName: 'touchable PlayerControls--control-element nfp-button-control default-control-button',
-    buttonHoverStyle: /** CSS */ (`
-      filter: brightness(130%);
-      transform: scale(1.1);
-    `),
     buttonInsertBefore: function(/** Element */ parent) {
       return parent.lastChild;
     },
     buttonImage: 'netflix',
+    buttonHoverStyle: /** CSS */ (`transform: scale(1.2);`),
     buttonParent: function() {
-      return document.querySelector('.PlayerControls--button-control-row'); 
+      return document.querySelector('.PlayerControlsNeo__button-control-row');
     },
     buttonScale: 0.6,
-    buttonStyle: /** CSS */ (`transition: all 0.1s linear`),
     captionElement: function() {
       const e = currentResource.videoElement();
       return e && e.parentElement.querySelector('.player-timedtext');
@@ -704,7 +700,7 @@ const resources = {
       return document.querySelector('.sznp-ui-tech-video-wrapper video');
     },
   },
- 
+
   'streamable': {
     buttonDidAppear: function() {
       const progressBar = document.getElementById('player-progress');
@@ -1059,7 +1055,7 @@ if (domainName in resources) {
   currentResource = resources[domainName];
 
   initialiseCaches();
-  
+
   if (currentResource.captionElement) {
     document.addEventListener('webkitpresentationmodechanged', videoPresentationModeChanged, {
       capture: true,
