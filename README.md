@@ -42,7 +42,7 @@
 
 ## Installation
 ### Safari
-Install from the [Mac App Store](https://itunes.apple.com/app/1421915518?mt=12&ls=1)  by clicking "Get"  
+Install from the [Mac App Store](https://itunes.apple.com/app/id1421915518?mt=12&ls=1) by clicking "Get"  
 <sub>(The [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X) is now [deprecated](https://developer.apple.com/documentation/safariextensions))</sub>
 ### Chrome
 Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/piper/jbjleapidaddpbncgofepljddfeoghkc) by clicking "Add to Chrome"
