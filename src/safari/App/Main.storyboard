@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Application-->
+        <scene sceneID="JPo-4y-FX3">
+            <objects>
+                <application id="hnw-xV-0zn" sceneMemberID="viewController">
+                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
+                        <items>
+                            <menuItem title="PiPer" id="1Xt-HY-uBw">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="PiPer" systemMenu="apple" id="uQy-DD-JDr">
+                                    <items>
+                                        <menuItem title="Quit PiPer" keyEquivalent="q" id="4sb-4s-VLi">
+                                            <connections>
+                                                <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
+                    </connections>
+                </application>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PiPer" customModuleProvider="target"/>
+                <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+                <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="360" y="-44"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="R2V-B0-nI4">
+            <objects>
+                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                    <window key="window" title="PiPer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="IQv-IB-iLA">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="356" height="220"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="356" height="220"/>
+                        <value key="maxSize" type="size" width="356" height="220"/>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                    </connections>
+                </windowController>
+                <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="55"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="hIz-AP-VOD">
+            <objects>
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="PiPer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="m2S-Jp-Qdl">
+                        <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="underWindowBackground" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="fhh-nv-kqK">
+                                <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fhh-nv-kqK" secondAttribute="trailing" id="R1a-1n-kYy"/>
+                            <constraint firstItem="fhh-nv-kqK" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Vgc-sd-EOP"/>
+                            <constraint firstItem="fhh-nv-kqK" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="ZHb-JW-3Uc"/>
+                            <constraint firstAttribute="bottom" secondItem="fhh-nv-kqK" secondAttribute="bottom" id="f4x-N6-X6o"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="extensionDisabledView" destination="Wtu-CL-ZAO" id="yuV-8q-YtZ"/>
+                        <outlet property="mainView" destination="3Hb-XS-UyM" id="yUU-7Q-ncx"/>
+                        <outlet property="viewContainer" destination="fhh-nv-kqK" id="c0U-Yq-xxu"/>
+                    </connections>
+                </viewController>
+                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView id="Wtu-CL-ZAO">
+                    <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SlA-kL-hiD">
+                            <rect key="frame" x="16" y="94" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="ZWA-Q4-Gnv"/>
+                                <constraint firstAttribute="width" constant="32" id="sOE-7r-348"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSCaution" id="dJM-ez-eQ2"/>
+                        </imageView>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5oh-0M-Zn6" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="265" y="93" width="81" height="32"/>
+                            <buttonCell key="cell" type="push" title="enable" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HcB-QW-aQq">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="clickedEnableExtensionWithSender:" target="XfG-lQ-9wD" id="jgv-vd-Hd3"/>
+                            </connections>
+                        </button>
+                        <textField horizontalHuggingPriority="200" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="500" translatesAutoresizingMaskIntoConstraints="NO" id="Gzc-Eb-L1r" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="56" y="102" width="207" height="17"/>
+                            <textFieldCell key="cell" alignment="left" title="safari-disabled-warning" drawsBackground="YES" id="LEL-vU-9sz">
+                                <font key="font" metaFont="systemMedium" size="13"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="5oh-0M-Zn6" firstAttribute="leading" secondItem="Gzc-Eb-L1r" secondAttribute="trailing" constant="8" id="Hcd-kf-9uY"/>
+                        <constraint firstItem="Gzc-Eb-L1r" firstAttribute="leading" secondItem="SlA-kL-hiD" secondAttribute="trailing" constant="8" id="IAC-H1-5u2"/>
+                        <constraint firstItem="SlA-kL-hiD" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="P98-CO-DBI"/>
+                        <constraint firstItem="5oh-0M-Zn6" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="Ttv-0y-TAb"/>
+                        <constraint firstItem="Gzc-Eb-L1r" firstAttribute="centerY" secondItem="Wtu-CL-ZAO" secondAttribute="centerY" id="cWx-Ul-bxK"/>
+                        <constraint firstItem="SlA-kL-hiD" firstAttribute="leading" secondItem="Wtu-CL-ZAO" secondAttribute="leading" constant="16" id="gUm-TC-3DN"/>
+                        <constraint firstAttribute="trailing" secondItem="5oh-0M-Zn6" secondAttribute="trailing" constant="16" id="rAw-aH-ZXO"/>
+                    </constraints>
+                </customView>
+                <customView id="3Hb-XS-UyM">
+                    <rect key="frame" x="0.0" y="0.0" width="356" height="220"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="l9e-rg-eUq">
+                            <rect key="frame" x="58" y="88" width="80" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="52v-J9-pFo"/>
+                                <constraint firstAttribute="height" constant="80" id="9ic-ED-CML"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Icon" id="655-Gm-l0p"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aXl-MI-TCo">
+                            <rect key="frame" x="61" y="45" width="73" height="39"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="PiPer" drawsBackground="YES" id="pyu-MO-9NT">
+                                <font key="font" metaFont="system" size="32"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h9M-Bg-2Qi" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="196" y="104" width="107" height="32"/>
+                            <buttonCell key="cell" type="push" title="report-bug" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HPq-wV-jsz">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="clickedReportBugWithSender:" target="XfG-lQ-9wD" id="GA1-uc-3Zx"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l7Q-NM-lYD" customClass="LocalizedButton" customModule="PiPer" customModuleProvider="target">
+                            <rect key="frame" x="196" y="70" width="107" height="32"/>
+                            <buttonCell key="cell" type="push" title="donate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jbL-wE-6Bb">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <segue destination="1sh-YF-bwE" kind="sheet" id="qCv-wd-VJy"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="l9e-rg-eUq" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="0.55" id="0rd-47-5ke"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" multiplier="1.2" id="1yu-Ya-ffe"/>
+                        <constraint firstItem="aXl-MI-TCo" firstAttribute="top" secondItem="l9e-rg-eUq" secondAttribute="bottom" constant="4" id="9A4-i3-Pj0"/>
+                        <constraint firstItem="l9e-rg-eUq" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" constant="-18" id="NqP-Fs-Cka"/>
+                        <constraint firstItem="aXl-MI-TCo" firstAttribute="centerX" secondItem="l9e-rg-eUq" secondAttribute="centerX" id="SqJ-aZ-Yox"/>
+                        <constraint firstItem="h9M-Bg-2Qi" firstAttribute="centerY" secondItem="3Hb-XS-UyM" secondAttribute="centerY" multiplier="0.9" id="XJe-gR-gCd"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="1.4" id="b0H-tS-xdf"/>
+                        <constraint firstItem="h9M-Bg-2Qi" firstAttribute="centerX" secondItem="3Hb-XS-UyM" secondAttribute="centerX" multiplier="1.4" id="bh5-aa-dpw"/>
+                        <constraint firstItem="l7Q-NM-lYD" firstAttribute="width" secondItem="h9M-Bg-2Qi" secondAttribute="width" id="orO-L8-WbF"/>
+                    </constraints>
+                </customView>
+            </objects>
+            <point key="canvasLocation" x="75" y="688"/>
+        </scene>
+        <!--Donate Progress View Controller-->
+        <scene sceneID="exg-Cy-V2E">
+            <objects>
+                <viewController id="xq6-KE-CKE" customClass="DonateProgressViewController" customModule="PiPer" customModuleProvider="target" sceneMemberID="viewController">
+                    <customView key="view" id="Z3j-yD-7xa" userLabel="Progress View">
+                        <rect key="frame" x="0.0" y="0.0" width="232" height="164"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="E2A-bR-Me7">
+                                <rect key="frame" x="100" y="50" width="32" height="32"/>
+                            </progressIndicator>
+                            <textField horizontalHuggingPriority="700" verticalHuggingPriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="bXO-nx-K3f" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                                <rect key="frame" x="14" y="130" width="61" height="22"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="donate" id="rKt-S9-lad">
+                                    <font key="font" metaFont="system" size="18"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="bch-TQ-lJc">
+                                <rect key="frame" x="200" y="132" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="5Dk-nE-VK5"/>
+                                    <constraint firstAttribute="width" constant="16" id="FKA-tU-4uc"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="fAn-Nq-nO9">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dismissClickedWithSender:" target="xq6-KE-CKE" id="G6E-PK-2VE"/>
+                                </connections>
+                            </button>
+                            <textField hidden="YES" horizontalHuggingPriority="200" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="500" translatesAutoresizingMaskIntoConstraints="NO" id="3uK-eO-TcT" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                                <rect key="frame" x="74" y="58" width="84" height="17"/>
+                                <textFieldCell key="cell" alignment="left" title="donate-error" drawsBackground="YES" id="Hxk-5m-6NQ">
+                                    <font key="font" metaFont="systemMedium" size="13"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="E2A-bR-Me7" firstAttribute="centerX" secondItem="3uK-eO-TcT" secondAttribute="centerX" id="2vw-3v-xBM"/>
+                            <constraint firstAttribute="trailing" secondItem="E2A-bR-Me7" secondAttribute="trailing" constant="100" id="BlZ-i8-jaF"/>
+                            <constraint firstAttribute="bottom" secondItem="E2A-bR-Me7" secondAttribute="bottom" constant="50" id="M9l-9k-0VE"/>
+                            <constraint firstItem="E2A-bR-Me7" firstAttribute="centerY" secondItem="3uK-eO-TcT" secondAttribute="centerY" id="SJ6-ae-jQf"/>
+                            <constraint firstItem="bXO-nx-K3f" firstAttribute="leading" secondItem="Z3j-yD-7xa" secondAttribute="leading" constant="16" id="VcV-Nc-ter"/>
+                            <constraint firstItem="E2A-bR-Me7" firstAttribute="leading" secondItem="Z3j-yD-7xa" secondAttribute="leading" constant="100" id="fGX-Sq-opK"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3uK-eO-TcT" secondAttribute="trailing" constant="16" id="hSv-y4-EXk"/>
+                            <constraint firstItem="3uK-eO-TcT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Z3j-yD-7xa" secondAttribute="leading" constant="16" id="hTs-8t-V5s"/>
+                            <constraint firstItem="bch-TQ-lJc" firstAttribute="top" secondItem="Z3j-yD-7xa" secondAttribute="top" constant="16" id="hdL-dp-n0p"/>
+                            <constraint firstItem="bXO-nx-K3f" firstAttribute="top" secondItem="Z3j-yD-7xa" secondAttribute="top" constant="12" id="j5I-CN-UJD"/>
+                            <constraint firstAttribute="trailing" secondItem="bch-TQ-lJc" secondAttribute="trailing" constant="16" id="rRf-qq-P7G"/>
+                            <constraint firstItem="bch-TQ-lJc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bXO-nx-K3f" secondAttribute="trailing" constant="32" id="uO5-sb-fQB"/>
+                            <constraint firstItem="E2A-bR-Me7" firstAttribute="top" secondItem="Z3j-yD-7xa" secondAttribute="top" constant="82" id="xHG-uf-eaf"/>
+                        </constraints>
+                    </customView>
+                    <connections>
+                        <outlet property="errorMessage" destination="3uK-eO-TcT" id="8PG-6n-cfA"/>
+                        <outlet property="progressIndicator" destination="E2A-bR-Me7" id="6tU-D7-Ded"/>
+                    </connections>
+                </viewController>
+                <customObject id="vHi-dq-1X0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="883" y="1114"/>
+        </scene>
+        <!--Donate Container View Controller-->
+        <scene sceneID="4f0-FV-KFt">
+            <objects>
+                <tabViewController selectedTabViewItemIndex="0" tabStyle="unspecified" canPropagateSelectedChildViewControllerTitle="NO" id="1sh-YF-bwE" customClass="DonateContainerViewController" customModule="PiPer" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem id="FNZ-vA-ksg">
+                            <nil key="label"/>
+                        </tabViewItem>
+                        <tabViewItem id="yts-dh-y6U">
+                            <nil key="label"/>
+                        </tabViewItem>
+                    </tabViewItems>
+                    <viewControllerTransitionOptions key="transitionOptions"/>
+                    <tabView key="tabView" type="noTabsNoBorder" id="wNE-Ok-s1w">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <font key="font" metaFont="message"/>
+                        <connections>
+                            <outlet property="delegate" destination="1sh-YF-bwE" id="AYb-DG-aSi"/>
+                        </connections>
+                    </tabView>
+                    <connections>
+                        <outlet property="donateProgressViewTabItem" destination="FNZ-vA-ksg" id="6Rv-TM-Xbs"/>
+                        <outlet property="donateViewTabItem" destination="yts-dh-y6U" id="ssm-6E-EOf"/>
+                        <outlet property="tabView" destination="wNE-Ok-s1w" id="4Hw-fF-nhC"/>
+                        <segue destination="xq6-KE-CKE" kind="relationship" relationship="tabItems" id="ows-ED-wFf"/>
+                        <segue destination="GR1-9j-nxR" kind="relationship" relationship="tabItems" id="W0l-7m-cHu"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="4GA-r3-EqO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="708" y="688"/>
+        </scene>
+        <!--Donate View Controller-->
+        <scene sceneID="SK0-Zh-jDO">
+            <objects>
+                <userDefaultsController representsSharedInstance="YES" id="w8N-nO-ksB"/>
+                <customObject id="x5G-oc-Cl6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="GR1-9j-nxR" customClass="DonateViewController" customModule="PiPer" customModuleProvider="target" sceneMemberID="viewController">
+                    <customView key="view" id="jce-U3-f7Q" userLabel="Donate View">
+                        <rect key="frame" x="0.0" y="0.0" width="290" height="211"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="700" verticalHuggingPriority="700" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Qla-Ap-0TG" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                                <rect key="frame" x="14" y="177" width="214" height="22"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="donate" id="5EO-9z-Dxr">
+                                    <font key="font" metaFont="system" size="18"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="fkf-qb-CLL">
+                                <rect key="frame" x="258" y="179" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Ib1-Px-Ar5"/>
+                                    <constraint firstAttribute="width" constant="16" id="ZLd-K6-ZMG"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="gLf-Cj-g0U">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dismissClickedWithSender:" target="GR1-9j-nxR" id="Old-11-Q0X"/>
+                                </connections>
+                            </button>
+                            <scrollView borderType="none" horizontalLineScroll="41" horizontalPageScroll="10" verticalLineScroll="41" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="3xY-5n-Vbh">
+                                <rect key="frame" x="20" y="57" width="250" height="100"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="gfE-sr-B6p">
+                                    <rect key="frame" x="0.0" y="0.0" width="250" height="100"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="41" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" floatsGroupRows="NO" id="olo-kf-cLh">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="gridColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <tableColumns>
+                                                <tableColumn identifier="DonationView" editable="NO" width="250" minWidth="40" maxWidth="1000" id="JyQ-k0-fgZ" userLabel="Table Column">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="Mzk-zH-z2o">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="DonationView" id="ZU1-3P-6SN">
+                                                            <rect key="frame" x="0.0" y="0.0" width="250" height="41"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <button horizontalHuggingPriority="600" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sog-KQ-GEk">
+                                                                    <rect key="frame" x="155" y="3" width="81" height="32"/>
+                                                                    <buttonCell key="cell" type="push" title="[price]" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8UV-Mq-9Dr">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                        <font key="font" metaFont="system"/>
+                                                                    </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="buyClickedWithSender:" target="GR1-9j-nxR" id="IIx-8J-Ntq"/>
+                                                                        <binding destination="ZU1-3P-6SN" name="title" keyPath="objectValue.price" id="iFQ-vj-MH6"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <textField horizontalHuggingPriority="600" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hr1-xK-qgu">
+                                                                    <rect key="frame" x="41" y="12" width="83" height="17"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="[donate title]" id="udR-9h-GKY">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="ZU1-3P-6SN" name="value" keyPath="objectValue.name" id="47R-DM-6Jh"/>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField horizontalHuggingPriority="600" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="b0V-JY-XrR">
+                                                                    <rect key="frame" x="18" y="12" width="23" height="17"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="17" id="QdU-dF-gV5"/>
+                                                                        <constraint firstAttribute="width" constant="19" id="mmi-Q8-YXX"/>
+                                                                    </constraints>
+                                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="🙂" id="43s-1k-v0h">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="ZU1-3P-6SN" name="value" keyPath="objectValue.emoticon" id="hk1-FH-AEy"/>
+                                                                    </connections>
+                                                                </textField>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="sog-KQ-GEk" secondAttribute="trailing" constant="20" id="3dr-fi-PSr"/>
+                                                                <constraint firstItem="Hr1-xK-qgu" firstAttribute="leading" secondItem="b0V-JY-XrR" secondAttribute="trailing" constant="4" id="NwT-BL-sll"/>
+                                                                <constraint firstItem="sog-KQ-GEk" firstAttribute="top" secondItem="ZU1-3P-6SN" secondAttribute="top" constant="10" id="Ugx-5j-kJ5"/>
+                                                                <constraint firstAttribute="bottom" secondItem="sog-KQ-GEk" secondAttribute="bottom" constant="10" id="X4t-gu-0b6"/>
+                                                                <constraint firstItem="b0V-JY-XrR" firstAttribute="leading" secondItem="ZU1-3P-6SN" secondAttribute="leading" constant="20" id="bch-fC-0rz"/>
+                                                                <constraint firstItem="Hr1-xK-qgu" firstAttribute="centerY" secondItem="sog-KQ-GEk" secondAttribute="centerY" id="ozX-67-q6l"/>
+                                                                <constraint firstItem="b0V-JY-XrR" firstAttribute="centerY" secondItem="sog-KQ-GEk" secondAttribute="centerY" id="xyO-Jl-lyi"/>
+                                                                <constraint firstItem="sog-KQ-GEk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hr1-xK-qgu" secondAttribute="trailing" constant="20" id="yI5-rB-nOq"/>
+                                                            </constraints>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
+                                            </tableColumns>
+                                            <connections>
+                                                <binding destination="GR1-9j-nxR" name="content" keyPath="self.donationProducts" id="tGM-Nk-kgc"/>
+                                            </connections>
+                                        </tableView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="0zv-4R-5jc"/>
+                                    <constraint firstAttribute="width" constant="250" id="cl8-we-9Se"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="fcd-Ce-3EI">
+                                    <rect key="frame" x="-100" y="-100" width="228" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="gac-6B-vof">
+                                    <rect key="frame" x="-100" y="-100" width="15" height="102"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="h03-80-d3t">
+                                <rect key="frame" x="59" y="20" width="172" height="17"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pBV-ld-iOi" customClass="LocalizedTextField" customModule="PiPer" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="97" height="17"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="justified" title="total-donations" id="x3s-bb-ehg">
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iQm-Zi-kbg">
+                                        <rect key="frame" x="99" y="0.0" width="75" height="17"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="[total price]" id="rsy-PF-Hcd">
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="iQm-Zi-kbg" secondAttribute="bottom" id="1EG-C8-Id8"/>
+                                    <constraint firstItem="pBV-ld-iOi" firstAttribute="top" secondItem="h03-80-d3t" secondAttribute="top" id="DiX-q8-tQ0"/>
+                                    <constraint firstItem="iQm-Zi-kbg" firstAttribute="top" secondItem="h03-80-d3t" secondAttribute="top" id="Grc-VA-qu3"/>
+                                    <constraint firstItem="iQm-Zi-kbg" firstAttribute="leading" secondItem="pBV-ld-iOi" secondAttribute="trailing" constant="8" id="Jjf-dV-WJ0"/>
+                                    <constraint firstAttribute="bottom" secondItem="pBV-ld-iOi" secondAttribute="bottom" id="OyK-Oz-Bdw"/>
+                                    <constraint firstItem="pBV-ld-iOi" firstAttribute="leading" secondItem="h03-80-d3t" secondAttribute="leading" id="SI9-EH-ZqN"/>
+                                    <constraint firstAttribute="trailing" secondItem="iQm-Zi-kbg" secondAttribute="trailing" id="xYO-fk-ic9"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="LkE-AY-8Be" customClass="ConfettiView" customModule="PiPer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="211" width="0.0" height="0.0"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" placeholder="YES" id="odk-ek-PXI"/>
+                                    <constraint firstAttribute="height" placeholder="YES" id="rAx-rk-ghc"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="fkf-qb-CLL" firstAttribute="top" secondItem="jce-U3-f7Q" secondAttribute="top" constant="16" id="1vq-gO-4zV"/>
+                            <constraint firstItem="fkf-qb-CLL" firstAttribute="leading" secondItem="Qla-Ap-0TG" secondAttribute="trailing" constant="32" id="5xK-PD-qqj"/>
+                            <constraint firstItem="3xY-5n-Vbh" firstAttribute="centerX" secondItem="jce-U3-f7Q" secondAttribute="centerX" id="6IE-e6-52M"/>
+                            <constraint firstAttribute="trailing" secondItem="fkf-qb-CLL" secondAttribute="trailing" constant="16" id="6ef-vV-JKx"/>
+                            <constraint firstItem="h03-80-d3t" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jce-U3-f7Q" secondAttribute="leading" constant="20" id="8Jn-IB-ZqE"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3xY-5n-Vbh" secondAttribute="trailing" constant="20" id="BUz-au-06b"/>
+                            <constraint firstAttribute="bottom" secondItem="h03-80-d3t" secondAttribute="bottom" constant="20" id="EKh-7R-Bb6"/>
+                            <constraint firstAttribute="trailing" secondItem="LkE-AY-8Be" secondAttribute="trailing" priority="10" id="GR9-El-pSz"/>
+                            <constraint firstItem="Qla-Ap-0TG" firstAttribute="top" secondItem="jce-U3-f7Q" secondAttribute="top" constant="12" id="Mxa-mZ-LYM"/>
+                            <constraint firstItem="h03-80-d3t" firstAttribute="top" secondItem="3xY-5n-Vbh" secondAttribute="bottom" constant="20" id="Nu0-Dh-Q4Z"/>
+                            <constraint firstItem="3xY-5n-Vbh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jce-U3-f7Q" secondAttribute="leading" constant="20" id="RRH-PB-gLG"/>
+                            <constraint firstAttribute="bottom" secondItem="LkE-AY-8Be" secondAttribute="bottom" priority="10" id="dec-YN-wsX"/>
+                            <constraint firstItem="LkE-AY-8Be" firstAttribute="top" secondItem="jce-U3-f7Q" secondAttribute="top" priority="100" id="gVA-aT-I3V"/>
+                            <constraint firstItem="3xY-5n-Vbh" firstAttribute="top" secondItem="Qla-Ap-0TG" secondAttribute="bottom" constant="20" id="h9U-lb-nmw"/>
+                            <constraint firstItem="Qla-Ap-0TG" firstAttribute="leading" secondItem="jce-U3-f7Q" secondAttribute="leading" constant="16" id="oSs-lE-Sua"/>
+                            <constraint firstItem="LkE-AY-8Be" firstAttribute="leading" secondItem="jce-U3-f7Q" secondAttribute="leading" priority="20" id="sLZ-FG-Ydl"/>
+                            <constraint firstItem="h03-80-d3t" firstAttribute="centerX" secondItem="jce-U3-f7Q" secondAttribute="centerX" id="tc6-rX-HfD"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h03-80-d3t" secondAttribute="trailing" constant="20" id="wzf-a8-HBd"/>
+                        </constraints>
+                    </customView>
+                    <connections>
+                        <outlet property="confettiView" destination="LkE-AY-8Be" id="z2W-cQ-VLV"/>
+                        <outlet property="donationTableView" destination="olo-kf-cLh" id="fLx-Vx-APx"/>
+                        <outlet property="tableViewHeightConstraint" destination="0zv-4R-5jc" id="m53-Ot-Emw"/>
+                        <outlet property="tableViewWidthConstraint" destination="cl8-we-9Se" id="Y1e-W1-pqX"/>
+                        <outlet property="totalDonations" destination="iQm-Zi-kbg" id="cQ3-32-YCb"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="514" y="1138"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Icon" width="512" height="512"/>
+        <image name="NSCaution" width="128" height="128"/>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
+    </resources>
+</document>

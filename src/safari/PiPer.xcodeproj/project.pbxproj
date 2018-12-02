@@ -1,0 +1,607 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		851545D721A1D23E002B149F /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */; };
+		851545D921A1D430002B149F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 851545D821A1D430002B149F /* StoreKit.framework */; };
+		851A5FA6219F971000A6E0CD /* DonateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A5FA5219F971000A6E0CD /* DonateViewController.swift */; };
+		85254C902100C6CA000CDDE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254C8F2100C6CA000CDDE0 /* AppDelegate.swift */; };
+		85254C922100C6CA000CDDE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254C912100C6CA000CDDE0 /* ViewController.swift */; };
+		85254CA92100C703000CDDE0 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254CA82100C703000CDDE0 /* SafariExtensionHandler.swift */; };
+		85254CB72100C703000CDDE0 /* PiPerExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 85254CA32100C703000CDDE0 /* PiPerExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		854061A62171599100F60C11 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854061A52171599100F60C11 /* LocalizationManager.swift */; };
+		854061A8217167EA00F60C11 /* LocalizedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854061A7217167EA00F60C11 /* LocalizedButton.swift */; };
+		854061AA2172234300F60C11 /* LocalizedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854061A92172234300F60C11 /* LocalizedTextField.swift */; };
+		857DA7332116237700B38873 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 857DA7322116237700B38873 /* Icon.icns */; };
+		85A0EA8021726E30000DB27C /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 85A0EA7A21726E2A000DB27C /* scripts */; };
+		85A0EA8121726E30000DB27C /* images in Resources */ = {isa = PBXBuildFile; fileRef = 85A0EA7B21726E2B000DB27C /* images */; };
+		85A0EA8621726F05000DB27C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85A0EA8521726F05000DB27C /* Main.storyboard */; };
+		85A0EA8C2172850D000DB27C /* ResourceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A0EA8B2172850D000DB27C /* ResourceHelper.swift */; };
+		85CBAE6B21A32FF40004C5E6 /* DonateProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */; };
+		85CBAE6E21A359520004C5E6 /* DonateContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */; };
+		85CBAE8F21A6083A0004C5E6 /* DonationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */; };
+		85CBAEB321A74BFF0004C5E6 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */; };
+		85E505AB211E330F003B446B /* Defines.c in Sources */ = {isa = PBXBuildFile; fileRef = 85E505AA211E330F003B446B /* Defines.c */; };
+		85E505AC211E3339003B446B /* Defines.c in Sources */ = {isa = PBXBuildFile; fileRef = 85E505AA211E330F003B446B /* Defines.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		85254CB52100C703000CDDE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 85254C842100C6C9000CDDE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 85254CA22100C703000CDDE0;
+			remoteInfo = PiPer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		85254CBB2100C703000CDDE0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				85254CB72100C703000CDDE0 /* PiPerExt.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseHelper.swift; sourceTree = "<group>"; };
+		851545D821A1D430002B149F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		851A5FA5219F971000A6E0CD /* DonateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateViewController.swift; sourceTree = "<group>"; };
+		851C3AE62113D4F90052505E /* PiPer_App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPer_App.entitlements; sourceTree = "<group>"; };
+		851C3AE72113D4FE0052505E /* PiPer_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPer_Extension.entitlements; sourceTree = "<group>"; };
+		85254C8C2100C6CA000CDDE0 /* PiPer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		85254C8F2100C6CA000CDDE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		85254C912100C6CA000CDDE0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		85254C982100C6CA000CDDE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85254CA32100C703000CDDE0 /* PiPerExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PiPerExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		85254CA82100C703000CDDE0 /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
+		85254CAF2100C703000CDDE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		854061A52171599100F60C11 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		854061A7217167EA00F60C11 /* LocalizedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedButton.swift; sourceTree = "<group>"; };
+		854061A92172234300F60C11 /* LocalizedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedTextField.swift; sourceTree = "<group>"; };
+		857DA7322116237700B38873 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
+		85A0EA7A21726E2A000DB27C /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scripts; sourceTree = "<group>"; };
+		85A0EA7B21726E2B000DB27C /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		85A0EA8521726F05000DB27C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		85A0EA8B2172850D000DB27C /* ResourceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHelper.swift; sourceTree = "<group>"; };
+		85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateProgressViewController.swift; sourceTree = "<group>"; };
+		85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonateContainerViewController.swift; sourceTree = "<group>"; };
+		85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationManager.swift; sourceTree = "<group>"; };
+		85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
+		85E505A7211E22A4003B446B /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
+		85E505AA211E330F003B446B /* Defines.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Defines.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		85254C892100C6CA000CDDE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				851545D921A1D430002B149F /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85254CA02100C703000CDDE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		85254C832100C6C9000CDDE0 = {
+			isa = PBXGroup;
+			children = (
+				85E505A9211E2D83003B446B /* Common */,
+				85254C8E2100C6CA000CDDE0 /* App */,
+				85254CA72100C703000CDDE0 /* Extension */,
+				85254C8D2100C6CA000CDDE0 /* Products */,
+				8589A341211E42FD006F9C65 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		85254C8D2100C6CA000CDDE0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				85254C8C2100C6CA000CDDE0 /* PiPer.app */,
+				85254CA32100C703000CDDE0 /* PiPerExt.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		85254C8E2100C6CA000CDDE0 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				85254C8F2100C6CA000CDDE0 /* AppDelegate.swift */,
+				85A0EA8B2172850D000DB27C /* ResourceHelper.swift */,
+				851545D621A1D23E002B149F /* InAppPurchaseHelper.swift */,
+				85CBAE8E21A6083A0004C5E6 /* DonationManager.swift */,
+				85254C912100C6CA000CDDE0 /* ViewController.swift */,
+				854061A7217167EA00F60C11 /* LocalizedButton.swift */,
+				854061A92172234300F60C11 /* LocalizedTextField.swift */,
+				854061A52171599100F60C11 /* LocalizationManager.swift */,
+				85CBAE6C21A359520004C5E6 /* DonateContainerViewController.swift */,
+				85CBAE6A21A32FF40004C5E6 /* DonateProgressViewController.swift */,
+				851A5FA5219F971000A6E0CD /* DonateViewController.swift */,
+				85CBAEB221A74BFF0004C5E6 /* ConfettiView.swift */,
+				85A0EA8521726F05000DB27C /* Main.storyboard */,
+				857DA7322116237700B38873 /* Icon.icns */,
+				851C3AE62113D4F90052505E /* PiPer_App.entitlements */,
+				85254C982100C6CA000CDDE0 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		85254CA72100C703000CDDE0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				85A0EA7321726E12000DB27C /* Resources */,
+				85254CA82100C703000CDDE0 /* SafariExtensionHandler.swift */,
+				851C3AE72113D4FE0052505E /* PiPer_Extension.entitlements */,
+				85254CAF2100C703000CDDE0 /* Info.plist */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		8589A341211E42FD006F9C65 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				851545D821A1D430002B149F /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		85A0EA7321726E12000DB27C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				85A0EA7A21726E2A000DB27C /* scripts */,
+				85A0EA7B21726E2B000DB27C /* images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		85E505A9211E2D83003B446B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				85E505A7211E22A4003B446B /* Defines.h */,
+				85E505AA211E330F003B446B /* Defines.c */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		85254C8B2100C6CA000CDDE0 /* PiPer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85254C9C2100C6CA000CDDE0 /* Build configuration list for PBXNativeTarget "PiPer" */;
+			buildPhases = (
+				85254C882100C6CA000CDDE0 /* Sources */,
+				85254C892100C6CA000CDDE0 /* Frameworks */,
+				85254C8A2100C6CA000CDDE0 /* Resources */,
+				85254CBB2100C703000CDDE0 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				85254CB62100C703000CDDE0 /* PBXTargetDependency */,
+			);
+			name = PiPer;
+			productName = PiPer;
+			productReference = 85254C8C2100C6CA000CDDE0 /* PiPer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		85254CA22100C703000CDDE0 /* PiPerExt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85254CB82100C703000CDDE0 /* Build configuration list for PBXNativeTarget "PiPerExt" */;
+			buildPhases = (
+				85254C9F2100C703000CDDE0 /* Sources */,
+				85254CA02100C703000CDDE0 /* Frameworks */,
+				85254CA12100C703000CDDE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PiPerExt;
+			productName = PiPer;
+			productReference = 85254CA32100C703000CDDE0 /* PiPerExt.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		85254C842100C6C9000CDDE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Adam Marcus";
+				TargetAttributes = {
+					85254C8B2100C6CA000CDDE0 = {
+						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1000;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.NetworkExtensions = {
+								enabled = 0;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					85254CA22100C703000CDDE0 = {
+						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+							com.apple.NetworkExtensions = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 85254C872100C6C9000CDDE0 /* Build configuration list for PBXProject "PiPer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 85254C832100C6C9000CDDE0;
+			productRefGroup = 85254C8D2100C6CA000CDDE0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				85254C8B2100C6CA000CDDE0 /* PiPer */,
+				85254CA22100C703000CDDE0 /* PiPerExt */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		85254C8A2100C6CA000CDDE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				857DA7332116237700B38873 /* Icon.icns in Resources */,
+				85A0EA8621726F05000DB27C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85254CA12100C703000CDDE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85A0EA8021726E30000DB27C /* scripts in Resources */,
+				85A0EA8121726E30000DB27C /* images in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		85254C882100C6CA000CDDE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				854061A8217167EA00F60C11 /* LocalizedButton.swift in Sources */,
+				85E505AB211E330F003B446B /* Defines.c in Sources */,
+				85CBAE8F21A6083A0004C5E6 /* DonationManager.swift in Sources */,
+				85254C922100C6CA000CDDE0 /* ViewController.swift in Sources */,
+				851545D721A1D23E002B149F /* InAppPurchaseHelper.swift in Sources */,
+				85254C902100C6CA000CDDE0 /* AppDelegate.swift in Sources */,
+				85A0EA8C2172850D000DB27C /* ResourceHelper.swift in Sources */,
+				854061A62171599100F60C11 /* LocalizationManager.swift in Sources */,
+				854061AA2172234300F60C11 /* LocalizedTextField.swift in Sources */,
+				851A5FA6219F971000A6E0CD /* DonateViewController.swift in Sources */,
+				85CBAE6B21A32FF40004C5E6 /* DonateProgressViewController.swift in Sources */,
+				85CBAEB321A74BFF0004C5E6 /* ConfettiView.swift in Sources */,
+				85CBAE6E21A359520004C5E6 /* DonateContainerViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85254C9F2100C703000CDDE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85254CA92100C703000CDDE0 /* SafariExtensionHandler.swift in Sources */,
+				85E505AC211E3339003B446B /* Defines.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		85254CB62100C703000CDDE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 85254CA22100C703000CDDE0 /* PiPerExt */;
+			targetProxy = 85254CB52100C703000CDDE0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		85254C9A2100C6CA000CDDE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_BUNDLE_ID = com.amarcus.PiPer;
+				APP_GROUP_ID = "$(TeamIdentifierPrefix)group.amarcus.piper";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXTENSION_BUNDLE_ID = com.amarcus.PiPer.PiPerExt;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APP_GROUP_ID_CONST=\"$(APP_GROUP_ID)\"",
+					"APP_BUNDLE_ID_CONST=\"$(APP_BUNDLE_ID)\"",
+					"EXTENSION_BUNDLE_ID_CONST=\"$(EXTENSION_BUNDLE_ID)\"",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Defines.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		85254C9B2100C6CA000CDDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_BUNDLE_ID = com.amarcus.PiPer;
+				APP_GROUP_ID = "$(TeamIdentifierPrefix)group.amarcus.piper";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXTENSION_BUNDLE_ID = com.amarcus.PiPer.PiPerExt;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APP_GROUP_ID_CONST=\"$(APP_GROUP_ID)\"",
+					"APP_BUNDLE_ID_CONST=\"$(APP_BUNDLE_ID)\"",
+					"EXTENSION_BUNDLE_ID_CONST=\"$(EXTENSION_BUNDLE_ID)\"",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Defines.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		85254C9D2100C6CA000CDDE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = App/PiPer_App.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		85254C9E2100C6CA000CDDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = App/PiPer_App.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		85254CB92100C703000CDDE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/PiPer_Extension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Extension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXTENSION_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		85254CBA2100C703000CDDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/PiPer_Extension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Extension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXTENSION_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85254C872100C6C9000CDDE0 /* Build configuration list for PBXProject "PiPer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85254C9A2100C6CA000CDDE0 /* Debug */,
+				85254C9B2100C6CA000CDDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85254C9C2100C6CA000CDDE0 /* Build configuration list for PBXNativeTarget "PiPer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85254C9D2100C6CA000CDDE0 /* Debug */,
+				85254C9E2100C6CA000CDDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85254CB82100C703000CDDE0 /* Build configuration list for PBXNativeTarget "PiPerExt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85254CB92100C703000CDDE0 /* Debug */,
+				85254CBA2100C703000CDDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 85254C842100C6C9000CDDE0 /* Project object */;
+}

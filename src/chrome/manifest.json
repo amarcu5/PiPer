@@ -1,0 +1,31 @@
+{
+  "name": "PiPer",
+  "description": "Adds Picture in Picture functionality to YouTube, Netflix, Amazon Video, Twitch, and more!",
+  "version": "0.0.0.0",
+  "version_name": "0.0.0",
+  "icons": {
+    "128": "Icon-128.png"
+  },
+  "background": {
+    "scripts": ["scripts/background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_idle",
+      "js": ["scripts/main.js"]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "web_accessible_resources": [
+    "images/*.svg",
+    "scripts/*.js"
+  ],
+  "minimum_chrome_version": "69.0.3483.0",
+  "manifest_version": 2
+}

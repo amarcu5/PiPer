@@ -1,11 +1,28 @@
-# PiPer
-Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Video, Twitch, and more!
+<p align="center">
+  <img src="/promo/Icon-512.png" alt="PiPer logo" width="200" />
+</p>
 
-<img src="/promo/Promo-shot.png" alt="Screenshot of PiPer in action" width="512" />
+<h1 align="center">
+  PiPer
+</h1>
+
+<p align="center">
+  PiPer is the browser extension to watch video Picture in Picture.
+</p>
+
+<p align="center">
+  <a href="#installation">Install</a> · 
+  <a href="https://paypal.me/adampmarcus">Donate</a> · 
+  <a href="https://github.com/amarcu5/PiPer/issues">Report an issue</a>
+</p>
+
+***
 
 ## Contents
 - [Features](#features)
 - [Installation](#installation)
+  * [Safari](#safari)
+  * [Chrome](#chrome)
 - [Supported sites](#supported-sites)
 - [Changelog](#changelog)
 - [Development](#development)
@@ -19,13 +36,18 @@ Adds Picture in Picture functionality to Safari for YouTube, Netflix, Amazon Vid
 ## Features
 * Adds a dedicated Picture in Picture button to the video player of [supported sites](#supported-sites)
 * Button integrates seamlessly with the player including hover effects and tooltips
-* Supports closed captions in Picture and Picture mode
+* Supports closed captions in Picture and Picture mode (Safari only)
+* Supports Safari and Chrome
 * Free and open source
 
 ## Installation
-Get the latest release from the [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X)
-
-<sub>...or live life on the edge with the latest [development build](https://rawgit.com/amarcu5/PiPer/develop/out/PiPer.safariextz) (IMPORTANT: these builds do not update automatically!)</sub>
+### Safari
+Install from the [Mac App Store](https://itunes.apple.com/app/id1421915518?mt=12&ls=1) by clicking "Get"  
+<sub>(The [Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.amarcus.safari.piper-BQ6Q24MF9X) is now [deprecated](https://developer.apple.com/documentation/safariextensions))</sub>
+### Chrome
+Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/piper/jbjleapidaddpbncgofepljddfeoghkc) by clicking "Add to Chrome"
+  
+<sub>...or live life on the edge with the latest [development build](https://github.com/amarcu5/PiPer/tree/develop/out) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
@@ -71,30 +93,38 @@ You can find information about releases [here](https://github.com/amarcu5/PiPer/
 ### Building
 
 #### Prerequisites
-* Mac running macOS 10.12 Sierra or later
+* Operating system
+  * macOS: 10.12 Sierra or newer (required to build Safari extension)
+  * Windows: Vista or newer using [Cygwin](https://cygwin.com/install.html)
+  * Linux: 64-bit Ubuntu 14.04+, Debian 8+, openSUSE 13.3+, or Fedora Linux 24+
+* Software
+  * [Node.js](https://nodejs.org)
+  * [Java](https://www.java.com/en/download/) (Windows only)
+
 
 #### Build tools
-For convenience the following Node.js tools have been packaged with [nexe](https://github.com/nexe/nexe) and included in this repository:
-* [csso](https://github.com/css/csso) (3.1.1) for compressing CSS
-* [svgo](https://github.com/svg/svgo) (0.7.2) for compressing SVG images
-* [xarjs](https://github.com/robertknight/xar-js) (0.2.0) for packaging Safari extension
-* [google-closure-compiler-js](https://github.com/google/closure-compiler-js) (20170806.0.0) for compiling JavaScript
+The following build tools are used to build the extension:
+* [csso](https://github.com/css/csso) for compressing CSS
+* [svgo](https://github.com/svg/svgo) for compressing SVG images
+* [xarjs](https://github.com/robertknight/xar-js) for packaging Safari legacy extension
+* [google-closure-compiler](https://github.com/google/closure-compiler) for compiling JavaScript
 
-However it is recommended to install the latest versions with [Node.js](https://nodejs.org):
+These can be installed by executing the following command:
 ```Shell
 npm install -g csso-cli
 npm install -g svgo
 npm install -g xar-js
-npm install -g google-closure-compiler-js
+npm install -g google-closure-compiler
 ```
-
-Additionally a reimplementation of the utility PlistBuddy used for automated build numbering is [provided](https://github.com/amarcu5/PiPer/tree/master/build-tools/) but it is advisable to download the original as part of [Xcode](https://itunes.apple.com/gb/app/xcode/id497799835?mt=12) or from [Apple's Command Line Tools](https://developer.apple.com/download/) 
 
 #### Steps
 1. Clone the repository
 2. Run `make.sh` 
-    1. By default this builds the unoptimized and unpackaged development version into the `./out/` directory that can then be installed using Safari's Extension Builder
-    2. Alternatively run `./make.sh -p release` to build the optimized and packaged release version (note that packaging requires a private key)
+    1. By default this builds the unoptimized and unpackaged development version for all targets into the `./out/` directory
+    2. Alternatively:
+       * `./make.sh -p release` to build the optimized release versions for all targets
+       * `./make.sh -p release -t chrome` to build the optimized release version for the Chrome browser
+       * `./make.sh -h` to see the full list of options
 
 ### Supporting a new site
 If we wanted to support `example.com` with the source:
@@ -110,73 +140,46 @@ If we wanted to support `example.com` with the source:
   </div>
 </div>
 ```
-We would start by adding a new entry in the `resources` object in `main.js`:
+We would start by adding a new file `example.js`  in the [resources directory](https://github.com/amarcu5/PiPer/tree/master/src/common/scripts/resources):
 ```JavaScript
-const resources = {
-  ...
-  'example' : {
-    buttonParent: function() {
-      // Returns the element that will contain the button
-      return document.querySelector('.video-controls');
-    },
-    videoElement: function() {
-      // Returns the video element
-      return document.querySelector('.video-container video');
-    },
-    
-    // Optional
-    captionElement: function() {
-      // Returns the element that contains the video captions
-      return document.querySelector('.video-captions');
-    },
+export const domain = 'example';
+
+export const resource = {
+  buttonParent: function() {
+    // Returns the element that will contain the button
+    return document.querySelector('.video-controls');
+  },
+  videoElement: function() {
+    // Returns the video element
+    return document.querySelector('.video-container video');
+  },
+  
+  // Optional
+  captionElement: function() {
+    // Returns the element that contains the video captions
+    return document.querySelector('.video-captions');
   },
 };
-```
-We also need to update the extension permissions to support the new site by editing `./src/Info.plist`:
-```XML
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Permissions</key>
-  <dict>
-    <key>Website Access</key>
-    <dict>
-      ...
-      <key>Allowed Domains</key>
-      <array>
-        ...
-        <string>example.com</string>
-        <string>*.example.com</string>
-      </array>
-    </dict>
-  </dict>
-</dict>
-</plist>
 ```
 We might want to style the button so that it integrates with the page better:
 ```JavaScript
-const resources = {
+export const resource = {
   ...
-  'example' : {
-    ...
-    // Assign a CSS class
-    buttonClassName: 'control',
-    // Scale the button
-    buttonScale: 0.5,
-    // Apply custom CSS styles
-    buttonStyle: /** CSS */ (`
-      /* Declaring CSS this way ensures it gets optimized when the extension is built */
-      cursor: pointer;
-      opacity: 0.5;
-    `),
-    // Apply a custom CSS hover style
-    buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
-  },
+  // Assign a CSS class
+  buttonClassName: 'control',
+  // Scale the button
+  buttonScale: 0.5,
+  // Apply custom CSS styles
+  buttonStyle: /** CSS */ (`
+    /* Declaring CSS this way ensures it gets optimized when the extension is built */
+    cursor: pointer;
+    opacity: 0.5;
+  `),
+  // Apply a custom CSS hover style
+  buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
 };
 ```
-For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree/master/src/scripts)
+For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree/master/src/)
 
 ## Acknowledgements
 * [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon
-* [Google](https://github.com/google/material-design-icons) for the Picture in Picture icon
