@@ -76,7 +76,6 @@ const prepareCaptions = function(video) {
   // Otherwise create new caption track
   info('Caption track created');
   track = video.addTextTrack('captions', TRACK_ID, 'en');
-  track.mode = 'showing';
 };
 
 /**
@@ -124,6 +123,7 @@ const removeCaptions = function(video, workaround = true) {
 const addCaption = function(video, caption) {
 
   info(`Showing caption '${caption}'`);
+  track.mode = 'showing';
   track.addCue(new VTTCue(video.currentTime, video.currentTime + 60, caption));
 
   if (getBrowser() == Browser.SAFARI) {
