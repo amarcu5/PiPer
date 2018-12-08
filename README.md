@@ -64,6 +64,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 * [Netflix](http://www.netflix.com)
 * [OCS](http://www.ocs.fr)
 * [Openload](http://www.openload.co)
+* [PBS](http://www.pbs.org)
 * [Periscope](http://www.periscope.tv)
 * [Plex](http://www.plex.tv)
 * [Seznam Zprávy](http://www.seznam.cz/zpravy)
