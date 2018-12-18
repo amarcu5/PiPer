@@ -23,6 +23,7 @@ export const resource = {
     border: 0px;
     background: transparent;
     opacity: 0.7;
+    outline: 0;
     text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.45);
   `),
   captionElement: function() {
