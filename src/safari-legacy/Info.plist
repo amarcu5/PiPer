@@ -16,6 +16,11 @@
 	<string>0.0</string>
 	<key>CFBundleVersion</key>
 	<string>0</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Global Page</key>
+		<string>global.html</string>
+	</dict>
 	<key>Content</key>
 	<dict>
 		<key>Scripts</key>
@@ -23,6 +28,7 @@
 			<key>End</key>
 			<array>
 				<string>scripts/main.js</string>
+				<string>scripts/legacy.js</string>
 			</array>
 		</dict>
 	</dict>

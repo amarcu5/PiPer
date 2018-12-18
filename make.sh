@@ -4,7 +4,7 @@
 
 EXTENSION_NAME="PiPer"
 
-SOURCE_FILES=("main.js" "fix.js" "background.js" "install.js" "localization-bridge.js")
+SOURCE_FILES=("main.js" "fix.js" "background.js" "install.js" "localization-bridge.js" "legacy.js")
 
 # Certifcate paths
 LEAF_CERT_PATH="../certs/cert.pem"
@@ -226,24 +226,6 @@ if [[ "${compress_svg}" -eq 1 ]]; then
   ${SVGO_PATH} -q -f "out/${EXTENSION_NAME}/images"
 fi
 
-# Compress all inline CSS with CSSO
-if [[ "${compress_css}" -eq 1 ]]; then
-  function minify_css() { 
-    echo "$@" | sed -e 's/\\"/"/g' -e 's/\\\$/$/g' | ${CSSO_PATH} --declaration-list
-  }
-  export -f minify_css
-  export CSSO_PATH
-  for path in "out/${EXTENSION_NAME}/scripts"/{*,**/*}.js; do
-    [[ ! -f "${path}" ]] && continue
-    source=$(cat "${path}")
-    echo "echo \"$(sed -e 's/\\/\\\\/g' -e 's/\$/\\$/g' -e 's/`/\\`/g' -e 's/\"/\\\"/g' -e 's/\\n/\\\\n/g' <<< "$source" \
-      | tr '\n' '\f' \
-      | sed -E 's/\/\*\*[[:space:]]+CSS[[:space:]]+\*\/[[:space:]]*\([[:space:]]*\\`([^`]*)\\`[[:space:]]*\)/\\`\$(minify_css '\''\1'\'')\\`/g' \
-      | tr '\f' '\n')\"" \
-      | sh > "${path}"
-  done
-fi
-
 # Get current version from git if automatic versioning enabled
 if [[ "${update_version}" -eq 1 ]]; then
 
@@ -344,6 +326,23 @@ for target in "${targets[@]}"; do
   # Copy target specific items to target output folder
   cp -r "src/${target}"/* "out/${EXTENSION_NAME}-${target}${target_extension}/" 2>/dev/null
   
+  # Compress all inline CSS with CSSO
+  if [[ "${compress_css}" -eq 1 ]]; then
+    function minify_css() { 
+      echo "$@" | sed -e 's/\\"/"/g' -e 's/\\\$/$/g' | ${CSSO_PATH} --declaration-list
+    }
+    export -f minify_css
+    export CSSO_PATH
+    for path in "out/${EXTENSION_NAME}-${target}${target_extension}${common_file_path}/scripts"/{*,**/*}.js; do
+      [[ ! -f "${path}" ]] && continue
+      source=$(cat "${path}")
+      echo "echo \"$(sed -e 's/\\/\\\\/g' -e 's/\$/\\$/g' -e 's/`/\\`/g' -e 's/\"/\\\"/g' -e 's/\\n/\\\\n/g' <<< "$source" \
+        | tr '\n' '\f' \
+        | sed -E 's/\/\*\*[[:space:]]+CSS[[:space:]]+\*\/[[:space:]]*\([[:space:]]*\\`([^`]*)\\`[[:space:]]*\)/\\`\$(minify_css '\''\1'\'')\\`/g' \
+        | tr '\f' '\n')\"" \
+        | sh > "${path}"
+    done
+  fi
   
   # Use closure compiler to compress javascript
   function remove_element() {
