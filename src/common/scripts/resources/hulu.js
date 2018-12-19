@@ -1,31 +1,51 @@
-import { getResource } from './../common.js'
+import { getButton } from './../button.js'
 
 export const domain = 'hulu';
 
 export const resource = {
-  buttonClassName: 'simple-button',
   buttonDidAppear: function() {
-    const buttonParent = getResource().buttonParent();
-    buttonParent.querySelector('.progress-bar-tracker').style.width = 'calc(100% - 380px)';
-    buttonParent.querySelector('.progress-time-container').style.marginRight = '45px';
+    
+    // Get localized button title and hide default tooltip
+    const button = getButton();
+    const /** string */ title = button.title;
+    button.title = '';
+    
+    // Create stylized tooltip and add to DOM
+    const tooltip = /** @type {HTMLElement} */ (document.createElement('div'));
+    tooltip.className = 'button-tool-tips';
+    tooltip.style.cssText = /** CSS */ (`
+      white-space: nowrap;
+      padding: 0 5px;
+      right: 0;
+    `);
+    tooltip.textContent = title.toUpperCase();
+    button.appendChild(tooltip);
+    
+    // Display stylized tooltip on mouseover
+    button.addEventListener('mouseover', function() {
+      tooltip.style.display = 'block';
+    });
+    button.addEventListener('mouseout', function() {
+      tooltip.style.display = 'none';
+    });
   },
   buttonElementType: 'div',
-  buttonHoverStyle: /** CSS */ (`
-    filter: brightness(50%) sepia(1) hue-rotate(58deg) saturate(160%) brightness(110%) !important;
-  `),
-  buttonParent: function() {
-    return document.querySelector('#site-player .main-bar');
+  buttonHoverStyle: /** CSS */ (`opacity: 1.0 !important`),
+  buttonInsertBefore: function(/** Element */ parent) {
+    return document.querySelector('.controls__view-mode-button');
   },
-  buttonScale: 0.7,
+  buttonParent: function() {
+    return document.querySelector('#dash-player-container .controls__menus-right');
+  },
   buttonStyle: /** CSS */ (`
-    top: -45px;
-    left: -50px;
-    filter: brightness(80%);
+    opacity: 0.7;
+    cursor: pointer;
+    width: 24px;
   `),
   captionElement: function() {
-    return document.querySelector('.closed-caption-container');
+    return document.querySelector('.closed-caption-outband');
   },
   videoElement: function() {
-    return document.getElementById('content-video-player');
+    return document.querySelector('.video-player');
   },
 };

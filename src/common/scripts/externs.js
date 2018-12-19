@@ -24,16 +24,7 @@ HTMLVideoElement.prototype.webkitSetPresentationMode = function(mode) {};
 /** @type {string} */
 TextTrack.prototype.label;
 
-/** @return {undefined} */
-safari.extension.dispatchMessage = function(message, userInfo) {};
-
-/** @const */
-safari.self = {};
-
-/** @return {undefined} */
-safari.self.addEventListener = function(type, listener) {};
-
-/** @constructor */
+/** @interface */
 const SafariExtensionMessageEvent = function() {};
 
 /** @type {*} */
@@ -41,6 +32,24 @@ SafariExtensionMessageEvent.prototype.message;
 
 /** @type {string} */
 SafariExtensionMessageEvent.prototype.name;
+
+/** @type {EventTarget} */
+SafariExtensionMessageEvent.prototype.target;
+
+/** @interface */
+const SafariEventTarget = function() {};
+
+/** @return {function(string,function(SafariExtensionMessageEvent),boolean=):undefined} */
+SafariEventTarget.prototype.addEventListener = function(type, listener, capture) {};
+
+/** @return {function(string,function(SafariExtensionMessageEvent),boolean=):undefined} */
+SafariEventTarget.prototype.removeEventListener = function(type, listener, capture) {};
+
+/** @type {!SafariEventTarget} */
+safari.self;
+
+/** @type {function(string,*=):undefined} */
+safari.extension.dispatchMessage = function(message, userInfo) {};
 
 
 /* Legacy Safari Extension */
@@ -50,6 +59,27 @@ safari.extension.settings = {};
 
 /** @return {undefined} */
 safari.extension.settings.clear = function() {};
+
+/** @type {!SafariEventTarget} */
+safari.application;
+
+/** @const */
+safari.self.tab = {};
+
+/** @type {function(string,*=):undefined} */
+safari.self.tab.dispatchMessage = function(message, userInfo) {};
+
+/** @interface */
+const SafariBrowserTab = function() {};
+
+/** @type {SafariWebPageProxy} */
+SafariBrowserTab.prototype.page;
+
+/** @interface */
+const SafariWebPageProxy = function() {};
+
+/** @type {function(string,*=):undefined} */
+SafariWebPageProxy.prototype.dispatchMessage = function(message, userInfo) {};
 
 
 /* Chrome Extension */
