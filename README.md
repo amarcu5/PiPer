@@ -112,10 +112,7 @@ The following build tools are used to build the extension:
 
 These can be installed by executing the following command:
 ```Shell
-npm install -g csso-cli
-npm install -g svgo
-npm install -g xar-js
-npm install -g google-closure-compiler
+npm install -g csso-cli svgo xar-js google-closure-compiler
 ```
 
 #### Steps
@@ -183,4 +180,4 @@ export const resource = {
 For more examples, please see the [source](https://github.com/amarcu5/PiPer/tree/master/src/)
 
 ## Acknowledgements
-* [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration and the Netflix icon
+* [Pied PíPer](https://github.com/JoeKuhns/PiedPiPer.safariextension) for the original inspiration
