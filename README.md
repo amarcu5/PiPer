@@ -50,6 +50,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 <sub>...or live life on the edge with the latest [development build](https://github.com/amarcu5/PiPer/tree/develop/out) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
+* [9Now](http://www.9now.com.au)
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
 * [CollegeHumor](http://www.collegehumor.com)
 * [CuriosityStream](http://www.curiositystream.com)

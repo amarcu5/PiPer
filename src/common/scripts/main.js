@@ -40,7 +40,7 @@ const getCurrentDomainName = function() {
     return 'plex';
   } else {
     // Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
-    return (location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/) || [])[1];
+    return (location.hostname.match(/([^.]+)\.(?:com?\.)?[^.]+$/) || [])[1];
   }
 };
 
