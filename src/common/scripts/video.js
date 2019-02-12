@@ -43,7 +43,8 @@ export const togglePictureInPicture = function(video) {
  * @param {function(HTMLVideoElement, boolean)} listener - an event listener to add
  */
 export const addPictureInPictureEventListener = function(listener) {
-  if (!eventListeners.includes(listener)) {
+  const index = eventListeners.indexOf(listener);
+  if (index == -1) {
     eventListeners.push(listener);
   }
 
