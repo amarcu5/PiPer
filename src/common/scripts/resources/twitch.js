@@ -26,6 +26,10 @@ export const resource = {
       if (videoPlayingPictureInPicture(video)) togglePictureInPicture(video);
     });
     neighbourButton.style.order = 2;
+
+    // Ensure "Watch on Twitch" button is the rightmost button
+    const twitchButton = document.querySelector('.qa-watch-twitch-button');
+    if (twitchButton) twitchButton.style.order = 3;
   },
   buttonHoverStyle: /** CSS */ (`
     filter: brightness(50%) sepia(1) hue-rotate(219deg) saturate(117%) brightness(112%);

@@ -28,8 +28,23 @@ const mutationObserver = function() {
   }
 };
 
-// Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
-const domainName = location.hostname && location.hostname.match(/([^.]+)\.(?:co\.)?[^.]+$/)[1];
+/**
+ * Returns the first non-public subdomain from the current domain name
+ *
+ * @return {string|undefined}
+ */
+const getCurrentDomainName = function() {
+
+  // Special case for local Plex Media Server access that always uses port 32400
+  if (location.port == 32400) {
+    return 'plex';
+  } else {
+    // Remove subdomain and public suffix (far from comprehensive as only removes .X and .co.Y)
+    return (location.hostname.match(/([^.]+)\.(?:com?\.)?[^.]+$/) || [])[1];
+  }
+};
+
+const domainName = getCurrentDomainName();
 
 if (domainName in resources) {
   info(`Matched site ${domainName} (${location})`);

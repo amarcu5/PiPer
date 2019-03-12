@@ -14,13 +14,13 @@ export const Browser = {
  * @return {Browser} 
  */
 export const getBrowser = function() {
-	if (BROWSER != Browser.UNKNOWN) {
+  if (BROWSER != Browser.UNKNOWN) {
     return /** @type {Browser} */ (BROWSER);
   }
   if (/Safari/.test(navigator.userAgent) && /Apple/.test(navigator.vendor)) {
     return Browser.SAFARI;
   }
-	if (/Chrome/.test(navigator.userAgent) && /Google/.test(navigator.vendor)) {
+  if (/Chrome/.test(navigator.userAgent) && /Google/.test(navigator.vendor)) {
     return Browser.CHROME;
   }
   return Browser.UNKNOWN;

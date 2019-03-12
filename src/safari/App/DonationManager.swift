@@ -149,6 +149,10 @@ class DonationManager {
     let emoticons = Array({
       () -> String in
       switch Calendar.current.dateComponents([.month, .weekdayOrdinal, .weekday, .day], from: Date()) {
+      case let date where date.month == 1 && date.day == 1: // New Years
+        return "🕛🥂🍾🎊"
+      case let date where date.month == 2 && date.day == 14: // Valentine's Day
+        return "🥀🌹💋💘"
       case let date where date.month == 10 && date.day == 31: // Halloween
         return "💀👻🧙‍♀️🎃"
       case let date where date.month == 11 && date.weekdayOrdinal == 4 && date.weekday == 5: // Thanksgiving

@@ -100,11 +100,11 @@
     const currentTimestamp = Date.now();
 
     let /** number */ alertInterval;
-    if (currentTimestamp >= 1551398400000) { // 2019-03-01
+    if (currentTimestamp >= 1556665200000) { // 2019-05-01
       alertInterval = 3.6e+6; // hourly
-    } else if (currentTimestamp >= 1548979200000) { // 2019-02-01
+    } else if (currentTimestamp >= 1554073200000) { // 2019-04-01
       alertInterval = 8.64e+7; // daily
-    } else if (currentTimestamp >= 1546300800000) { // 2019-01-01
+    } else if (currentTimestamp >= 1551398400000) { // 2019-03-01
       alertInterval = 6.048e+8; // weekly
     } else {
       alertInterval = 2.628e+9; // monthly

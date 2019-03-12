@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Test for Picture in Picture support and display warning to activate Chrome flags if needed
   const video = /** @type {HTMLVideoElement} */ (document.getElementById('test-video'));
   video.addEventListener('loadeddata', function() {
-    video.requestPictureInPicture().catch(function(/** Error */ error) {
-      if (~error.message.indexOf('Picture-in-Picture is not available')) {
+    video.requestPictureInPicture().catch(function(error) {
+      const errorMessage = /** @type {Error} */ (error).message;
+      if (~errorMessage.indexOf('Picture-in-Picture is not available')) {
         info('Picture-in-Picture NOT supported');
         document.getElementById('warning').style.display = 'flex';
       } else {

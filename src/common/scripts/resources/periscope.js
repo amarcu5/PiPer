@@ -19,6 +19,6 @@ export const resource = {
     filter: brightness(200%);
   `),
   videoElement: function() {
-    return document.querySelector('.vjs-tech video[src]');
+    return document.querySelector('.Video video');
   },
 };

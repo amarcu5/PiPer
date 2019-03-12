@@ -24,7 +24,7 @@ export const resource = {
   buttonScale: 0.6,
   buttonStyle: /** CSS */ (`
     position: absolute;
-    right: calc(50px + 2.5rem);
+    right: 114px;
     width: 50px;
     cursor: pointer;
     opacity: 0.6;

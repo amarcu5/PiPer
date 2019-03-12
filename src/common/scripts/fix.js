@@ -78,7 +78,7 @@ const callAnimationFrameRequestsAndTimeouts = function() {
 /**
  * Avoids background throttling by invoking timeouts with media 'timeupdate' events
  *
- * @param {Function|string} callback - a setTimeout callback
+ * @param {Function|TrustedScript|string} callback - a setTimeout callback
  * @param {number=} timeout - a delay in ms
  * @return {number}
  */
