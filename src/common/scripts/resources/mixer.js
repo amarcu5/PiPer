@@ -12,7 +12,7 @@ export const resource = {
   },
   buttonScale: 0.65,
   buttonStyle: /** CSS */ (`
-    margin-top: 3px;
+    width: 36px;
     height: 36px;
     border-radius: 50%;
     cursor: pointer;
