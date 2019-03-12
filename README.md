@@ -47,7 +47,7 @@ Install from the [Mac App Store](https://itunes.apple.com/app/id1421915518?mt=12
 ### Chrome
 Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/piper/jbjleapidaddpbncgofepljddfeoghkc) by clicking "Add to Chrome"
   
-<sub>...or live life on the edge with the latest [development build](https://github.com/amarcu5/PiPer/tree/develop/out) (IMPORTANT: these builds do not update automatically!)</sub>
+<sub>...or live life on the edge with the latest [development build](https://github.com/amarcu5/PiPer/tree/develop-1.0.x/out) (IMPORTANT: these builds do not update automatically!)</sub>
 
 ## Supported sites
 * [9Now](http://www.9now.com.au)
