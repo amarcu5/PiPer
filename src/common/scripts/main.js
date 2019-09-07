@@ -3,7 +3,7 @@ import { Browser, getBrowser, getResource, setResource } from './common.js'
 import { addVideoElementListeners } from './video.js'
 import { resources } from './resources/index.js';
 import { checkButton, addButton } from './button.js'
-import { shouldProcessCaptions, enableCaptions, processCaptions } from './captions.js'
+import { shouldProcessCaptions, enableCaptions, processCaptions, addVideoCaptionTracks } from './captions.js'
 import { initialiseCaches } from './cache.js'
 
 /**
@@ -16,6 +16,9 @@ const mutationObserver = function() {
 
   // Workaround Chrome's lack of an entering Picture in Picture mode event by monitoring all video elements
   if (getBrowser() == Browser.CHROME) addVideoElementListeners();
+
+  // Workaround Safari bug; captions are not displayed if the track is added after the video has loaded
+  if (getBrowser() == Browser.SAFARI) addVideoCaptionTracks();
 
   // Try adding the button to the page if needed
   if (checkButton()) return;

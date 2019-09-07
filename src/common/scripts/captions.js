@@ -41,7 +41,7 @@ export const enableCaptions = function(ignoreNowPlayingCheck) {
   const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement(true));
   if (!video) return;
   showingCaptions = videoPlayingPictureInPicture(video);
-  prepareCaptions(video);
+  track = getCaptionTrack(video);
   processCaptions();
 };
 
@@ -55,27 +55,35 @@ export const shouldProcessCaptions = function() {
 };
 
 /**
- * Prepares video for captions
+ * Gets caption track for video (creates or returns existing track as needed)
  *
  * @param {HTMLVideoElement} video - video element that will display captions
+ * @return {TextTrack}
  */
-const prepareCaptions = function(video) {
+const getCaptionTrack = function(video) {
 
   // Find existing caption track
-  track = null;
   const allTracks = video.textTracks;
   for (let trackId = allTracks.length; trackId--;) {
     if (allTracks[trackId].label === TRACK_ID) {
-      track = allTracks[trackId];
       info('Existing caption track found');
-      break;
+      return allTracks[trackId];
     }
   }
-  if (track) return;
 
   // Otherwise create new caption track
   info('Caption track created');
-  track = video.addTextTrack('captions', TRACK_ID, 'en');
+  return video.addTextTrack('captions', TRACK_ID, 'en');
+};
+
+/**
+ * Adds caption tracks to all video elements
+ */
+export const addVideoCaptionTracks = function() {
+  const elements = document.getElementsByTagName('video');
+  for (let index = 0, element; element = elements[index]; index++) {
+    getCaptionTrack(/** @type {?HTMLVideoElement} */ (element));
+  }
 };
 
 /**
@@ -88,7 +96,7 @@ const pictureInPictureEventListener = function(video, isPlayingPictureInPicture)
   
   // Toggle display of the captions and prepare video if needed
   showingCaptions = isPlayingPictureInPicture;
-  if (showingCaptions) prepareCaptions(video);
+  if (showingCaptions) track = getCaptionTrack(video);
   lastUnprocessedCaption = '';
   processCaptions();
 
