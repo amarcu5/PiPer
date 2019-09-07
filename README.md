@@ -53,6 +53,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 * [9Now](http://www.9now.com.au)
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
 * [CollegeHumor](http://www.collegehumor.com)
+* [Crunchyroll](http://www.crunchyroll.com)
 * [CuriosityStream](http://www.curiositystream.com)
 * [Eurosport player](http://www.eurosportplayer.com)
 * [FuboTV](http://www.fubo.tv)
