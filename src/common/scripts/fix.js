@@ -1,4 +1,5 @@
 import { info } from './logger.js'
+import { videoPlayingPictureInPicture } from './video.js'
 
 let activeVideo = null;
 let timeoutId = 0;
@@ -107,7 +108,7 @@ const bypassBackgroundTimerThrottling = function() {
     const allVideos = document.querySelectorAll('video');
     for (let videoId = allVideos.length; videoId--;) {
       const video = /** @type {?HTMLVideoElement} */ (allVideos[videoId]);
-      if (video.webkitPresentationMode == 'picture-in-picture') {
+      if (videoPlayingPictureInPicture(video)) {
         activeVideo = video;
         break;
       }
