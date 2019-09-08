@@ -96,7 +96,10 @@ const pictureInPictureEventListener = function(video, isPlayingPictureInPicture)
   
   // Toggle display of the captions and prepare video if needed
   showingCaptions = isPlayingPictureInPicture;
-  if (showingCaptions) track = getCaptionTrack(video);
+  if (showingCaptions) {
+    track = getCaptionTrack(video);
+    track.mode = 'showing';
+  }
   lastUnprocessedCaption = '';
   processCaptions();
 
