@@ -10,6 +10,7 @@ import { initialiseCaches } from './cache.js'
  * Tracks injected button and captions
  */
 const mutationObserver = function() {
+  const currentResource = getResource();
 
   // Process video captions if needed
   if (shouldProcessCaptions()) processCaptions();
@@ -18,11 +19,10 @@ const mutationObserver = function() {
   if (getBrowser() == Browser.CHROME) addVideoElementListeners();
 
   // Workaround Safari bug; captions are not displayed if the track is added after the video has loaded
-  if (getBrowser() == Browser.SAFARI) addVideoCaptionTracks();
+  if (getBrowser() == Browser.SAFARI && currentResource.captionElement) addVideoCaptionTracks();
 
   // Try adding the button to the page if needed
   if (checkButton()) return;
-  const currentResource = getResource();
   const buttonParent = currentResource.buttonParent();
   if (buttonParent) {
     addButton(buttonParent);
