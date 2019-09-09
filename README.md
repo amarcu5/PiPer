@@ -84,6 +84,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 * [Video Aktálně](http://video.aktualne.cz)
 * [Vier](http://www.vier.be)
 * [Vijf](http://www.vijf.be)
+* [VK](http://www.vk.com)
 * [VRV](http://www.vrv.co)
 * [VRT NU](http://www.vrt.be/vrtnu/)
 * [Yelo Play](http://www.yeloplay.be)
