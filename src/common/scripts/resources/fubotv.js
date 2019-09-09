@@ -16,6 +16,6 @@ export const resource = {
     cursor: pointer;
   `),
   videoElement: function() {
-    return document.getElementById('video');
+    return document.getElementById('bitmovinplayer-video-video');
   },
 };

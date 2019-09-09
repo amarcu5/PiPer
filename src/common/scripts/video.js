@@ -28,6 +28,9 @@ export const togglePictureInPicture = function(video) {
         document.head.appendChild(script);
         script.remove();
       } else {
+        // Force enable Picture in Picture mode support
+        video.removeAttribute('disablepictureinpicture');
+        
         video.requestPictureInPicture();
       }
       break;

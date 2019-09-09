@@ -1,24 +1,25 @@
-import { getResource } from './../common.js'
-import { videoPlayingPictureInPicture, togglePictureInPicture } from './../video.js'
+import { getButton } from './../button.js'
 
 export const domain = 'udemy';
 
 export const resource = {
-  buttonClassName: 'vjs-control vjs-button',
-  buttonDidAppear: function() {
-    document.querySelector('.vjs-fullscreen-control').addEventListener('click', function() {
-      const video = /** @type {?HTMLVideoElement} */ (getResource().videoElement());
-      if (videoPlayingPictureInPicture(video)) togglePictureInPicture(video);
-    });
+  buttonClassName: 'btn',
+  buttonHoverStyle: /** CSS */ (`opacity: 1 !important`),
+  buttonInsertBefore: function(/** Element */ parent) {
+    return document.querySelector('button[aria-label="Fullscreen"]');
   },
   buttonParent: function() {
-    return document.querySelector('.vjs-control-bar');
+    return document.querySelector('div[class^="control-bar--control-bar--"]');
   },
-  buttonScale: 0.7,
-  buttonStyle: /** CSS */ (`order: 7`),
+  buttonScale: 0.8,
+  buttonStyle: /** CSS */ (`
+    width: 3em;
+    height: 3em;
+    padding: 0;
+    opacity: 0.8;
+  `),
   captionElement: function() {
-    const e = getResource().videoElement();
-    return e && e.parentElement.querySelector('.vjs-text-track-display');
+    return document.querySelector('div[class^="captions-display--captions-container"]');
   },
   videoElement: function() {
     return document.querySelector('video.vjs-tech');
