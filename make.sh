@@ -529,6 +529,8 @@ for target in "${targets[@]}"; do
     ${CCJS_PATH} \
       "${compression_options[@]}" \
       --warning_level VERBOSE \
+      --language_out ECMASCRIPT_2017 \
+      --output_wrapper "var a;a||(a=!0,(()=>{%output%})());" \
       "${source_map_options[@]}" \
       "${js_code[@]}" \
     > "${absolute_entry%.*}.cjs"
