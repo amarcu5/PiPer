@@ -56,6 +56,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 * [CollegeHumor](http://www.collegehumor.com)
 * [Crunchyroll](http://www.crunchyroll.com)
 * [CuriosityStream](http://www.curiositystream.com)
+* [Disney+](http://www.disneyplus.com)
 * [Eurosport player](http://www.eurosportplayer.com)
 * [FuboTV](http://www.fubo.tv)
 * [Giant Bomb](http://www.giantbomb.com)
