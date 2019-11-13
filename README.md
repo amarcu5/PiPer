@@ -51,6 +51,7 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 
 ## Supported sites
 * [9Now](http://www.9now.com.au)
+* [Apple TV+](http://tv.apple.com)
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
 * [Česká televize](http://www.ceskatelevize.cz)
 * [CollegeHumor](http://www.collegehumor.com)
