@@ -7,60 +7,74 @@ localizations['button-title'] = {
   'de': 'Bild-in-Bild starten',
   'nl': 'Beeld in beeld starten',
   'fr': 'Démarrer Image dans l’image',
+  'tr': 'Resim içinde Resim modunu aç',
 };
 
 localizations['donate'] = {
   'en': 'Donate',
   'de': 'Spenden',
+  'tr': 'Bağış Yap',
 };
 
 localizations['donate-small'] = {
   'en': 'Small donation',
+  'tr': 'Küçük bağış',
 };
 
 localizations['donate-medium'] = {
   'en': 'Medium donation',
+  'tr': 'Orta bağış',
 };
 
 localizations['donate-large'] = {
   'en': 'Grand donation',
+  'tr': 'Büyük bağış',
 };
 
 localizations['total-donations'] = {
   'en': 'Total donations:',
+  'tr': 'Toplam bağış:',
 };
 
 localizations['donate-error'] = {
   'en': 'In-app purchase unavailable',
+  'tr': 'Uygulama içi satın alım hatası',
 };
 
 localizations['report-bug'] = {
   'en': 'Report a bug',
   'de': 'Einen Fehler melden',
+  'tr': 'Bir hata bildir',
 };
 
 localizations['options'] = {
   'en': 'Options',
+  'tr': 'Seçenekler',
 };
 
 localizations['install-thanks'] = {
   'en': 'Thanks for adding PiPer!',
+  'tr': 'Piper kullandığınız için teşekkürler!',
 };
 
 localizations['enable'] = {
   'en': 'Enable',
+  'tr': 'Etkinleştir',
 };
 
 localizations['safari-disabled-warning'] = {
   'en': 'Extension is currently disabled, enable in Safari preferences',
+  'tr': 'Eklenti şu anda devre dışı, Safari tercihlerinde etkinleştirin',
 };
 
 localizations['chrome-flags-open'] = {
   'en': 'Open Chrome Flags',
+  'tr': 'Chrome Flags aç',
 };
 
 localizations['chrome-flags-warning'] = {
   'en': 'Before you get started you need to enable the chrome flag [emphasis]"SurfaceLayer objects for videos"[/emphasis]',
+  'tr': 'Başlamadan önce Chrome flag emphasis]"SurfaceLayer objects for videos"[/emphasis] etkinleştirmeniz gerekli',
 };
 
 // Set English as the default fallback language
