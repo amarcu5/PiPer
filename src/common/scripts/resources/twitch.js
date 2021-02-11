@@ -5,7 +5,7 @@ import { videoPlayingPictureInPicture, togglePictureInPicture } from './../video
 export const domain = 'twitch';
 
 export const resource = {
-  buttonClassName: 'tw-border-bottom-left-radius-medium tw-border-bottom-right-radius-medium tw-border-top-left-radius-medium tw-border-top-right-radius-medium tw-button-icon tw-button-icon--overlay tw-core-button tw-core-button--overlay tw-inline-flex tw-relative tw-tooltip-wrapper',
+  buttonClassName: 'tw-border-bottom-left-radius-medium tw-border-bottom-right-radius-medium tw-border-top-left-radius-medium tw-border-top-right-radius-medium tw-button-icon tw-button-icon--overlay tw-core-button tw-core-button--overlay tw-inline-flex tw-relative',
   buttonDidAppear: function() {
     // Add tooltip
     const button = getButton();
