@@ -51,11 +51,14 @@ Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/pi
 
 ## Supported sites
 * [9Now](http://www.9now.com.au)
+* [Apple TV+](http://tv.apple.com)
 * [Amazon Video](http://www.amazon.com/PrimeVideo)
 * [Česká televize](http://www.ceskatelevize.cz)
 * [CollegeHumor](http://www.collegehumor.com)
 * [Crunchyroll](http://www.crunchyroll.com)
 * [CuriosityStream](http://www.curiositystream.com)
+* [DAZN](https://www.dazn.com)
+* [Disney+](http://www.disneyplus.com)
 * [Eurosport player](http://www.eurosportplayer.com)
 * [FuboTV](http://www.fubo.tv)
 * [Giant Bomb](http://www.giantbomb.com)

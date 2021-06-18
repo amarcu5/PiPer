@@ -12,6 +12,7 @@ export const resource = {
     return document.querySelector('.PlayerControlsNeo__button-control-row'); 
   },
   buttonScale: 0.7,
+  buttonStyle: /** CSS */ (`min-width: 2.3em`),
   captionElement: function() {
     const e = getResource().videoElement();
     return e && e.parentElement.querySelector('.player-timedtext');
